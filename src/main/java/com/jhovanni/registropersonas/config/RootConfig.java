@@ -19,7 +19,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @Configuration
 @ComponentScan(basePackages = "com.jhovanni.registropersonas.hibernate")
 @EnableTransactionManagement
-class RootConfig {
+public class RootConfig {
 
     @Bean
     public BasicDataSource dataSource() {

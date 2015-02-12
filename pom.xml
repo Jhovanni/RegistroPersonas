@@ -69,6 +69,19 @@
             <artifactId>hibernate-core</artifactId>
             <version>4.3.8.Final</version>
         </dependency>
+        <!-- JUnit Test Framework -->
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.11</version>
+        </dependency>
+		
+        <!-- Spring Test Support -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-test</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
     </dependencies>
 
     <build>
