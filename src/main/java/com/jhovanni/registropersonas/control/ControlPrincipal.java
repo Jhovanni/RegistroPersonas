@@ -10,6 +10,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
@@ -61,6 +62,28 @@ public class ControlPrincipal {
             }
         } else {
             System.out.println("Errors controlPrincipal.registrar: " + errors);
+        }
+        return mv;
+    }
+
+    @RequestMapping(value = "persona/borrar/{id}", method = RequestMethod.GET)
+    public ModelAndView prepararBorrar(@PathVariable int id) {
+        ModelAndView mv = new ModelAndView("persona/borrar");
+        Persona persona = servicio.getPersona(id);
+        if (persona != null) {
+            mv.addObject(persona);
+        }
+        return mv;
+    }
+
+    @RequestMapping(value = "persona/borrar/{id}", method = RequestMethod.POST)
+    public ModelAndView borrar(@PathVariable int id) {
+        ModelAndView mv = new ModelAndView("persona/borrar");
+        try {
+            servicio.borrarPersona(id);
+            mv.addObject("personaBorrada", true);
+        } catch (Exception e) {
+            System.out.println("Excepción ControlPrincipal.borrar:" + e);
         }
         return mv;
     }

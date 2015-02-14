@@ -52,19 +52,40 @@ public class ServicioRegistro implements Servicio {
 
     @Override
     public int registrarPersona(Persona persona, String nombreUsuario, String clave) {
-        Usuario usuario=new Usuario();
+        Usuario usuario = new Usuario();
         usuario.setNombre(nombreUsuario);
         usuario.setClave(clave);
         usuario.setActivo(true);
         usuarioRepositorio.crear(usuario);
-        
-        Permiso permiso=new Permiso();
+
+        Permiso permiso = new Permiso();
         permiso.setUsuario(usuario);
         permiso.setNivel(Nivel.usuario);
         permisoRepositorio.crear(permiso);
-        
+
         persona.setUsuario(usuario);
-        return (int)personaRepositorio.crear(persona);
+        return (int) personaRepositorio.crear(persona);
     }
 
+    @Override
+    public Persona getPersona(int id) {
+        return personaRepositorio.get(id);
+    }
+
+    @Override
+    public void borrarPersona(Persona persona) {
+        Usuario usuario = persona.getUsuario();
+        List<Permiso> permisos = usuario.getPermisos();
+
+        personaRepositorio.borrar(persona);
+        for (Permiso permiso : permisos) {
+            permisoRepositorio.borrar(permiso);
+        }
+        usuarioRepositorio.borrar(usuario);
+    }
+
+    @Override
+    public void borrarPersona(int id) {
+        borrarPersona(getPersona(id));
+    }
 }

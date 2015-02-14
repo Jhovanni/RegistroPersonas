@@ -37,6 +37,7 @@
                             <td>${persona.ciudad.nombre}</td>
                             <th>Foto</th>
                             <td>
+                                <a href="editar/${persona.id}"><s:message code="Link.editarPersona"/></a>
                                 <a href="borrar/${persona.id}"><s:message code="Link.borrarPersona"/></a>
                             </td>
                         </tr>

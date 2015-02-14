@@ -61,4 +61,27 @@ public interface Servicio {
      * @return id generado
      */
     public int registrarPersona(Persona persona, String nombreUsuario, String clave);
+
+    /**
+     * Busca el registro Persona en base a un idenfiticador
+     *
+     * @param id
+     * @return
+     */
+    public Persona getPersona(int id);
+
+    /**
+     * Elimina un registro persona del sistema. Esta operación no puede
+     * deshacerse
+     *
+     * @param persona
+     */
+    public void borrarPersona(Persona persona);
+
+    /**
+     * Elimina un registro persona del sistema en base a su identificador
+     *
+     * @param id
+     */
+    public void borrarPersona(int id);
 }
