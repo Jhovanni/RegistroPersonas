@@ -66,6 +66,33 @@ public class ControlPrincipal {
         return mv;
     }
 
+    @RequestMapping(value = "persona/editar/{id}", method = RequestMethod.GET)
+    public ModelAndView prepararEditar(@PathVariable int id) {
+        ModelAndView mv = new ModelAndView("persona/editar");
+        Persona persona = servicio.getPersona(id);
+        if (persona != null) {
+            mv.addObject(persona);
+        }
+        return mv;
+    }
+
+    @RequestMapping(value = "persona/editar/{id}", method = RequestMethod.POST)
+    public ModelAndView editar(@Valid Persona persona, Errors errors) {
+        ModelAndView mv = new ModelAndView("persona/editar");
+        System.out.println(persona + " usuario:" + persona.getUsuario());
+        if (!errors.hasErrors()) {
+            try {
+                servicio.editarPersona(persona);
+                mv.addObject("personaEditada", true);
+            } catch (DataIntegrityViolationException e) {
+                errors.rejectValue("nombreUsuario", "IdOcupado");
+            }
+        } else {
+            System.out.println("Errors controlPrincipal.editar: " + errors);
+        }
+        return mv;
+    }
+
     @RequestMapping(value = "persona/borrar/{id}", method = RequestMethod.GET)
     public ModelAndView prepararBorrar(@PathVariable int id) {
         ModelAndView mv = new ModelAndView("persona/borrar");

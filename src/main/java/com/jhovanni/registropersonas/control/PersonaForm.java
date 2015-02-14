@@ -39,6 +39,15 @@ public class PersonaForm {
     public PersonaForm() {
     }
 
+    PersonaForm(Persona persona) {
+        this.nombre = persona.getNombre();
+        this.edad = persona.getEdad();
+        this.genero = persona.getGenero();
+        this.ciudad = persona.getCiudad();
+        this.nombreUsuario = persona.getUsuario().getNombre();
+        this.clave = this.clave2 = persona.getUsuario().getClave();
+    }
+
     public Persona toPersona() {
         Persona persona = new Persona();
         persona.setNombre(nombre);

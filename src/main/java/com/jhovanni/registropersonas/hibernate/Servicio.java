@@ -84,4 +84,11 @@ public interface Servicio {
      * @param id
      */
     public void borrarPersona(int id);
+
+    /**
+     * Actualiza los datos de una persona
+     *
+     * @param persona
+     */
+    public void editarPersona(Persona persona);
 }

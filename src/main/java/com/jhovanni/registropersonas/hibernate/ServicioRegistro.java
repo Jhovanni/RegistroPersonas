@@ -88,4 +88,9 @@ public class ServicioRegistro implements Servicio {
     public void borrarPersona(int id) {
         borrarPersona(getPersona(id));
     }
+
+    @Override
+    public void editarPersona(Persona persona) {
+        personaRepositorio.guardar(persona);
+    }
 }

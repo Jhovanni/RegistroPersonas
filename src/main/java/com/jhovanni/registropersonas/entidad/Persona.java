@@ -11,6 +11,9 @@ import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+import org.hibernate.validator.constraints.Range;
 
 /**
  *
@@ -23,8 +26,12 @@ public class Persona implements Serializable {
     @Id
     @GeneratedValue
     private int id;
+    @NotNull
+    @Size(min = 3, max = 20)
     private String nombre;
+    @Range(min = 15, max = 70)
     private int edad;
+    @NotNull
     @Enumerated(EnumType.STRING)
     private Genero genero;
     @Lob
@@ -34,6 +41,7 @@ public class Persona implements Serializable {
     private Usuario usuario;
     @JoinColumn(name = "ID_CIUDAD", referencedColumnName = "ID")
     @ManyToOne
+    @NotNull
     private Ciudad ciudad;
 
     public int getId() {
