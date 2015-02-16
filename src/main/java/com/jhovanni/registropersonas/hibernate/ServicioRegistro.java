@@ -91,6 +91,12 @@ public class ServicioRegistro implements Servicio {
 
     @Override
     public void editarPersona(Persona persona) {
-        personaRepositorio.guardar(persona);
+        Persona actual = personaRepositorio.get(persona.getId());
+        //actualizar los valores que se guardarán únicamente
+        actual.setNombre(persona.getNombre());
+        actual.setEdad(persona.getEdad());
+        actual.setGenero(persona.getGenero());
+        actual.setCiudad(persona.getCiudad());
+        personaRepositorio.guardar(actual);
     }
 }
