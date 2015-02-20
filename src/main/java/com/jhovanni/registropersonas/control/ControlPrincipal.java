@@ -26,6 +26,11 @@ public class ControlPrincipal {
     @Autowired
     private Servicio servicio;
 
+    @RequestMapping("/")
+    public String inicio() {
+        return "redirect:persona/lista";
+    }
+
     @ModelAttribute(value = "ciudades")
     public List<Ciudad> ciudades() {
         return servicio.getCiudades();
@@ -124,7 +129,7 @@ public class ControlPrincipal {
 
     @RequestMapping(value = "denegado")
     public ModelAndView accesoDenegado(Principal principal) {
-        ModelAndView mv=new ModelAndView("denegado");
+        ModelAndView mv = new ModelAndView("denegado");
         mv.addObject("nombreUsuario", principal.getName());
         return mv;
     }
