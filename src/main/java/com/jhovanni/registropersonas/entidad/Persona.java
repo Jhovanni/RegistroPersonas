@@ -21,7 +21,7 @@ import org.hibernate.validator.constraints.Range;
  */
 @Entity
 @Table(name = "PERSONAS")
-public class Persona implements Serializable {
+public class Persona implements Serializable{
 
     @Id
     @GeneratedValue
@@ -35,7 +35,7 @@ public class Persona implements Serializable {
     @Enumerated(EnumType.STRING)
     private Genero genero;
     @Lob
-    private Serializable foto;
+    private byte[] foto;
     @JoinColumn(name = "NOMBRE_USUARIO", referencedColumnName = "NOMBRE")
     @OneToOne
     private Usuario usuario;
@@ -76,11 +76,11 @@ public class Persona implements Serializable {
         this.genero = genero;
     }
 
-    public Serializable getFoto() {
+    public byte[] getFoto() {
         return foto;
     }
 
-    public void setFoto(Serializable foto) {
+    public void setFoto(byte[] foto) {
         this.foto = foto;
     }
 

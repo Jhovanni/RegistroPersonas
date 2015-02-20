@@ -3,8 +3,10 @@ package com.jhovanni.registropersonas.control;
 import com.jhovanni.registropersonas.entidad.Ciudad;
 import com.jhovanni.registropersonas.entidad.Persona;
 import com.jhovanni.registropersonas.hibernate.Servicio;
+import java.io.IOException;
 import java.security.Principal;
 import java.util.List;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -29,6 +31,15 @@ public class ControlPrincipal {
     @RequestMapping("")
     public String inicio() {
         return "redirect:persona/lista";
+    }
+
+    @RequestMapping(value = "persona/{id}/foto")
+    public void mostrarFoto(@PathVariable int id, HttpServletResponse response) throws IOException {
+        Persona persona = servicio.getPersona(id);
+        byte[] foto = persona.getFoto();
+        response.setContentType("image/jpeg, image/jpg, image/png, image/gif");
+        response.getOutputStream().write(foto);
+        response.getOutputStream().flush();
     }
 
     @ModelAttribute(value = "ciudades")

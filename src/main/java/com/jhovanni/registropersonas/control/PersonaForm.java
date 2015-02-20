@@ -57,9 +57,9 @@ public class PersonaForm {
         try {
             persona.setFoto(foto.getBytes());
         } catch (IOException ex) {
-            Logger.getLogger(PersonaForm.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println("IOException PersonaForm.toPersona: " + ex);
         } catch (NullPointerException ne) {
-            Logger.getLogger(PersonaForm.class.getName()).log(Level.WARNING, null, ne);
+            System.out.println("NullPointerException PersonaForm.toPersona: " + ne);
         }
         return persona;
     }

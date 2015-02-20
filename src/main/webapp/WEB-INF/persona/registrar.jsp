@@ -38,8 +38,8 @@
                 <f:options items="${ciudades}" itemLabel="nombre" itemValue="id"/>
             </f:select>
             <f:errors path="ciudad"/><br>
-            <%--<f:label path="foto"><s:message code="Persona.foto"/>:</f:label>--%>
-            <%--<f:input path="foto" type="file"/><f:errors path="foto"/>--%>
+            <f:label path="foto"><s:message code="Persona.foto"/>:</f:label>
+            <f:input path="foto" type="file"/><f:errors path="foto"/><br>
             <f:button><s:message code="Boton.registrarPersona"/></f:button>
         </f:form>
         <br><a href="lista"><s:message code="Link.listaPersonas"/></a>

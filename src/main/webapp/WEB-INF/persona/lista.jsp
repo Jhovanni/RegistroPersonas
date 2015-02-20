@@ -36,7 +36,11 @@
                             <td>${persona.edad}</td>
                             <td>${persona.genero}</td>
                             <td>${persona.ciudad.nombre}</td>
-                            <th>Foto</th>
+                            <td>
+                                <c:url value="${persona.id}/foto" var="urlFoto"/>
+                                <s:message code="Persona.foto.alt" var="sinFoto"/>
+                                <a href="${urlFoto}"><img src="${urlFoto}" alt="${sinFoto}" width="50" height="50"/></a>
+                            </td>
                             <td>
                                 <sec:authorize access="hasAuthority('admin')">
                                     <a href="editar/${persona.id}"><s:message code="Link.editarPersona"/></a>
