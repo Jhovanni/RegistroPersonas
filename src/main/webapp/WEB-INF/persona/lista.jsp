@@ -12,6 +12,7 @@
         <title>${tituloListaPersonas}</title>
     </head>
     <body>
+        <%@ include file="../encabezado.jsp" %>
         <h1>${tituloListaPersonas}</h1>        
         <c:if test="${empty personas}" var="listaVacia"><s:message code="ListaVacia.persona"/></c:if>
         <c:if test="${!listaVacia}">
@@ -46,8 +47,5 @@
             </table>
         </c:if>
         <br><a href="registrar"><s:message code="Link.registrarPersona"/></a>
-        
-        <!--por ahora solo como prueba quedará así-->
-        <form action="../logout"><button type="submit">Desconectar</button></form>
     </body>
 </html>

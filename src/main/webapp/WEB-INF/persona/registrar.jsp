@@ -14,6 +14,7 @@
         <title>${tituloRegistrarPersona}</title>
     </head>
     <body>
+        <%@ include file="../encabezado.jsp" %>
         <h1>${tituloRegistrarPersona}</h1>
         <c:if test="${usuarioRegistrado}"><s:message code="PersonaRegistrada"/></c:if>
         <f:form action="registrar" modelAttribute="personaForm" enctype="multipart/form-data">

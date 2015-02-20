@@ -13,6 +13,7 @@
         <title>${tituloEditarPersona}</title>
     </head>
     <body>
+        <%@ include file="../encabezado.jsp" %>
         <h1>${tituloEditarPersona}</h1>
         <c:if test="${personaEditada}"><s:message code="PersonaEditada"/><br></c:if>
         <c:if test="${persona==null}" var="noEncontrada"><s:message code="PersonaNoEncontrada"/></c:if>
