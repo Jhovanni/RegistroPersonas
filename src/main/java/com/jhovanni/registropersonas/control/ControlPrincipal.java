@@ -26,7 +26,7 @@ public class ControlPrincipal {
     @Autowired
     private Servicio servicio;
 
-    @RequestMapping("/")
+    @RequestMapping("")
     public String inicio() {
         return "redirect:persona/lista";
     }
