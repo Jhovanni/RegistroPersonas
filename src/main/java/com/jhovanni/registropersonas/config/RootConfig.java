@@ -10,6 +10,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.orm.hibernate4.HibernateTransactionManager;
 import org.springframework.orm.hibernate4.LocalSessionFactoryBean;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 /**
@@ -51,5 +52,10 @@ public class RootConfig {
         transactionManager.setSessionFactory(sessionFactory);
         return transactionManager;
 
+    }
+    @Bean
+    BCryptPasswordEncoder passwordEncoder(){
+        BCryptPasswordEncoder passwordEncoder=new BCryptPasswordEncoder();
+        return passwordEncoder;
     }
 }

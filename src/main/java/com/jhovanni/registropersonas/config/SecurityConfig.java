@@ -7,6 +7,7 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.annotation.web.servlet.configuration.EnableWebMvcSecurity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 /**
  *
@@ -18,13 +19,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     private DataSource dataSource;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @Autowired
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.jdbcAuthentication().dataSource(dataSource)
                 .usersByUsernameQuery("SELECT NOMBRE, CLAVE, ACTIVO FROM USUARIOS WHERE NOMBRE=?")
-                .authoritiesByUsernameQuery("SELECT NOMBRE_USUARIO, NIVEL FROM PERMISOS WHERE NOMBRE_USUARIO=?");
+                .authoritiesByUsernameQuery("SELECT NOMBRE_USUARIO, NIVEL FROM PERMISOS WHERE NOMBRE_USUARIO=?")
+                .passwordEncoder(passwordEncoder);
     }
 
     @Override

@@ -7,6 +7,7 @@ import com.jhovanni.registropersonas.entidad.Persona;
 import com.jhovanni.registropersonas.entidad.Usuario;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 /**
@@ -24,6 +25,8 @@ public class ServicioRegistro implements Servicio {
     private Repositorio<Usuario> usuarioRepositorio;
     @Autowired
     private Repositorio<Permiso> permisoRepositorio;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @Override
     public Usuario getUsuario(String nombre) {
@@ -54,7 +57,7 @@ public class ServicioRegistro implements Servicio {
     public int registrarPersona(Persona persona, String nombreUsuario, String clave) {
         Usuario usuario = new Usuario();
         usuario.setNombre(nombreUsuario);
-        usuario.setClave(clave);
+        usuario.setClave(passwordEncoder.encode(clave));
         usuario.setActivo(true);
         usuarioRepositorio.crear(usuario);
 
