@@ -3,6 +3,7 @@ package com.jhovanni.registropersonas.control;
 import com.jhovanni.registropersonas.entidad.Ciudad;
 import com.jhovanni.registropersonas.entidad.Persona;
 import com.jhovanni.registropersonas.hibernate.Servicio;
+import java.security.Principal;
 import java.util.List;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -112,6 +113,19 @@ public class ControlPrincipal {
         } catch (Exception e) {
             System.out.println("Excepción ControlPrincipal.borrar:" + e);
         }
+        return mv;
+    }
+
+    //CONTROLES DE SPRING SECURITY
+    @RequestMapping(value = "login", method = RequestMethod.GET)
+    public String prepararLogin() {
+        return "login";
+    }
+
+    @RequestMapping(value = "denegado")
+    public ModelAndView accesoDenegado(Principal principal) {
+        ModelAndView mv=new ModelAndView("denegado");
+        mv.addObject("nombreUsuario", principal.getName());
         return mv;
     }
 }

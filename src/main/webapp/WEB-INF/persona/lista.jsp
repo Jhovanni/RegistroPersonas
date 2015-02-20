@@ -46,5 +46,8 @@
             </table>
         </c:if>
         <br><a href="registrar"><s:message code="Link.registrarPersona"/></a>
+        
+        <!--por ahora solo como prueba quedará así-->
+        <form action="../logout"><button type="submit">Desconectar</button></form>
     </body>
 </html>
