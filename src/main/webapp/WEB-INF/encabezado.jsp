@@ -8,7 +8,7 @@
 <%@ taglib prefix="s" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="sec"	uri="http://www.springframework.org/security/tags"%>
 
-<a href="${pageContext.request.contextPath}/">Inicio</a>
+<a href="${pageContext.request.contextPath}/"><s:message code="Link.inicio"/></a>
 <sec:authorize access="isAnonymous()">
     <form action="${pageContext.request.contextPath}/login" method="POST">
         <label for="usuario"><s:message code="Persona.nombreUsuario"/></label>

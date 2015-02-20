@@ -22,8 +22,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.inMemoryAuthentication().withUser("jhovanni").password("jhovanni").roles("usuario", "admin").authorities("usuario","admin");
-        auth.inMemoryAuthentication().withUser("carlos").password("carloscarlos").roles("usuario").authorities("usuario");
+        auth.jdbcAuthentication().dataSource(dataSource)
+                .usersByUsernameQuery("SELECT NOMBRE, CLAVE, ACTIVO FROM USUARIOS WHERE NOMBRE=?")
+                .authoritiesByUsernameQuery("SELECT NOMBRE_USUARIO, NIVEL FROM PERMISOS WHERE NOMBRE_USUARIO=?");
     }
 
     @Override
@@ -31,8 +32,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.csrf().disable()
                 .authorizeRequests()
                 .antMatchers("/", "/login", "/logout", "/persona/lista").permitAll()
-                .antMatchers("/persona/registrar").hasAnyRole("admin", "usuario")
-                .antMatchers("/persona/editar/**", "/persona/borrar/**").hasRole("admin")
+                .antMatchers("/persona/registrar").hasAnyAuthority("admin", "usuario")
+                .antMatchers("/persona/editar/**", "/persona/borrar/**").hasAuthority("admin")
                 .and().formLogin()
                 .usernameParameter("usuario")
                 .passwordParameter("clave")
