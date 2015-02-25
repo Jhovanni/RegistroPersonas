@@ -30,7 +30,7 @@ public class ControlPrincipal {
 
     @RequestMapping("")
     public String inicio() {
-        return "redirect:persona/lista";
+        return "redirect:/persona/lista";
     }
 
     @RequestMapping(value = "persona/{id}/foto")
