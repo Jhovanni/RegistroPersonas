@@ -6,6 +6,8 @@ import com.jhovanni.registropersonas.hibernate.Servicio;
 import java.io.IOException;
 import java.security.Principal;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,12 +36,16 @@ public class ControlPrincipal {
     }
 
     @RequestMapping(value = "persona/{id}/foto")
-    public void mostrarFoto(@PathVariable int id, HttpServletResponse response) throws IOException {
+    public void mostrarFoto(@PathVariable int id, HttpServletResponse response) {
         Persona persona = servicio.getPersona(id);
         byte[] foto = persona.getFoto();
         response.setContentType("image/jpeg, image/jpg, image/png, image/gif");
-        response.getOutputStream().write(foto);
-        response.getOutputStream().flush();
+        try {
+            response.getOutputStream().write(foto);
+            response.getOutputStream().flush();
+        } catch (IOException | NullPointerException ex) {
+            System.err.println("Exception controlPrincipal.mostrarFoto " + id + ": " + ex);
+        }
     }
 
     @ModelAttribute(value = "ciudades")
