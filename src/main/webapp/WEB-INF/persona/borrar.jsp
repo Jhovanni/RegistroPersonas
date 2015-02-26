@@ -10,29 +10,59 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>${tituloBorrarPersona}</title>
     </head>
     <body>
         <%@ include file="../encabezado.jsp" %>
-        <h1>${tituloBorrarPersona}</h1>
-        <c:if test="${personaBorrada}"><s:message code="PersonaBorrada"/><br></c:if>
-        <c:if test="${persona==null}" var="noEncontrada"><s:message code="PersonaNoEncontrada"/></c:if>
-        <c:if test="${!noEncontrada}">
-            <f:form action="../borrar/${persona.id}" modelAttribute="persona">
-                <table>
-                    <tbody>
-                        <tr><th><s:message code="Persona.id"/>: </th><td>${persona.id}</td></tr>
-                        <tr><th><s:message code="Persona.nombre"/>: </th><td>${persona.nombre}</td></tr>
-                        <tr><th><s:message code="Persona.edad"/>: </th><td>${persona.edad}</td></tr>
-                        <tr><th><s:message code="Persona.genero"/>: </th><td>${persona.genero}</td></tr>
-                        <tr><th><s:message code="Persona.ciudad"/>: </th><td>${persona.ciudad.nombre}</td></tr>
-                    </tbody>
-                </table>
-                <f:button><s:message code="Boton.borrarPersona"/></f:button>
-            </f:form>
-            <br><a href="../editar/${persona.id}"><s:message code="Link.editarPersona"/></a>
-        </c:if>
-        <br><a href="../registrar"><s:message code="Link.registrarPersona"/></a>
-        <br><a href="../lista"><s:message code="Link.listaPersonas"/></a>
+        <div class="container">
+            <h1>${tituloBorrarPersona}</h1>
+            <c:if test="${personaBorrada}">
+                <div class="text-success"><s:message code="PersonaBorrada"/></div>
+            </c:if>
+            <c:if test="${persona==null}" var="noEncontrada">
+                <div class="text-info"><s:message code="PersonaNoEncontrada"/></div>
+            </c:if>
+            <c:if test="${!noEncontrada}">
+                <f:form action="../borrar/${persona.id}" modelAttribute="persona" class="form-horizontal">
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label"><s:message code="Persona.id"/>: </label>
+                        <div class="col-sm-10">
+                            <p class="form-control-static">${persona.id}</p>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label"><s:message code="Persona.nombre"/>: </label>
+                        <div class="col-sm-10">
+                            <p class="form-control-static">${persona.nombre}</p>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label"><s:message code="Persona.edad"/>: </label>
+                        <div class="col-sm-10">
+                            <p class="form-control-static">${persona.edad}</p>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label"><s:message code="Persona.genero"/>: </label>
+                        <div class="col-sm-10">
+                            <p class="form-control-static">${persona.genero}</p>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label"><s:message code="Persona.ciudad"/>: </label>
+                        <div class="col-sm-10">
+                            <p class="form-control-static">${persona.ciudad.nombre}</p>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-offset-2 col-sm-10">
+                            <a href="../editar/${persona.id}" class="btn btn-default"><s:message code="Link.editarPersona"/></a>
+                            <f:button class="btn btn-default"><s:message code="Boton.borrarPersona"/></f:button>
+                        </div>
+                    </div>
+                </f:form>
+            </c:if>
+        </div>
     </body>
 </html>

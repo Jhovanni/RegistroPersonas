@@ -9,14 +9,16 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>${tituloListaPersonas}</title>
     </head>
     <body>
         <%@ include file="../encabezado.jsp" %>
+        <div class="container">
         <h1>${tituloListaPersonas}</h1>        
         <c:if test="${empty personas}" var="listaVacia"><s:message code="ListaVacia.persona"/></c:if>
-        <c:if test="${!listaVacia}">
-            <table>
+        <div class="table-responsive"><c:if test="${!listaVacia}">
+            <table class="table table-hover">
                 <thead>
                     <tr>
                         <th><s:message code="Persona.id"/></th>
@@ -39,7 +41,7 @@
                             <td>
                                 <c:url value="${persona.id}/foto" var="urlFoto"/>
                                 <s:message code="Persona.foto.alt" var="sinFoto"/>
-                                <a href="${urlFoto}"><img src="${urlFoto}" alt="${sinFoto}" width="50" height="50"/></a>
+                                <a href="${urlFoto}"><img src="${urlFoto}" alt="${sinFoto}" class="img-thumbnail" width="50" height="50"/></a>
                             </td>
                             <td>
                                 <sec:authorize access="hasAuthority('admin')">
@@ -50,8 +52,8 @@
                         </tr>
                     </c:forEach>
                 </tbody>
-            </table>
+            </table></div>
         </c:if>
-        <br><a href="registrar"><s:message code="Link.registrarPersona"/></a>
+        </div>
     </body>
 </html>
