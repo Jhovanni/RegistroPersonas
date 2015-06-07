@@ -1,6 +1,8 @@
 package com.jhovanni.registropersonas.config;
 
 import com.jhovanni.registropersonas.control.CiudadFormatter;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -22,7 +24,7 @@ import org.springframework.web.servlet.view.JstlView;
 @EnableWebMvc
 @ComponentScan(basePackages = "com.jhovanni.registropersonas.control")
 public class DispatcherConfig extends WebMvcConfigurerAdapter {
-
+    
     @Autowired
     private CiudadFormatter ciudadFormatter;
 
