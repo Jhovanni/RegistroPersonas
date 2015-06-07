@@ -44,6 +44,15 @@ public class Persona implements Serializable{
     @NotNull
     private Ciudad ciudad;
 
+    public Persona() {
+    }
+
+    public Persona(String nombre, int edad, Genero genero) {
+        this.nombre = nombre;
+        this.edad = edad;
+        this.genero = genero;
+    }
+    
     public int getId() {
         return id;
     }
