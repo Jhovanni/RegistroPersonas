@@ -24,12 +24,12 @@
                     <div class="text-success"><s:message code="Login.desconectado"/></div>
                 </c:if>
                 <div class="form-group">
-                    <label for="usuario"><s:message code="Persona.nombreUsuario"/></label>
-                    <input id="usuario" name="usuario" class="form-control"/>
+                    <label for="usuario"><s:message code="Persona.nombreUsuario" var="nombreUsuarioLabel"/></label>
+                    <input id="usuario" name="usuario" class="form-control" placeholder="${nombreUsuarioLabel}"/>
                 </div>
                 <div class="form-group">
-                    <label for="clave"><s:message code="Persona.clave"/></label>
-                    <input id="clave" name="clave" type="password" class="form-control">
+                    <label for="clave"><s:message code="Persona.clave" var="claveLabel"/></label>
+                    <input id="clave" name="clave" type="password" class="form-control" placeholder="${claveLabel}"/>
                 </div>
                 <button type="submit" class="btn btn-default"><s:message code="Boton.ingresar"/></button>
             </form>

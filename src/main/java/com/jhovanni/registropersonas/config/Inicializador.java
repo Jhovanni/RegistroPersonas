@@ -22,7 +22,7 @@ public class Inicializador implements WebApplicationInitializer {
         // Crear el contexto base de Spring
         AnnotationConfigWebApplicationContext rootContext
                 = new AnnotationConfigWebApplicationContext();
-        rootContext.register(RootConfig.class,SecurityConfig.class);
+        rootContext.register(RootConfig.class, SecurityConfig.class);
         
         //crear el filtro de urls para spring security
         FilterRegistration.Dynamic springSecurityFilterChain
@@ -36,7 +36,7 @@ public class Inicializador implements WebApplicationInitializer {
         // Crear el dispatcher servlet de Spring usando contexto de aplicación
         AnnotationConfigWebApplicationContext dispatcherContext
                 = new AnnotationConfigWebApplicationContext();
-        dispatcherContext.register(DispatcherConfig.class);
+        dispatcherContext.register(DispatcherConfig.class, SecurityConfig.class);
 
         // Registrar y mapear el dispatcher al servlet
         ServletRegistration.Dynamic dispatcher

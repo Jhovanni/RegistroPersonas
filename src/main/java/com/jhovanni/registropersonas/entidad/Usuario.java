@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
@@ -23,7 +24,7 @@ public class Usuario implements Serializable {
     private boolean activo;
     @OneToOne(mappedBy = "usuario")
     private Persona persona;
-    @OneToMany(mappedBy = "usuario")
+    @OneToMany(fetch = FetchType.EAGER,mappedBy = "usuario")
     private List<Permiso> permisos;
 
     public String getNombre() {

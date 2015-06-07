@@ -12,6 +12,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -58,7 +59,7 @@ public class ControlPrincipal {
         }
         return ciudades;
     }
-
+    
     @RequestMapping(value = "persona/lista")
     public ModelAndView listarPersonas() {
         log.entry();
@@ -67,6 +68,7 @@ public class ControlPrincipal {
         return log.exit(mv);
     }
 
+    @PreAuthorize(value = "isAuthenticated()")
     @RequestMapping(value = "persona/registrar", method = RequestMethod.GET)
     public ModelAndView prepararRegistrar() {
         log.entry();
@@ -75,13 +77,14 @@ public class ControlPrincipal {
         return log.exit(mv);
     }
 
+    @PreAuthorize(value = "isAuthenticated()")
     @RequestMapping(value = "persona/registrar", method = RequestMethod.POST)
     public ModelAndView registrar(@Valid PersonaForm personaForm, Errors errors) {
         ModelAndView mv = new ModelAndView("persona/registrar");
         log.entry(personaForm);
 
         if (!personaForm.getClave().equals(personaForm.getClave2())) {
-            log.warn("contraseñas iguales");
+            log.debug("contraseñas recibidas diferentes");
             errors.rejectValue("clave2", "ClaveDiferente");
         }
         if (!errors.hasErrors()) {
@@ -91,7 +94,7 @@ public class ControlPrincipal {
                 mv.addObject(new PersonaForm());
                 mv.addObject("usuarioRegistrado", true);
             } catch (DataIntegrityViolationException e) {
-                log.warn("nombreUsuario ocupado");
+                log.debug("nombre de usuario ocupado");
                 errors.rejectValue("nombreUsuario", "IdOcupado");
             }
         } else {
@@ -99,7 +102,7 @@ public class ControlPrincipal {
         }
         return log.exit(mv);
     }
-
+    @PreAuthorize(value = "hasRole('admin')")
     @RequestMapping(value = "persona/editar/{id}", method = RequestMethod.GET)
     public ModelAndView prepararEditar(@PathVariable int id) {
         log.entry(id);
@@ -111,6 +114,7 @@ public class ControlPrincipal {
         return log.exit(mv);
     }
 
+    @PreAuthorize(value = "hasRole('admin')")
     @RequestMapping(value = "persona/editar/{id}", method = RequestMethod.POST)
     public ModelAndView editar(@Valid Persona persona, Errors errors) {
         ModelAndView mv = new ModelAndView("persona/editar");
@@ -120,7 +124,7 @@ public class ControlPrincipal {
                 servicio.editarPersona(persona);
                 mv.addObject("personaEditada", true);
             } catch (DataIntegrityViolationException e) {
-                log.warn("nombreUsuario ya en uso");
+                log.debug("nombre de usuario ocupadoo");
                 errors.rejectValue("nombreUsuario", "IdOcupado");
             }
         } else {
@@ -129,6 +133,7 @@ public class ControlPrincipal {
         return log.exit(mv);
     }
 
+    @PreAuthorize(value = "hasRole('admin')")
     @RequestMapping(value = "persona/borrar/{id}", method = RequestMethod.GET)
     public ModelAndView prepararBorrar(@PathVariable int id) {
         log.entry(id);
@@ -140,6 +145,7 @@ public class ControlPrincipal {
         return log.exit(mv);
     }
 
+    @PreAuthorize(value = "hasRole('admin')")
     @RequestMapping(value = "persona/borrar/{id}", method = RequestMethod.POST)
     public ModelAndView borrar(@PathVariable int id) {
         log.entry(id);

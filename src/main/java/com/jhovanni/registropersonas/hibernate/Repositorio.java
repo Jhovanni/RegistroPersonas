@@ -2,7 +2,14 @@ package com.jhovanni.registropersonas.hibernate;
 
 import java.io.Serializable;
 import java.util.List;
+import javax.transaction.Transactional;
 
+/**
+ * Interface para todos los repositorios de la apliación
+ * @author jhovanni
+ * @param <E> Entidad sobre la que trabaja el repositorio
+ */
+@Transactional
 public interface Repositorio<E> {
 
     /**

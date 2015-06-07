@@ -69,7 +69,7 @@ public class Permiso implements Serializable {
 
     @Override
     public String toString() {
-        return "Permiso{" + "usuario=" + usuario + ", nivel=" + nivel + '}';
+        return "Permiso{" + "nombreUsuario=" + usuario.getNombre() + ", nivel=" + nivel + '}';
     }
 
 }

@@ -32,10 +32,10 @@
             <sec:authorize access="isAnonymous()">
                 <form action="${pageContext.request.contextPath}/login" method="POST" class="navbar-form form-inline navbar-left">
                     <div class="form-group input-group-sm">
-                        <label for="usuario" class="sr-only"><s:message code="Persona.nombreUsuario"/></label>
-                        <input id="usuario" name="usuario" class="form-control" placeholder="Nombre de usuario"/>
-                        <label for="clave" class="sr-only"><s:message code="Persona.clave"/></label>
-                        <input id="clave" name="clave" type="password" class="form-control" placeholder="Contraseña"/>
+                        <label for="usuario" class="sr-only"><s:message code="Persona.nombreUsuario" var="nombreUsuarioLabel"/></label>
+                        <input id="usuario" name="usuario" class="form-control" placeholder="${nombreUsuarioLabel}"/>
+                        <label for="clave" class="sr-only"><s:message code="Persona.clave" var="claveLabel"/></label>
+                        <input id="clave" name="clave" type="password" class="form-control" placeholder="${claveLabel}"/>
                         <button type="submit" class="btn btn-default btn-sm"><s:message code="Boton.ingresar"/></button>
                     </div>
                 </form>
