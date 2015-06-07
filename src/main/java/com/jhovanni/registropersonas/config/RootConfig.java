@@ -25,10 +25,10 @@ public class RootConfig {
     @Bean
     public BasicDataSource dataSource() {
         BasicDataSource dataSource = new BasicDataSource();
-        dataSource.setDriverClassName("oracle.jdbc.driver.OracleDriver");
-        dataSource.setUrl("jdbc:oracle:thin:@localhost:1521");
-        dataSource.setUsername("registro_personas");
-        dataSource.setPassword("registro_personas");
+        dataSource.setDriverClassName("com.mysql.jdbc.Driver");
+        dataSource.setUrl("jdbc:mysql://sql4.freemysqlhosting.net:3306/sql479856");
+        dataSource.setUsername("sql479856");
+        dataSource.setPassword("sJ5*vV3*");
         return dataSource;
     }
 
@@ -36,7 +36,7 @@ public class RootConfig {
     @Autowired
     public LocalSessionFactoryBean sessionFactory(DataSource dataSource) {
         Properties properties = new Properties();
-        properties.put("hibernate.dialect", "org.hibernate.dialect.Oracle10gDialect");
+        properties.put("hibernate.dialect", "org.hibernate.dialect.MySQLDialect");
 
         LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
         sessionFactory.setDataSource(dataSource);
