@@ -5,6 +5,8 @@
  */
 package com.jhovanni.registropersonas.config;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.Test;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -15,11 +17,12 @@ import static org.junit.Assert.*;
  * @author Jhovanni
  */
 public class PasswordEncoderTest{
+    private static final Logger log = LogManager.getLogger();
     @Test
     public void testEncoder(){
         PasswordEncoder passwordEncoder=new BCryptPasswordEncoder();
         assertNotNull(passwordEncoder.encode("admin"));
-        System.out.println(passwordEncoder.encode("admin"));
+        log.info(passwordEncoder.encode("admin"));
     }
     
 }

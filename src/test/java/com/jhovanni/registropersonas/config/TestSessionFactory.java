@@ -1,5 +1,7 @@
 package com.jhovanni.registropersonas.config;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.junit.Test;
@@ -14,8 +16,10 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
  * @author Jhovanni
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = {RootConfig.class})
+@ContextConfiguration(classes = RootConfig.class)
 public class TestSessionFactory {
+    private static final Logger log = LogManager.getLogger();
+    
     @Autowired
     private SessionFactory sessionFactory;
     /**
@@ -24,8 +28,10 @@ public class TestSessionFactory {
      */
     @Test
     public void testConexion() {
+        log.entry();
         Session session = sessionFactory.openSession();
         session.beginTransaction();
         session.createSQLQuery("SELECT 1 FROM DUAL");
+        log.exit();
     }
 }
