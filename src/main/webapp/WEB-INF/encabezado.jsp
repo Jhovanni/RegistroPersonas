@@ -11,7 +11,7 @@
 <script src="${pageContext.request.contextPath}/js/jquery.min.js" type="text/javascript"></script>
 <script src="${pageContext.request.contextPath}/js/bootstrap.min.js" type="text/javascript"></script>
 <nav class="navbar navbar-inverse" role="navigation">
-    <div class="container-fluid">
+    <div class="container">
         <!-- Brand and toggle get grouped for better mobile display -->
         <div class="navbar-header">
             <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
@@ -42,15 +42,14 @@
             </sec:authorize>
             <sec:authorize access="isAuthenticated()">
                 <ul class="nav navbar-nav navbar-right">
-                    <li><p class="navbar-text">
-                            <span class="glyphicon glyphicon-user"></span> 
-                            <sec:authentication property="principal.username"/>
-                        </p></li>
-                    <li><a href="${pageContext.request.contextPath}/logout">
-                            <span class="glyphicon glyphicon-log-out"></span> <s:message code="Boton.desconectar"/>
+                    <li><a href="${pageContext.request.contextPath}/editar/registrar">
+                            <span class="glyphicon glyphicon-user"></span> <sec:authentication property="principal.username"/>
                         </a></li>
                     <li><a href="${pageContext.request.contextPath}/persona/registrar">
                             <span class="glyphicon glyphicon-new-window"></span> <s:message code="Link.registrarPersona"/>
+                        </a></li>
+                    <li><a href="${pageContext.request.contextPath}/logout">
+                            <span class="glyphicon glyphicon-log-out"></span> <s:message code="Boton.desconectar"/>
                         </a></li>
                 </ul>
             </sec:authorize>
