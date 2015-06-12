@@ -10,6 +10,7 @@ import javax.persistence.IdClass;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import org.springframework.security.core.GrantedAuthority;
 
 /**
  *
@@ -18,7 +19,7 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "PERMISOS")
 @IdClass(PermisoPK.class)
-public class Permiso implements Serializable {
+public class Permiso implements Serializable, GrantedAuthority {
 
     @Id
     @JoinColumn(name = "NOMBRE_USUARIO", referencedColumnName = "NOMBRE")
@@ -72,4 +73,8 @@ public class Permiso implements Serializable {
         return "Permiso{" + "nombreUsuario=" + usuario.getNombre() + ", nivel=" + nivel + '}';
     }
 
+    @Override
+    public String getAuthority() {
+        return this.nivel.toString();
+    }
 }

@@ -1,10 +1,12 @@
 package com.jhovanni.registropersonas.hibernate;
 
 import com.jhovanni.registropersonas.entidad.Usuario;
+import java.util.ArrayList;
+import java.util.List;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.authority.AuthorityUtils;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -35,6 +37,6 @@ public class LoginService implements UserDetailsService {
     public UserDetails loadUserByUsername(String nombreUsuario) throws UsernameNotFoundException {
         log.entry(nombreUsuario);
         Usuario usuario = usuarioRepositorio.get(nombreUsuario);
-        return log.exit(new User(usuario.getNombre(), usuario.getClave(), AuthorityUtils.createAuthorityList(usuario.getPermisos().toString())));
+        return log.exit(new User(usuario.getNombre(), usuario.getClave(), usuario.getPermisos()));
     }
 }

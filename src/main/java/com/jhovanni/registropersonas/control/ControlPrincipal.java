@@ -41,6 +41,7 @@ public class ControlPrincipal {
 
     @RequestMapping(value = "persona/{id}/foto")
     public void mostrarFoto(@PathVariable int id, HttpServletResponse response) {
+        log.entry(id);
         Persona persona = servicio.getPersona(id);
         byte[] foto = persona.getFoto();
         response.setContentType("image/jpeg, image/jpg, image/png, image/gif");
@@ -50,6 +51,7 @@ public class ControlPrincipal {
         } catch (IOException | NullPointerException ex) {
             log.error(ex);
         }
+        log.exit();
     }
 
     @ModelAttribute(value = "ciudades")
@@ -102,7 +104,7 @@ public class ControlPrincipal {
         }
         return log.exit(mv);
     }
-    @PreAuthorize(value = "hasRole('admin')")
+    @PreAuthorize(value = "hasAuthority('admin')")
     @RequestMapping(value = "persona/editar/{id}", method = RequestMethod.GET)
     public ModelAndView prepararEditar(@PathVariable int id) {
         log.entry(id);
@@ -114,7 +116,7 @@ public class ControlPrincipal {
         return log.exit(mv);
     }
 
-    @PreAuthorize(value = "hasRole('admin')")
+    @PreAuthorize(value = "hasAuthority('admin')")
     @RequestMapping(value = "persona/editar/{id}", method = RequestMethod.POST)
     public ModelAndView editar(@Valid Persona persona, Errors errors) {
         ModelAndView mv = new ModelAndView("persona/editar");
@@ -133,7 +135,7 @@ public class ControlPrincipal {
         return log.exit(mv);
     }
 
-    @PreAuthorize(value = "hasRole('admin')")
+    @PreAuthorize(value = "hasAuthority('admin')")
     @RequestMapping(value = "persona/borrar/{id}", method = RequestMethod.GET)
     public ModelAndView prepararBorrar(@PathVariable int id) {
         log.entry(id);
@@ -145,7 +147,7 @@ public class ControlPrincipal {
         return log.exit(mv);
     }
 
-    @PreAuthorize(value = "hasRole('admin')")
+    @PreAuthorize(value = "hasAuthority('admin')")
     @RequestMapping(value = "persona/borrar/{id}", method = RequestMethod.POST)
     public ModelAndView borrar(@PathVariable int id) {
         log.entry(id);
