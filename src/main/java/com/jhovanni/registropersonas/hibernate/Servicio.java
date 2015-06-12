@@ -69,6 +69,14 @@ public interface Servicio {
      * @return
      */
     public Persona getPersona(int id);
+    
+    /**
+     * Busca el registro Persona en base a su nombre de usuario
+     *
+     * @param nombreUsuario
+     * @return
+     */
+    public Persona getPersona(String nombreUsuario);
 
     /**
      * Elimina un registro persona del sistema. Esta operación no puede

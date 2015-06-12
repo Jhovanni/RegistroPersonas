@@ -64,4 +64,11 @@ public class UsuarioRepositorio implements Repositorio<Usuario> {
         log.exit();
     }
 
+    @Override
+    public Usuario get(String nombreUsuario) {
+        log.entry(nombreUsuario);
+        Session session = sessionFactory.getCurrentSession();
+        return log.exit((Usuario) session.get(Usuario.class, nombreUsuario));
+    }
+
 }

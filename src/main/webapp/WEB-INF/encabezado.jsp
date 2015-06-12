@@ -42,7 +42,7 @@
             </sec:authorize>
             <sec:authorize access="isAuthenticated()">
                 <ul class="nav navbar-nav navbar-right">
-                    <li><a href="${pageContext.request.contextPath}/editar/registrar">
+                    <li><a href="${pageContext.request.contextPath}/persona/editar">
                             <span class="glyphicon glyphicon-user"></span> <sec:authentication property="principal.username"/>
                         </a></li>
                     <li><a href="${pageContext.request.contextPath}/persona/registrar">

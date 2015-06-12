@@ -5,6 +5,7 @@ import java.io.Serializable;
 import java.util.List;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,6 +40,14 @@ public class PersonaRepositorio implements Repositorio<Persona> {
         log.entry(id);
         Session session = sessionFactory.getCurrentSession();
         return log.exit((Persona) session.get(Persona.class, id));
+    }
+    
+    @Override
+    public Persona get(String nombreUsuario) {
+        log.entry(nombreUsuario);
+        Session session = sessionFactory.getCurrentSession();
+        Query query = session.createQuery("from Persona p where usuario.nombre=:nombreUsuario").setString("nombreUsuario", nombreUsuario);
+        return log.exit((Persona) query.uniqueResult());
     }
 
     @Override

@@ -84,6 +84,12 @@ public class ServicioRegistro implements Servicio {
         log.entry(id);
         return log.exit(personaRepositorio.get(id));
     }
+    
+    @Override
+    public Persona getPersona(String nombreUsuario) {
+        log.entry(nombreUsuario);
+        return log.exit(personaRepositorio.get(nombreUsuario));
+    }
 
     @Override
     public void borrarPersona(Persona persona) {

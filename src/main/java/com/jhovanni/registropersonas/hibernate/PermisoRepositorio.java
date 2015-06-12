@@ -53,4 +53,9 @@ public class PermisoRepositorio implements Repositorio<Permiso> {
         session.delete(permiso);
     }
 
+    @Override
+    public Permiso get(String cadena) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
 }

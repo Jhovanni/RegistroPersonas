@@ -53,4 +53,9 @@ public class CiudadRepositorio implements Repositorio<Ciudad> {
         session.delete(ciudad);
     }
 
+    @Override
+    public Ciudad get(String cadena) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
 }

@@ -115,6 +115,18 @@ public class ControlPrincipal {
         }
         return log.exit(mv);
     }
+    
+    @PreAuthorize(value = "isAuthenticated()")
+    @RequestMapping(value = "persona/editar", method = RequestMethod.GET)
+    public ModelAndView prepararEditar(Principal principal) {
+        log.entry(principal);
+        ModelAndView mv = new ModelAndView("persona/editar");
+        Persona persona = servicio.getPersona(principal.getName());
+        if (persona != null) {
+            mv.addObject(persona);
+        }
+        return log.exit(mv);
+    }
 
     @PreAuthorize(value = "hasAuthority('admin')")
     @RequestMapping(value = "persona/editar/{id}", method = RequestMethod.POST)

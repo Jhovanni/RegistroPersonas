@@ -34,6 +34,14 @@ public interface Repositorio<E> {
      * @return
      */
     E get(Serializable id);
+    
+    /**
+     * Busca un registro en base a una cadena de texto
+     *
+     * @param cadena
+     * @return
+     */
+    E get(String cadena);
 
     /**
      * Agrega un registro al sistea
