@@ -15,7 +15,7 @@
     <body>
         <%@ include file="../encabezado.jsp" %>
         <div class="container">
-            <h1>${tituloListaPersonas}</h1>        
+            <h1>${tituloListaPersonas}</h1>
             <c:if test="${empty personas}" var="listaVacia"><s:message code="ListaVacia.persona"/></c:if>
             <div class="table-responsive"><c:if test="${!listaVacia}">
                     <table class="table table-hover">

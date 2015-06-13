@@ -10,7 +10,10 @@
 <link href="${pageContext.request.contextPath}/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
 <script src="${pageContext.request.contextPath}/js/jquery.min.js" type="text/javascript"></script>
 <script src="${pageContext.request.contextPath}/js/bootstrap.min.js" type="text/javascript"></script>
-<nav class="navbar navbar-inverse" role="navigation">
+<style>
+    body { padding-top: 70px; }
+</style>
+<header class="navbar navbar-inverse navbar-fixed-top" role="navigation">
     <div class="container">
         <!-- Brand and toggle get grouped for better mobile display -->
         <div class="navbar-header">
@@ -20,15 +23,21 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="${pageContext.request.contextPath}"><s:message code="Link.listaPersonas"/></a>
+            <a class="navbar-brand" href="${pageContext.request.contextPath}">
+                <span class="glyphicon glyphicon-home"></span>
+            </a>            
         </div>
 
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse navbar-right" id="myNavbar">
-            <ul class="nav navbar-nav">                        
+            <ul class="nav navbar-nav">
                 <!-- Hidden li included to remove active class when scrolled up -->
                 <li class="hidden"><a href="#page-top"></a></li>
             </ul>
+            <ul class="nav navbar-nav">
+                <li><a href="${pageContext.request.contextPath}/persona/lista">
+                        <span class="glyphicon glyphicon-list"></span> <s:message code="Link.listaPersonas"/>
+                    </a></li></ul>
             <sec:authorize access="isAnonymous()">
                 <form action="${pageContext.request.contextPath}/login" method="POST" class="navbar-form form-inline navbar-left">
                     <div class="form-group input-group-sm">
@@ -55,4 +64,4 @@
             </sec:authorize>
         </div><!-- /.navbar-collapse -->
     </div><!-- /.container-fluid -->
-</nav>
+</header>

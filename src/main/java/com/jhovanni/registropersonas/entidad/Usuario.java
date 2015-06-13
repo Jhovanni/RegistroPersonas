@@ -1,6 +1,6 @@
 package com.jhovanni.registropersonas.entidad;
 
-import java.io.Serializable;
+import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 import javax.persistence.Entity;
@@ -9,6 +9,8 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 /**
  *
@@ -16,7 +18,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "USUARIOS")
-public class Usuario implements Serializable {
+public class Usuario implements UserDetails {
 
     @Id
     private String nombre;
@@ -89,6 +91,41 @@ public class Usuario implements Serializable {
     @Override
     public String toString() {
         return "Usuario{" + "nombre=" + nombre + ", activo=" + activo + '}';
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return permisos;
+    }
+
+    @Override
+    public String getPassword() {
+        return clave;
+    }
+
+    @Override
+    public String getUsername() {
+        return nombre;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return activo;
     }
 
 }

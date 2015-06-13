@@ -36,7 +36,7 @@ public class ControlPrincipal {
     @RequestMapping("")
     public String inicio() {
         log.entry();
-        return log.exit("redirect:/persona/lista");
+        return log.exit("inicio");
     }
 
     @RequestMapping(value = "persona/{id}/foto")

@@ -1,23 +1,17 @@
 package com.jhovanni.registropersonas.control;
 
 import com.jhovanni.registropersonas.config.DispatcherConfig;
-import com.jhovanni.registropersonas.config.Inicializador;
 import com.jhovanni.registropersonas.config.RootConfig;
-import com.jhovanni.registropersonas.entidad.Ciudad;
 import com.jhovanni.registropersonas.entidad.Genero;
 import com.jhovanni.registropersonas.entidad.Persona;
 import com.jhovanni.registropersonas.hibernate.Servicio;
-import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
-import javax.servlet.http.HttpServletResponse;
-import javax.ws.rs.core.Response;
+import junit.framework.TestCase;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
-import static org.junit.Assert.*;
 import static org.hamcrest.Matchers.*;
 import static org.hamcrest.Matchers.is;
 import static org.mockito.Mockito.*;
@@ -27,15 +21,11 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.ResultMatcher;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.validation.Errors;
-import org.springframework.web.servlet.ModelAndView;
 
 /**
  * Pruebas para el controlador de vistas de la aplicación
@@ -45,7 +35,7 @@ import org.springframework.web.servlet.ModelAndView;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {RootConfig.class, DispatcherConfig.class})
 @WebAppConfiguration
-public class ControlPrincipalTest {
+public class ControlPrincipalTest extends TestCase{
 
     private static final Logger log = LogManager.getLogger();
     private MockMvc mvc;
@@ -56,6 +46,7 @@ public class ControlPrincipalTest {
     private Servicio servicio;
 
     @Before
+    @Override
     public void setUp() {
         MockitoAnnotations.initMocks(this);
         mvc = MockMvcBuilders.standaloneSetup(control).build();
@@ -81,9 +72,9 @@ public class ControlPrincipalTest {
     @Test
     public void testInicio() throws Exception {
         log.entry();
-        mvc.perform(get("/")).andExpect(status().isFound())
-                .andExpect(view().name("redirect:/persona/lista"))
-                .andExpect(forwardedUrl(null));
+        mvc.perform(get("/")).andExpect(status().isOk())
+                .andExpect(view().name("inicio"))
+                .andExpect(forwardedUrl("inicio"));
         log.exit();
     }
 
