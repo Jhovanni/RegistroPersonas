@@ -26,9 +26,9 @@ public class RootConfig {
     public BasicDataSource dataSource() {
         BasicDataSource dataSource = new BasicDataSource();
         dataSource.setDriverClassName("com.mysql.jdbc.Driver");
-        dataSource.setUrl("jdbc:mysql://sql4.freemysqlhosting.net:3306/sql479856");
-        dataSource.setUsername("sql479856");
-        dataSource.setPassword("sJ5*vV3*");
+         dataSource.setUrl("jdbc:mysql://db4free.net:3306/jhovannidb");
+        dataSource.setUsername("jhovanni");
+        dataSource.setPassword("Artista13");
         return dataSource;
     }
 

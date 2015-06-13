@@ -12,6 +12,11 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>${tituloIndex}</title>
+        <style>
+            padding{}
+            padding-bottom{}
+            padding-top{}
+        </style>
     </head>
     <body>
         <%@ include file="encabezado.jsp" %>
