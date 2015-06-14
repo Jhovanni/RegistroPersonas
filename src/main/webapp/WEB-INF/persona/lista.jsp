@@ -21,7 +21,6 @@
                     <table class="table table-hover">
                         <thead>
                             <tr>
-                                <th><s:message code="Persona.id"/></th>
                                 <th><s:message code="Persona.nombre"/></th>
                                 <th><s:message code="Persona.edad"/></th>
                                 <th><s:message code="Persona.genero"/></th>
@@ -33,13 +32,12 @@
                         <tbody>
                             <c:forEach items="${personas}" var="persona">
                                 <tr>
-                                    <td>${persona.id}</td>
                                     <td>${persona.nombre}</td>
                                     <td>${persona.edad}</td>
-                                    <td>${persona.genero}</td>
+                                    <td><s:message code="Persona.genero.${persona.genero}"/></td>
                                     <td>${persona.ciudad.nombre}</td>
                                     <td>
-                                        <c:url value="${persona.id}/foto" var="urlFoto"/>
+                                        <c:url value="foto/${persona.foto.id}" var="urlFoto"/>
                                         <s:message code="Persona.foto.alt" var="sinFoto"/>
                                         <a href="${urlFoto}"><img src="${urlFoto}" alt="${sinFoto}" class="img-thumbnail" width="50" height="50"/></a>
                                     </td>

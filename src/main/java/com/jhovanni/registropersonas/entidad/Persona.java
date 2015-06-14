@@ -7,7 +7,6 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -34,8 +33,9 @@ public class Persona implements Serializable{
     @NotNull
     @Enumerated(EnumType.STRING)
     private Genero genero;
-    @Lob
-    private byte[] foto;
+    @JoinColumn(name = "ID_FOTO", referencedColumnName = "ID")
+    @OneToOne
+    private Foto foto;
     @JoinColumn(name = "NOMBRE_USUARIO", referencedColumnName = "NOMBRE")
     @OneToOne
     private Usuario usuario;
@@ -85,11 +85,11 @@ public class Persona implements Serializable{
         this.genero = genero;
     }
 
-    public byte[] getFoto() {
+    public Foto getFoto() {
         return foto;
     }
 
-    public void setFoto(byte[] foto) {
+    public void setFoto(Foto foto) {
         this.foto = foto;
     }
 

@@ -1,6 +1,7 @@
 package com.jhovanni.registropersonas.hibernate;
 
 import com.jhovanni.registropersonas.entidad.Ciudad;
+import com.jhovanni.registropersonas.entidad.Foto;
 import com.jhovanni.registropersonas.entidad.Persona;
 import com.jhovanni.registropersonas.entidad.Usuario;
 import java.util.List;
@@ -99,4 +100,12 @@ public interface Servicio {
      * @param persona
      */
     public void editarPersona(Persona persona);
+
+    /**
+     * Obtiene una foto guardada en bd de acuerdo a su identificador
+     *
+     * @param id
+     * @return
+     */
+    public Foto getFoto(int id);
 }

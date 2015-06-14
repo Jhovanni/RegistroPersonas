@@ -1,6 +1,7 @@
 package com.jhovanni.registropersonas.hibernate;
 
 import com.jhovanni.registropersonas.entidad.Ciudad;
+import com.jhovanni.registropersonas.entidad.Foto;
 import com.jhovanni.registropersonas.entidad.Nivel;
 import com.jhovanni.registropersonas.entidad.Permiso;
 import com.jhovanni.registropersonas.entidad.Persona;
@@ -28,6 +29,8 @@ public class ServicioRegistro implements Servicio {
     private Repositorio<Usuario> usuarioRepositorio;
     @Autowired
     private Repositorio<Permiso> permisoRepositorio;
+    @Autowired
+    private Repositorio<Foto> fotoRepositorio;
     @Autowired
     private PasswordEncoder passwordEncoder;
 
@@ -69,6 +72,11 @@ public class ServicioRegistro implements Servicio {
         usuario.setClave(passwordEncoder.encode(clave));
         usuario.setActivo(true);
         usuarioRepositorio.crear(usuario);
+        
+        if (persona.getFoto() != null) {
+            log.info("Guardando archivo (foto) seleccionado en base de datos");
+            fotoRepositorio.crear(persona.getFoto());
+        }
 
         Permiso permiso = new Permiso();
         permiso.setUsuario(usuario);
@@ -96,10 +104,15 @@ public class ServicioRegistro implements Servicio {
         log.entry(persona);
         Usuario usuario = persona.getUsuario();
         List<Permiso> permisos = usuario.getPermisos();
+        Foto foto = persona.getFoto();
 
         personaRepositorio.borrar(persona);
         for (Permiso permiso : permisos) {
             permisoRepositorio.borrar(permiso);
+        }
+        if (foto != null) {
+            log.info("Borrando archivo de foto");
+            fotoRepositorio.borrar(foto);
         }
         usuarioRepositorio.borrar(usuario);
         log.exit();
@@ -123,5 +136,11 @@ public class ServicioRegistro implements Servicio {
         actual.setCiudad(persona.getCiudad());
         personaRepositorio.guardar(actual);
         log.exit();
+    }
+
+    @Override
+    public Foto getFoto(int id) {
+        log.entry(id);
+        return log.exit(fotoRepositorio.get(id));
     }
 }

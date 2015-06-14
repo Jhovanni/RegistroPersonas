@@ -1,8 +1,10 @@
 package com.jhovanni.registropersonas.control;
 
 import com.jhovanni.registropersonas.entidad.Ciudad;
+import com.jhovanni.registropersonas.entidad.Foto;
 import com.jhovanni.registropersonas.entidad.Persona;
 import com.jhovanni.registropersonas.hibernate.Servicio;
+import com.mysql.jdbc.MysqlDataTruncation;
 import java.io.IOException;
 import java.security.Principal;
 import java.util.List;
@@ -39,14 +41,13 @@ public class ControlPrincipal {
         return log.exit("inicio");
     }
 
-    @RequestMapping(value = "persona/{id}/foto")
+    @RequestMapping(value = "persona/foto/{id}")
     public void mostrarFoto(@PathVariable int id, HttpServletResponse response) {
         log.entry(id);
-        Persona persona = servicio.getPersona(id);
-        byte[] foto = persona.getFoto();
+        Foto foto = servicio.getFoto(id);
         response.setContentType("image/jpeg, image/jpg, image/png, image/gif");
         try {
-            response.getOutputStream().write(foto);
+            response.getOutputStream().write(foto.getContenido());
             response.getOutputStream().flush();
         } catch (IOException | NullPointerException ex) {
             log.error(ex);
@@ -98,6 +99,8 @@ public class ControlPrincipal {
             } catch (DataIntegrityViolationException e) {
                 log.debug("nombre de usuario ocupado");
                 errors.rejectValue("nombreUsuario", "IdOcupado");
+            }catch(Exception e){
+                errors.reject("Hubo un problema al ejecutar la acción");
             }
         } else {
             log.warn(errors);

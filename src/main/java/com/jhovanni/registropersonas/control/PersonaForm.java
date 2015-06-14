@@ -1,13 +1,14 @@
 package com.jhovanni.registropersonas.control;
 
 import com.jhovanni.registropersonas.entidad.Ciudad;
+import com.jhovanni.registropersonas.entidad.Foto;
 import com.jhovanni.registropersonas.entidad.Genero;
 import com.jhovanni.registropersonas.entidad.Persona;
 import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hibernate.validator.constraints.Range;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -16,6 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
  * @author Jhovanni
  */
 public class PersonaForm {
+    Logger log = LogManager.getLogger();
 
     @NotNull
     @Size(min = 3, max = 20)
@@ -54,12 +56,16 @@ public class PersonaForm {
         persona.setEdad(edad);
         persona.setGenero(genero);
         persona.setCiudad(ciudad);
-        try {
-            persona.setFoto(foto.getBytes());
-        } catch (IOException ex) {
-            System.out.println("IOException PersonaForm.toPersona: " + ex);
-        } catch (NullPointerException ne) {
-            System.out.println("NullPointerException PersonaForm.toPersona: " + ne);
+        if (foto.getSize() > 0) {
+            try {
+                Foto f = new Foto();
+                f.setContenido(this.foto.getBytes());
+                persona.setFoto(f);
+            } catch (IOException ex) {
+                log.error("IOException PersonaForm.toPersona: " + ex);
+            } catch (NullPointerException ne) {
+                log.error("NullPointerException PersonaForm.toPersona: " + ne);
+            }
         }
         return persona;
     }
