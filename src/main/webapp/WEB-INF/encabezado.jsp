@@ -11,7 +11,7 @@
 <script src="${pageContext.request.contextPath}/js/jquery.min.js" type="text/javascript"></script>
 <script src="${pageContext.request.contextPath}/js/bootstrap.min.js" type="text/javascript"></script>
 <style>
-    body { padding-top: 70px; }
+    body { padding-top: 50px; }
 </style>
 <header class="navbar navbar-inverse navbar-fixed-top" role="navigation">
     <div class="container">
