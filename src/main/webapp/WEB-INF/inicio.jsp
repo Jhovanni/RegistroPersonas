@@ -21,6 +21,11 @@
             body > section.landing{padding: 6em;}
             boy > section.landing .entrada-buscar{margin-top: 1em;}
             .ligero{font-size: .7rem}
+            .fondo.claro{background-color: #fff;}
+            .fondo.oscuro{background-color: #222;}
+            .texto.claro{color: #fff;}
+            .texto.oscuro{color: #59636b;}
+            .texto.tema{color: #31b0d5}
             #bienvenida{
                 background-image: url("${pageContext.request.contextPath}/imagenes/chica_mirando.jpg");
                 background-repeat: no-repeat;
@@ -44,11 +49,8 @@
                 padding-top: 22em;
                 padding-bottom: 30em;
             }
-            .fondo.claro{background-color: #fff;}
-            .fondo.oscuro{background-color: #222;}
-            .texto.claro{color: #fff;}
-            .texto.oscuro{color: #59636b;}
-            .texto.tema{color: #31b0d5}
+            #top-link{position: fixed;bottom: 1em;right: 1em;min-height: 1em;padding: 1em;margin-bottom: 1em;border-radius: .4em;}            
+            #top-link:hover{border:1px solid #e3e3e3;border-radius:4px;-webkit-box-shadow:inset 0 1px 1px rgba(0,0,0,.05);}
             ::-webkit-input-placeholder {text-align: center}
             :-moz-placeholder {text-align: center;}/* Firefox 18- */
             ::-moz-placeholder {text-align: center;}/* Firefox 19+ */
@@ -56,6 +58,11 @@
         </style>
     </head>
     <body>
+        <span id="top-link">
+            <a href="#top" onclick="$('html,body').animate({scrollTop:0},'slow');return false;">
+                <span class="glyphicon glyphicon-chevron-up"></span>
+            </a>
+        </span>
         <%@ include file="encabezado.jsp" %>
         <section id="bienvenida" class="container-fluid text-center landing texto claro">
             <div class="row">
