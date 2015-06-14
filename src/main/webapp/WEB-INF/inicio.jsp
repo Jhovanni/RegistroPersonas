@@ -13,105 +13,142 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>${tituloIndex}</title>
         <style>
-            padding{}
-            padding-bottom{}
-            padding-top{}
+            .padding{padding: 1em !important;}
+            .padding-bottom{padding-bottom: 1em !important;}
+            .padding-top{padding-top: 1em !important;}
+            .margin-top{margin-top: 1em !important;}
+            .margin-bottom{margin-bottom: 1em !important;}
+            body > section.landing{padding: 6em;}
+            boy > section.landing .entrada-buscar{margin-top: 1em;}
+            .ligero{font-size: .7rem}
+            #bienvenida{
+                background-image: url("${pageContext.request.contextPath}/imagenes/chica_mirando.jpg");
+                background-repeat: no-repeat;
+                background-position: center center;
+                background-size: cover;
+                background-attachment: fixed;
+                -webkit-background-size: cover;
+                -moz-background-size: cover;
+                -o-background-size: cover;
+                padding-top: 20em;
+                padding-bottom: 24em;
+            }
+            #fotografia{
+                background-image: url("${pageContext.request.contextPath}/imagenes/playa_cancun.JPG");
+                background-repeat: no-repeat;
+                background-position: center center;
+                background-size: cover;
+                -webkit-background-size: cover;
+                -moz-background-size: cover;
+                -o-background-size: cover;
+                padding-top: 22em;
+                padding-bottom: 30em;
+            }
+            .fondo.claro{background-color: #fff;}
+            .fondo.oscuro{background-color: #222;}
+            .texto.claro{color: #fff;}
+            .texto.oscuro{color: #59636b;}
+            .texto.tema{color: #31b0d5}
+            ::-webkit-input-placeholder {text-align: center}
+            :-moz-placeholder {text-align: center;}/* Firefox 18- */
+            ::-moz-placeholder {text-align: center;}/* Firefox 19+ */
+            :-ms-input-placeholder {text-align: center;}
         </style>
     </head>
     <body>
         <%@ include file="encabezado.jsp" %>
-        <section class="container text-center">
+        <section id="bienvenida" class="container-fluid text-center landing texto claro">
             <div class="row">
                 <div class="col-xs-10 col-xs-offset-1">
-                    <h1><strong>Jhovanni</strong></h1>
-                    <h2>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</h2>
+                    <h1><strong>Registro de personas</strong></h1>
+                    <h2 class="margin-bottom"><span class="hidden-xs">Proyecto Web para prácticas de integración de diversas tecnologías; tales como Java EE, Spring, BootStrap y más</span></h2>
                 </div>
             </div>
             <div class="row">
-                <div class="col-xs-6 col-xs-offset-3 input-group">
+                <div class="col-xs-6 col-xs-offset-3 input-group entrada-buscar">
                         <input type="text" class="form-control" placeholder="Ingresa un texto para buscar" focus state/>
                         <span class="input-group-btn">
                             <button class="btn btn-default"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
                         </span>
                 </div>                
             </div>
-            <h5>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</h5>
+            <h5>Se buscará a las personas por nombre y ciudad</h5>
         </section>
-        <section class="container text-center">
-            <div class="row">
+        <section class="container-fluid text-center landing fondo claro">
+            <div class="row padding-bottom texto oscuro">
                 <div class="col-xs-10 col-xs-offset-1">
-                    <h1>Lorem ipsum dolor sit amet</h1>
-                    <h4>Quam sunt quos minima consequatur dolore quaerat vel recusandae numquam ab qui dignissimos doloribus molestiae pariatur magnam libero nam consectetur asperiores maiores.                 </h4>
+                    <h1 class="texto tema text-center">Tecnologías</h1>
+                    <h4 class="">Colocar todas la tecnologías implementadas, 
+                        dejaría está página muy larga. Por lo cual he decidido mostrar 
+                        las más representativas del proyecto</h4>
                 </div>
             </div>
-            <div class="row">
+            <div class="row padding-top texto oscuro">
                 <div class="col-sm-3">
                     <h2><span class="glyphicon glyphicon-user" aria-hiden="true"></span></h2>
-                    <h5>Lorem ipsum dolor sit</h5>
-                    <small>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptates, ipsam, explicabo, fugit in magni delectus aliquid.</small>
+                    <h5>Java EE</h5>
+                    <small class="hidden-xs">Plataforma de programación (parte de la Plataforma Java) para desarrollar y ejecutar software de aplicaciones en el lenguaje de programación Java.</small>
                 </div>
                 <div class="col-sm-3">
                     <h2><span class="glyphicon glyphicon-picture" aria-hiden="true"></span></h2>
-                    <h5>Lorem ipsum dolor sit</h5>
-                    <small>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptates, ipsam, explicabo, fugit in magni delectus aliquid.</small>
+                    <h5>Spring</h5>
+                    <small class="hidden-xs">Framework de código abierto para la plataforma Java, para desarrollo de aplicaciones y contenedor de inversión de control.</small>
                 </div>
                 <div class="col-sm-3">
                     <h2><span class="glyphicon glyphicon-camera" aria-hiden="true"></span></h2>
-                    <h5>Lorem ipsum dolor sit</h5>
-                    <small>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptates, ipsam, explicabo, fugit in magni delectus aliquid.</small>
+                    <h5>Hibernate</h5>
+                    <small class="hidden-xs">Framework de código abierto para el manejo de persistencia en la plataforma Java.</small>
                 </div>
                 <div class="col-sm-3">
                     <h2><span class="glyphicon glyphicon-pushpin" aria-hiden="true"></span></h2>
-                    <h5>Lorem ipsum dolor sit</h5>
-                    <small>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptates, ipsam, explicabo, fugit in magni delectus aliquid.</small>
+                    <h5>BootStrap</h5>
+                    <small class="hidden-xs">Framework front-end móvil, elegante, intuitivo y potente para el desarrollo web más rápido y fácil.</small>
                 </div>
             </div>
         </section>
-        <section class="container">
-            <div class="row text-center">
+        <section class="container-fluid landing fondo oscuro hidden-xs">
+            <div class="row text-center ligero">
                 <div class="col-xs-10 col-xs-offset-1">
-                    <h1>Lorem ipsum dolor sit amet</h1>
-                    <h4>Quam sunt quos minima consequatur dolore quaerat vel recusandae numquam ab qui dignissimos doloribus molestiae pariatur magnam libero nam consectetur asperiores maiores.                 </h4>
+                    <h1 class="texto tema">Notas de desarrollo</h1>
+                    <h4 class="texto claro">
+                        Este mensaje no se mostrará cuando se navegue a través de un dispositivo con dimensiones reducidas
+                        Bien podría colocar aquí el archivo readme del proyecto, o alguna cosa similar.
+                    </h4>
                 </div>
             </div>
         </section>
-        <section class="container">
+        <section id="fotografia" class="container-fluid landing texto claro">
             <div class="row text-center">
-                <div class="col-xs-10 col-xs-offset-1">
-                    <h2>Lorem ipsum dolor sit amet</h2>
-                    <h4>Quam sunt quos minima consequatur</h4>
-                    <a class="btn btn-primary" href="#">Yes, please!</a>
+                <div class="col-xs-8 col-xs-offset-2">
+                    <h2>Cancún</h2>
+                    <h4>Toma de Playa de las tortugas en Cancún, un lugar estupendo para descansar, 
+                        tomar un tiempo libre, olvidar el mundo. Apuesto te gustaría estar ahí</h4>
+                    <a class="btn btn-primary margin-top" href="#">¡Sí por supuesto!</a>
                 </div>
             </div>
         </section>
-        <section class="container">
-            <div class="row">
+        <section class="container-fluid landing fondo claro">
+            <div class="row margin-bottom texto oscuro">
                 <div class="col-xs-10 col-xs-offset-1 text-center">
-                    <h1>Jhovanni</h1>
+                    <h1 class="texto tema">Autor</h1>
                     <h3>
-                        Javi Jimenez is the CTO and co-founder of
-                        <a class="text normal" href="http://tapquo.com">tapquo</a>
-                        . A restless mind that always strives for continuous improvement, able to create frameworks like
-                        <a class="text normal" href="http://lungo.tapquo.com">Lungo</a>
-                        ,
-                        <a class="text normal" href="http://quojs.tapquo.com">QuoJS</a>
-                        ,
-                        <a class="text normal" href="http://monocle.tapquo.com">Monocle</a>
-                        used by thousands of developers around the world.
+                        Jhovanni Montesinos es desarrollador de aplicaciones web y móviles. 
+                        Actualmente forma parte del proyecto DEMS, para uso interno de 
+                        <a class="text" href="http://www.ibm.com/mx/es/">IBM</a>.
                     </h3>
                 </div>
             </div>
             <div class="row">
                 <div class="col-xs-4 col-xs-offset-4">
-                    <img class="img-responsive img-circle" alt="..." src="http://wallpoper.com/images/00/32/06/04/shay-laren_00320604.jpg">
+                    <img class="img-responsive img-circle margin-bottom" alt="..." src="${pageContext.request.contextPath}/imagenes/jhovanni.png">
                 </div>
             </div>
         </section>
-        <footer class="container text-center">
-            <div class="row">
+        <footer class="container-fluid text-center small fondo oscuro">
+            <div class="row padding texto claro">
                 <div class="col-xs-6 col-xs-offset-3">
-                    <p>Hecho por <a class="" href="#">Jhovanni</a></p>
-                    <small>We're a  user experiences company located in Bilbao, ES.</small>
+                    <p>2015 - Desarrollado por <a class="" href="#">Jhovanni</a>, repositorio en <a href="https://github.com/Jhovanni/RegistroPersonas">GitHub</a></p>
+                    <small>Actualmente radico en Guadalajara. Uniendo fuerzas con un equipo estupendo en IBM</small>
                 </div>
             </div>
         </footer>
