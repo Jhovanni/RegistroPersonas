@@ -82,7 +82,7 @@ public class ControlPrincipal {
 
     @PreAuthorize(value = "isAuthenticated()")
     @RequestMapping(value = "persona/registrar", method = RequestMethod.POST)
-    public ModelAndView registrar(@Valid PersonaForm personaForm, Errors errors) {
+    public ModelAndView registrar(@Valid @ModelAttribute PersonaForm personaForm, Errors errors) {
         ModelAndView mv = new ModelAndView("persona/registrar");
         log.entry(personaForm);
 

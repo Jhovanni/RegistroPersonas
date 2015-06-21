@@ -20,7 +20,7 @@ import org.springframework.web.servlet.view.JstlView;
  */
 @Configuration
 @EnableWebMvc
-@ComponentScan(basePackages = "com.jhovanni.registropersonas.control")
+@ComponentScan(basePackages = {"com.jhovanni.registropersonas.control", "com.jhovanni.registropersonas.secure"})
 public class DispatcherConfig extends WebMvcConfigurerAdapter {
     
     @Autowired

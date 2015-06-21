@@ -2,20 +2,24 @@ package com.jhovanni.registropersonas.control;
 
 import com.jhovanni.registropersonas.config.DispatcherConfig;
 import com.jhovanni.registropersonas.config.RootConfig;
+import com.jhovanni.registropersonas.entidad.Ciudad;
 import com.jhovanni.registropersonas.entidad.Genero;
 import com.jhovanni.registropersonas.entidad.Persona;
 import com.jhovanni.registropersonas.hibernate.Servicio;
 import java.util.ArrayList;
 import java.util.List;
+import javax.ws.rs.core.MediaType;
 import junit.framework.TestCase;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.Test;
 import static org.hamcrest.Matchers.*;
-import static org.hamcrest.Matchers.is;
+import org.junit.Ignore;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -56,7 +60,7 @@ public class ControlPrincipalTest extends TestCase{
      * Test inyección de dependencias correctas Se asegura que tanto el
      * controlador como el servicio no sean nulos
      */
-    @Test
+    @Ignore @Test
     public void testDependencias() {
         log.entry();
         assertNotNull(control);
@@ -69,7 +73,7 @@ public class ControlPrincipalTest extends TestCase{
      *
      * @throws java.lang.Exception
      */
-    @Test
+    @Ignore @Test
     public void testInicio() throws Exception {
         log.entry();
         mvc.perform(get("/")).andExpect(status().isOk())
@@ -83,7 +87,7 @@ public class ControlPrincipalTest extends TestCase{
      *
      * @throws java.lang.Exception
      */
-    @Test
+    @Ignore @Test
     public void testListarPersonas() throws Exception {
         log.entry();
         List<Persona> personas = new ArrayList<>();
@@ -105,6 +109,40 @@ public class ControlPrincipalTest extends TestCase{
         verify(servicio).getCiudades();
         verify(servicio, times(1)).getPersonas();
         verifyNoMoreInteractions(servicio);
+        log.exit();
+    }
+    
+    @Ignore @Test
+    public void testPrepararRegistrar() throws Exception {
+        log.entry();
+        mvc.perform(get("/persona/registrar"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("persona/registrar"))
+                .andExpect(forwardedUrl("persona/registrar"))
+                .andExpect(model().attributeExists("personaForm"))
+                .andExpect(model().attribute("personaForm", Matchers.isA(PersonaForm.class)));
+        log.exit();
+    }
+    
+    @Test
+    public void testRegistrar()throws Exception{
+        log.entry();
+        PersonaForm personaForm = new PersonaForm();
+        personaForm.setCiudad(new Ciudad());
+        personaForm.setClave("clave");
+        personaForm.setClave2("clave");
+        personaForm.setEdad(20);
+        personaForm.setGenero(Genero.M);
+        personaForm.setNombre("Persona");
+        personaForm.setNombreUsuario("usuario");
+        
+        
+        mvc.perform(post("/persona/registrar")
+                .contentType(MediaType.MULTIPART_FORM_DATA)
+                .sessionAttr("personaForm", personaForm))
+                .andExpect(status().isOk())
+                .andExpect(view().name("persona/registrar"))
+                .andExpect(forwardedUrl("persona/registrar"));
         log.exit();
     }
 

@@ -1,0 +1,19 @@
+[
+{"id":"example01","access":true,"roles":["*"]},
+{"id":"example02","access":true,"roles":["Administrator","Engagement Lead"]},
+{"id":"example03","access":true,"edition":true,"roles":["Administrator","Engagement Lead"]},
+{"id":"example04","access":true,"edition":true,"roles":["*"],"freeForDST":true},
+{"id":"example05","access":true,"edition":true,"roles":["Administrator","Engagement Lead"],"freeForDST":true},
+{"id":"example06","access":true,"roles":["*"], "contacts":["*"]},
+{"id":"example07","access":true,"edition":true,"roles":["*"], "contacts":["*"]},
+{"id":"example08","access":true,"edition":true,"roles":["*"], "contacts":["Approver","Review"]},
+{"id":"example09","access":true,"roles":["Administrator","Engagement Lead"], "contacts":["Approver","Review"]},
+{"id":"example10","access":true,"roles":["Administrator","Engagement Lead"], "contacts":["Approver","Review"]},
+{"id":"example11","access":true,"roles":["Administrator","Engagement Lead"], "contacts":["Approver","Review"],"freeForDST":true},
+{"id":"example12","access":true,"roles":["*"], "status":["RFI","RFP"]},
+{"id":"example13","access":true,"roles":["Administrator","Engagement Lead"], "status":["RFI","RFP"],"freeForDST":true},
+{"id":"example14","access":true,"edition":true,"roles":["Administrator","Engagement Lead"], "status":["RFI","RFP"],"freeForDST":true},
+
+{"id":"protot01","access":true,"roles":["+"]},
+{"id":"protot02","access":true,"roles":["-"]}
+]

@@ -134,4 +134,9 @@ public class PersonaForm {
         this.clave2 = clave2;
     }
 
+    @Override
+    public String toString() {
+        return "PersonaForm{" + "nombre=" + nombre + ", edad=" + edad + ", genero=" + genero + ", ciudad=" + ciudad + ", nombreUsuario=" + nombreUsuario + '}';
+    }
+    
 }
