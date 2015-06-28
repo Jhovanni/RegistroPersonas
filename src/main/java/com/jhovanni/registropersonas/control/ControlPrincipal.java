@@ -4,7 +4,7 @@ import com.jhovanni.registropersonas.entidad.Ciudad;
 import com.jhovanni.registropersonas.entidad.Foto;
 import com.jhovanni.registropersonas.entidad.Persona;
 import com.jhovanni.registropersonas.hibernate.Servicio;
-import com.mysql.jdbc.MysqlDataTruncation;
+import com.jhovanni.registropersonas.secure.SecureManager;
 import java.io.IOException;
 import java.security.Principal;
 import java.util.List;
@@ -32,6 +32,8 @@ public class ControlPrincipal {
     private static final Logger log = LogManager.getLogger();
     private List<Ciudad>ciudades;
     
+    @Autowired
+    private SecureManager manager;
     @Autowired
     private Servicio servicio;
     

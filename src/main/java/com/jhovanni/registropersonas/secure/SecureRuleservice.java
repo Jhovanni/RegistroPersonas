@@ -18,7 +18,7 @@ public class SecureRuleservice {
 
     private static final Logger log = LogManager.getLogger();
     private boolean debugMode = false;
-    private String jsonFileUrl = "";
+    private String jsonFileUrl = "secureRules.json";
     private List<SecureRule> rules;
 
     public SecureRule findById(String id) throws SecureRuleNotFoundException{

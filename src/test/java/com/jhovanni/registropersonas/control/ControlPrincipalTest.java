@@ -39,6 +39,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {RootConfig.class, DispatcherConfig.class})
 @WebAppConfiguration
+@Ignore
 public class ControlPrincipalTest extends TestCase{
 
     private static final Logger log = LogManager.getLogger();
