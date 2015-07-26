@@ -61,7 +61,7 @@ public class ControlPrincipalTest extends TestCase{
      * Test inyección de dependencias correctas Se asegura que tanto el
      * controlador como el servicio no sean nulos
      */
-    @Ignore @Test
+    @Test
     public void testDependencias() {
         log.entry();
         assertNotNull(control);
@@ -74,7 +74,7 @@ public class ControlPrincipalTest extends TestCase{
      *
      * @throws java.lang.Exception
      */
-    @Ignore @Test
+    @Test
     public void testInicio() throws Exception {
         log.entry();
         mvc.perform(get("/")).andExpect(status().isOk())
@@ -88,7 +88,7 @@ public class ControlPrincipalTest extends TestCase{
      *
      * @throws java.lang.Exception
      */
-    @Ignore @Test
+    @Test
     public void testListarPersonas() throws Exception {
         log.entry();
         List<Persona> personas = new ArrayList<>();
@@ -113,7 +113,7 @@ public class ControlPrincipalTest extends TestCase{
         log.exit();
     }
     
-    @Ignore @Test
+    @Test
     public void testPrepararRegistrar() throws Exception {
         log.entry();
         mvc.perform(get("/persona/registrar"))
@@ -139,7 +139,6 @@ public class ControlPrincipalTest extends TestCase{
         
         
         mvc.perform(post("/persona/registrar")
-                .contentType(MediaType.MULTIPART_FORM_DATA)
                 .sessionAttr("personaForm", personaForm))
                 .andExpect(status().isOk())
                 .andExpect(view().name("persona/registrar"))

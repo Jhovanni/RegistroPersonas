@@ -9,9 +9,10 @@ import org.junit.Test;
  *
  * @author jhovanni
  */
+@Ignore
 public class LoggerTest {
     private static final Logger log = LogManager.getLogger();
-    @Ignore
+    
     @Test
     public void testLogger(){
         log.entry();

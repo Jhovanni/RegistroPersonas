@@ -45,14 +45,6 @@ public interface Servicio {
     public List<Persona> getPersonas();
 
     /**
-     * Agrega una persona al sistema
-     *
-     * @param persona
-     * @return id generado
-     */
-    public int registrarPersona(Persona persona);
-
-    /**
      * Crea un nuevo registro de una persona en el sistema, con el nombre de
      * usuario y contraseña
      *
@@ -61,7 +53,7 @@ public interface Servicio {
      * @param clave
      * @return id generado
      */
-    public int registrarPersona(Persona persona, String nombreUsuario, String clave);
+    public Persona registrarPersona(Persona persona, String nombreUsuario, String clave);
 
     /**
      * Busca el registro Persona en base a un idenfiticador

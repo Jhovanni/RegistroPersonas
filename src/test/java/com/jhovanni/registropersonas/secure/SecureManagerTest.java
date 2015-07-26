@@ -3,6 +3,7 @@ package com.jhovanni.registropersonas.secure;
 import com.jhovanni.registropersonas.config.DispatcherConfig;
 import com.jhovanni.registropersonas.config.RootConfig;
 import junit.framework.TestCase;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,7 @@ import org.springframework.test.context.web.WebAppConfiguration;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {RootConfig.class, DispatcherConfig.class})
 @WebAppConfiguration
+@Ignore
 public class SecureManagerTest extends TestCase {
 
     @Autowired

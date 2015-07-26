@@ -6,6 +6,7 @@ import java.util.List;
 import junit.framework.TestCase;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +21,7 @@ import org.springframework.test.context.web.WebAppConfiguration;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {RootConfig.class, DispatcherConfig.class})
 @WebAppConfiguration
+@Ignore
 public class SecureRuleRepositoryTest extends TestCase{
     private static final Logger log = LogManager.getLogger();
    @Autowired
