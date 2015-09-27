@@ -4,7 +4,6 @@ import com.jhovanni.registropersonas.entidad.Ciudad;
 import com.jhovanni.registropersonas.entidad.Foto;
 import com.jhovanni.registropersonas.entidad.Persona;
 import com.jhovanni.registropersonas.hibernate.Servicio;
-import com.jhovanni.registropersonas.secure.SecureManager;
 import java.io.IOException;
 import java.security.Principal;
 import java.util.List;
@@ -32,8 +31,6 @@ public class ControlPrincipal {
     private static final Logger log = LogManager.getLogger();
     private List<Ciudad>ciudades;
     
-    @Autowired
-    private SecureManager manager;
     @Autowired
     private Servicio servicio;
     
@@ -102,7 +99,8 @@ public class ControlPrincipal {
                 log.debug("nombre de usuario ocupado");
                 errors.rejectValue("nombreUsuario", "IdOcupado");
             }catch(Exception e){
-                errors.reject("Hubo un problema al ejecutar la acción");
+                log.error("Hubo un problema al ejecutar la acción " + e);
+                errors.reject("Error.desconocido");
             }
         } else {
             log.warn(errors);

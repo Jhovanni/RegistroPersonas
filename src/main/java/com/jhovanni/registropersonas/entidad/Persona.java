@@ -19,7 +19,7 @@ import org.hibernate.validator.constraints.Range;
  * @author Jhovanni
  */
 @Entity
-@Table(name = "PERSONAS")
+@Table
 public class Persona implements Serializable{
 
     @Id

@@ -13,7 +13,7 @@ import javax.persistence.Table;
  * @author Jhovanni
  */
 @Entity
-@Table(name = "CIUDADES")
+@Table
 public class Ciudad implements Serializable {
 
     @Id

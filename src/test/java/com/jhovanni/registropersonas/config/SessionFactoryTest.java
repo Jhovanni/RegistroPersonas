@@ -17,7 +17,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = RootConfig.class)
-public class TestSessionFactory {
+public class SessionFactoryTest {
     private static final Logger log = LogManager.getLogger();
     
     @Autowired
@@ -32,6 +32,7 @@ public class TestSessionFactory {
         Session session = sessionFactory.openSession();
         session.beginTransaction();
         session.createSQLQuery("SELECT 1 FROM DUAL");
+        log.info("Conexión exitosa a base de datos");
         log.exit();
     }
 }

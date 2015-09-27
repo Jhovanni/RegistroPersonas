@@ -8,6 +8,7 @@ import java.util.Objects;
  * @author Jhovanni
  */
 public class PermisoId implements Serializable {
+    private static final long serialVersionUID = 1L;
 
     private String usuario;
     private Nivel nivel;

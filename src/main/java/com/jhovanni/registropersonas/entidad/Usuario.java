@@ -17,7 +17,7 @@ import org.springframework.security.core.userdetails.UserDetails;
  * @author Jhovanni
  */
 @Entity
-@Table(name = "USUARIOS")
+@Table
 public class Usuario implements UserDetails {
 
     @Id

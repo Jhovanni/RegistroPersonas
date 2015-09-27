@@ -17,7 +17,7 @@ import org.springframework.security.core.GrantedAuthority;
  * @author Jhovanni
  */
 @Entity
-@Table(name = "PERMISOS")
+@Table
 @IdClass(PermisoId.class)
 public class Permiso implements Serializable, GrantedAuthority {
 

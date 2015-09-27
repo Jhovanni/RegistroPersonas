@@ -14,12 +14,13 @@ import javax.validation.constraints.Size;
  * @author Jhovanni
  */
 @Entity
-@Table(name = "FOTOS")
+@Table
 public class Foto implements Serializable{
+    public static final int NOMBRE_SIZE = 30;
     @Id
     @GeneratedValue
     private int id;
-    @Size(max = 30)
+    @Size(max = NOMBRE_SIZE)
     private String nombre;
     @Lob
     @NotNull

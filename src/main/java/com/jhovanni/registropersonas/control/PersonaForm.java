@@ -60,6 +60,12 @@ public class PersonaForm {
             try {
                 Foto f = new Foto();
                 f.setContenido(this.foto.getBytes());
+
+                if (this.foto.getOriginalFilename().length() <= Foto.NOMBRE_SIZE) {
+                    f.setNombre(this.foto.getOriginalFilename());
+                } else {
+                    f.setNombre(this.foto.getOriginalFilename().substring(0, Foto.NOMBRE_SIZE));
+                }
                 persona.setFoto(f);
             } catch (IOException ex) {
                 log.error("IOException PersonaForm.toPersona: " + ex);

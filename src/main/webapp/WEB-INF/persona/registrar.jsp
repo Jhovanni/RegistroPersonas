@@ -19,8 +19,9 @@
         <div class="container">
             <h1>${tituloRegistrarPersona}</h1>
             <c:if test="${usuarioRegistrado}"><div class="text-success"><s:message code="PersonaRegistrada"/></div></c:if>
-            <f:form action="registrar" modelAttribute="personaForm" enctype="multipart/form-data" cssClass="form-horizontal">
-                <div class="form-group"><f:errors path=""/></div>
+            <f:form action="registrar" modelAttribute="personaForm" enctype="multipart/form-data" cssClass="form-horizontal" autocomplete="off" id="001" onsubmit="enviar()">
+                <!-- Firefox: desactivar autocomplete --><input type="text" style="display:none"><input type="password" style="display:none">
+                <div class="form-group" class="help-block"><f:errors path=""/></div>
                 <div class="form-group">
                     <f:label path="nombreUsuario" cssClass="col-sm-2 control-label"><s:message code="Persona.nombreUsuario"/>:</f:label>
                         <div class="col-sm-10">
