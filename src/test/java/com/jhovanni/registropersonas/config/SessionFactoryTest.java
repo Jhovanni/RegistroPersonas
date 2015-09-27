@@ -16,7 +16,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
  * @author Jhovanni
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = RootConfig.class)
+@ContextConfiguration(classes = RootConfigTest.class)
 public class SessionFactoryTest {
     private static final Logger log = LogManager.getLogger();
     

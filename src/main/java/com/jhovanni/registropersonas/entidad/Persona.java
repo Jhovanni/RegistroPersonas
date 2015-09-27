@@ -4,6 +4,7 @@ import java.io.Serializable;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -20,7 +21,7 @@ import org.hibernate.validator.constraints.Range;
  */
 @Entity
 @Table
-public class Persona implements Serializable{
+public class Persona implements Serializable {
 
     @Id
     @GeneratedValue
@@ -52,7 +53,21 @@ public class Persona implements Serializable{
         this.edad = edad;
         this.genero = genero;
     }
-    
+
+    public Persona(int id, String nombre, int edad, Genero genero, Ciudad ciudad, Integer fotoId) {
+        this.id = id;
+        this.nombre = nombre;
+        this.edad = edad;
+        this.genero = genero;
+        this.ciudad = ciudad;
+        if (fotoId == null) {
+        } else {
+            Foto f = new Foto();
+            f.setId(fotoId);
+            this.foto = f;
+        }
+    }
+
     public int getId() {
         return id;
     }

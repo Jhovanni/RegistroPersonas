@@ -1,6 +1,6 @@
 package com.jhovanni.registropersonas.hibernate;
 
-import com.jhovanni.registropersonas.config.RootConfig;
+import com.jhovanni.registropersonas.config.RootConfigTest;
 import com.jhovanni.registropersonas.entidad.Ciudad;
 import com.jhovanni.registropersonas.entidad.Foto;
 import com.jhovanni.registropersonas.entidad.Genero;
@@ -24,7 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
  * @author jhovanni
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = RootConfig.class)
+@ContextConfiguration(classes = RootConfigTest.class)
 @Ignore
 public class ServicioRegistroTest extends TestCase {
 

@@ -40,11 +40,21 @@ public class ControlPrincipal {
         return log.exit("inicio");
     }
 
+    @RequestMapping(value = "persona/foto")
+    public void mostrarDefaultFoto(HttpServletResponse response) {
+        log.entry();
+        //TODO: implementar
+        log.exit();
+    }
+    
     @RequestMapping(value = "persona/foto/{id}")
-    public void mostrarFoto(@PathVariable int id, HttpServletResponse response) {
+    public void mostrarFoto(@PathVariable(value = "id") int id, HttpServletResponse response) {
         log.entry(id);
         Foto foto = servicio.getFoto(id);
         response.setContentType("image/jpeg, image/jpg, image/png, image/gif");
+        response.setContentLength(foto.getContenido().length);
+        response.setHeader("Content-Disposition", "inline; filename=\"" + foto.getNombre()
+                + "\"");
         try {
             response.getOutputStream().write(foto.getContenido());
             response.getOutputStream().flush();

@@ -1,7 +1,7 @@
 package com.jhovanni.registropersonas.control;
 
 import com.jhovanni.registropersonas.config.DispatcherConfig;
-import com.jhovanni.registropersonas.config.RootConfig;
+import com.jhovanni.registropersonas.config.RootConfigTest;
 import com.jhovanni.registropersonas.entidad.Ciudad;
 import com.jhovanni.registropersonas.entidad.Genero;
 import com.jhovanni.registropersonas.entidad.Persona;
@@ -37,7 +37,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
  * @author jhovanni
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = {RootConfig.class, DispatcherConfig.class})
+@ContextConfiguration(classes = {RootConfigTest.class, DispatcherConfig.class})
 @WebAppConfiguration
 @Ignore
 public class ControlPrincipalTest extends TestCase{

@@ -1,6 +1,6 @@
 package com.jhovanni.registropersonas.repositorio;
 
-import com.jhovanni.registropersonas.config.RootConfig;
+import com.jhovanni.registropersonas.config.RootConfigTest;
 import com.jhovanni.registropersonas.entidad.Ciudad;
 import java.util.List;
 import junit.framework.TestCase;
@@ -18,8 +18,8 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
  * @author jhovanni
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = RootConfig.class)
-@Ignore
+@ContextConfiguration(classes = RootConfigTest.class)
+//@Ignore
 public class CiudadRepositoryTest extends TestCase {
 
     private final Logger log = LogManager.getLogger();

@@ -61,7 +61,7 @@ public class ServicioRegistro implements Servicio {
     @Override
     public List<Persona> getPersonas() {
         log.entry();
-        return log.exit(personaRepository.findAll());
+        return log.exit(personaRepository.findAllForListing());
     }
 
     @Override
