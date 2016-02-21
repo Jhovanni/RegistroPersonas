@@ -22,6 +22,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
@@ -137,8 +138,8 @@ public class ControlPrincipalTest extends TestCase {
         log.entry();
         PersonaForm personaForm = new PersonaForm();
         personaForm.setCiudad(new Ciudad());
-        personaForm.setClave("clave");
-        personaForm.setClave2("clave");
+        personaForm.setClave("claveClave");
+        personaForm.setClave2("claveClave");
         personaForm.setEdad(20);
         personaForm.setGenero(Genero.M);
         personaForm.setNombre("Persona");
@@ -149,6 +150,8 @@ public class ControlPrincipalTest extends TestCase {
                 .andExpect(status().isOk())
                 .andExpect(view().name("persona/registrar"))
                 .andExpect(forwardedUrl("persona/registrar"));
+
+        Mockito.verify(servicio, Mockito.times(1)).registrarPersona(personaForm.toPersona(), personaForm.getNombreUsuario(), personaForm.getClave());
         log.exit();
     }
 

@@ -17,8 +17,9 @@ import org.springframework.web.multipart.MultipartFile;
  *
  * @author Jhovanni
  */
-public class PersonaForm implements Serializable{
-    Logger log = LogManager.getLogger();
+public class PersonaForm implements Serializable {
+
+    private static final Logger log = LogManager.getLogger();
 
     @NotNull
     @Size(min = 3, max = 20)
@@ -48,7 +49,8 @@ public class PersonaForm implements Serializable{
         this.genero = persona.getGenero();
         this.ciudad = persona.getCiudad();
         this.nombreUsuario = persona.getUsuario().getNombre();
-        this.clave = this.clave2 = persona.getUsuario().getClave();
+        this.clave = persona.getUsuario().getClave();
+        this.clave2 = persona.getUsuario().getClave();
     }
 
     public Persona toPersona() {
@@ -57,7 +59,7 @@ public class PersonaForm implements Serializable{
         persona.setEdad(edad);
         persona.setGenero(genero);
         persona.setCiudad(ciudad);
-        if (foto.getSize() > 0) {
+        if (foto != null && foto.getSize() > 0) {
             try {
                 Foto f = new Foto();
                 f.setContenido(this.foto.getBytes());
@@ -145,5 +147,5 @@ public class PersonaForm implements Serializable{
     public String toString() {
         return "PersonaForm{" + "nombre=" + nombre + ", edad=" + edad + ", genero=" + genero + ", ciudad=" + ciudad + ", nombreUsuario=" + nombreUsuario + '}';
     }
-    
+
 }

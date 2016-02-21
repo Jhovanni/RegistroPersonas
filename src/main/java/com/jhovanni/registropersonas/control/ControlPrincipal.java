@@ -7,6 +7,7 @@ import com.jhovanni.registropersonas.hibernate.ServicioRegistro;
 import java.io.IOException;
 import java.security.Principal;
 import java.util.List;
+import java.util.Objects;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import org.apache.logging.log4j.LogManager;
@@ -30,12 +31,13 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 @SessionAttributes({"personaForm"})
 public class ControlPrincipal {
+
     private static final Logger log = LogManager.getLogger();
-    private List<Ciudad>ciudades;
-    
+    private List<Ciudad> ciudades;
+
     @Autowired
     private ServicioRegistro servicio;
-    
+
     @RequestMapping("")
     public String inicio() {
         log.entry();
@@ -48,7 +50,7 @@ public class ControlPrincipal {
         //TODO: implementar
         log.exit();
     }
-    
+
     @RequestMapping(value = "persona/foto/{id}")
     public void mostrarFoto(@PathVariable(value = "id") int id, HttpServletResponse response) {
         log.entry(id);
@@ -68,12 +70,31 @@ public class ControlPrincipal {
 
     @ModelAttribute(value = "ciudades")
     public List<Ciudad> ciudades() {
-        if(ciudades==null){
-            ciudades=servicio.getCiudades();
+        if (ciudades == null) {
+            ciudades = servicio.getCiudades();
         }
         return ciudades;
     }
-    
+
+    /**
+     * Proporciona un atributo personaForm, en caso de que la sesión se haya
+     * perdido. De otra manera, una HttpSessionRequiredException sería lanzada,
+     * y aunque se puede capturar con un ExceptionHandler, aún no encuentro la
+     * alternativa más adecuada.<br>
+     * El problema con el ExceptionHandler, es que luego de regresar del login
+     * (pidiendo la sesión de nuevo), ya no se redirige bien a la página en que
+     * estaba el usuario. Y cuando se trate de llamdas AJAX, el problema podría
+     * ser peor. Por lo pronto ésta es una solución satisfactoria y que permite
+     * seguir realizando los test sin inconvenientes<br>
+     * TODO:investigar alternativas a esto
+     *
+     * @return
+     */
+    @ModelAttribute
+    public PersonaForm personaForm() {
+        return new PersonaForm();
+    }
+
     @RequestMapping(value = "persona/lista")
     public ModelAndView listarPersonas() {
         log.entry();
@@ -97,7 +118,7 @@ public class ControlPrincipal {
         log.entry(personaForm);
         ModelAndView mv = new ModelAndView("persona/registrar");
 
-        if (!personaForm.getClave().equals(personaForm.getClave2())) {
+        if (!Objects.equals(personaForm.getClave(), personaForm.getClave2())) {
             log.debug("contraseñas recibidas diferentes");
             errors.rejectValue("clave2", "ClaveDiferente");
         }
@@ -110,7 +131,7 @@ public class ControlPrincipal {
             } catch (DataIntegrityViolationException e) {
                 log.debug("nombre de usuario ocupado");
                 errors.rejectValue("nombreUsuario", "IdOcupado");
-            }catch(Exception e){
+            } catch (Exception e) {
                 log.error("Hubo un problema al ejecutar la acción " + e);
                 errors.reject("Error.desconocido");
             }
@@ -119,6 +140,7 @@ public class ControlPrincipal {
         }
         return log.exit(mv);
     }
+
     @PreAuthorize(value = "hasAuthority('Administrador')")
     @RequestMapping(value = "persona/editar/{id}", method = RequestMethod.GET)
     public ModelAndView prepararEditar(@PathVariable int id) {
@@ -130,7 +152,7 @@ public class ControlPrincipal {
         }
         return log.exit(mv);
     }
-    
+
     @PreAuthorize(value = "isAuthenticated()")
     @RequestMapping(value = "persona/editar", method = RequestMethod.GET)
     public ModelAndView prepararEditar(Principal principal) {
