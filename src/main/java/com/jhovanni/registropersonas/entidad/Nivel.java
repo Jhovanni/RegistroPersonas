@@ -6,5 +6,5 @@ package com.jhovanni.registropersonas.entidad;
  */
 public enum Nivel {
 
-    admin, usuario
+    Administrador, Usuario
 }

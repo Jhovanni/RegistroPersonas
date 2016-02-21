@@ -6,7 +6,7 @@
 package com.jhovanni.registropersonas.control;
 
 import com.jhovanni.registropersonas.entidad.Ciudad;
-import com.jhovanni.registropersonas.hibernate.Servicio;
+import com.jhovanni.registropersonas.hibernate.ServicioRegistro;
 import java.text.ParseException;
 import java.util.Locale;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +21,7 @@ import org.springframework.stereotype.Component;
 public class CiudadFormatter implements Formatter<Ciudad> {
 
     @Autowired
-    private Servicio servicio;
+    private ServicioRegistro servicio;
 
     @Override
     public String print(Ciudad ciudad, Locale locale) {

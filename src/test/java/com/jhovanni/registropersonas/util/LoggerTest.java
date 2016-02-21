@@ -26,7 +26,7 @@ public class LoggerTest {
         log.fatal("fatal");
         log.exit();
 
-        log.trace("Cambiando nivel de logueo a warn \n\n");
+        log.trace("Cambiando nivel de logueo a warn");
         setLogLevel(Level.WARN);
 
         log.entry();

@@ -5,6 +5,7 @@ import com.jhovanni.registropersonas.entidad.Foto;
 import com.jhovanni.registropersonas.entidad.Genero;
 import com.jhovanni.registropersonas.entidad.Persona;
 import java.io.IOException;
+import java.io.Serializable;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import org.apache.logging.log4j.LogManager;
@@ -16,7 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
  *
  * @author Jhovanni
  */
-public class PersonaForm {
+public class PersonaForm implements Serializable{
     Logger log = LogManager.getLogger();
 
     @NotNull

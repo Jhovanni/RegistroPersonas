@@ -1,6 +1,5 @@
 package com.jhovanni.registropersonas.config;
 
-import com.jhovanni.registropersonas.config.*;
 import java.util.Properties;
 import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
@@ -31,9 +30,10 @@ public class RootConfigTest {
     public BasicDataSource dataSource() {
         BasicDataSource dataSource = new BasicDataSource();
         dataSource.setDriverClassName("com.mysql.jdbc.Driver");
-        dataSource.setUrl("jdbc:mysql://127.0.0.1:3306/registropersonas");
-        dataSource.setUsername("adminijSX8pP");
-        dataSource.setPassword("J9kdAnAP8WAI");
+        //jdbc:mysql://db4free.net:3306/jhovannidatabase?zeroDateTimeBehavior=convertToNul
+        dataSource.setUrl("jdbc:mysql://db4free.net:3306/jhovannidatabase");
+        dataSource.setUsername("jhovanni");
+        dataSource.setPassword("jhovanniDatabase");
         return dataSource;
     }
 

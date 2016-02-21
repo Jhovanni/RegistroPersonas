@@ -42,7 +42,7 @@
                                         <a href="${urlFoto}"><img src="${urlFoto}" alt="${sinFoto}" class="img-thumbnail" width="50" height="50"/></a>
                                     </td>
                                     <td>
-                                        <sec:authorize access="hasAuthority('admin')">
+                                        <sec:authorize access="hasAuthority('Administrador')">
                                             <a href="editar/${persona.id}" class="btn btn-default"><s:message code="Link.editarPersona"/>
                                             </a>
                                             <a href="borrar/${persona.id}" class="btn btn-default"><s:message code="Link.borrarPersona"/>

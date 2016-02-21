@@ -2,6 +2,7 @@ package com.jhovanni.registropersonas.entidad;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Objects;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -20,7 +21,7 @@ public class Ciudad implements Serializable {
     @GeneratedValue
     //la secuencia que genera el id es "HIBERNATE_SEQUENCE", por lo tanto no es
     //necesario especificarla en @GeneratedValue
-    private int id;
+    private Integer id;
     private String nombre;
     @OneToMany(mappedBy = "ciudad")
     private List<Persona> personas;
@@ -29,7 +30,7 @@ public class Ciudad implements Serializable {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -65,7 +66,7 @@ public class Ciudad implements Serializable {
             return false;
         }
         final Ciudad other = (Ciudad) obj;
-        return this.id == other.id;
+        return Objects.equals(this.id, other.id);
     }
 
     @Override

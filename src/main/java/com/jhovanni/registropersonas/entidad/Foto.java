@@ -1,10 +1,12 @@
 package com.jhovanni.registropersonas.entidad;
 
 import java.io.Serializable;
+import java.util.Objects;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Lob;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -15,22 +17,25 @@ import javax.validation.constraints.Size;
  */
 @Entity
 @Table
-public class Foto implements Serializable{
+public class Foto implements Serializable {
+
     public static final int NOMBRE_SIZE = 30;
     @Id
     @GeneratedValue
-    private int id;
+    private Integer id;
     @Size(max = NOMBRE_SIZE)
     private String nombre;
     @Lob
     @NotNull
-    private byte[]contenido;
+    private byte[] contenido;
+    @OneToOne(mappedBy = "foto")
+    private Persona persona;
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -50,10 +55,18 @@ public class Foto implements Serializable{
         this.contenido = contenido;
     }
 
+    public Persona getPersona() {
+        return persona;
+    }
+
+    public void setPersona(Persona persona) {
+        this.persona = persona;
+    }
+
     @Override
     public int hashCode() {
         int hash = 7;
-        hash = 89 * hash + this.id;
+        hash = 83 * hash + Objects.hashCode(this.id);
         return hash;
     }
 
@@ -66,7 +79,10 @@ public class Foto implements Serializable{
             return false;
         }
         final Foto other = (Foto) obj;
-        return this.id == other.id;
+        if (!Objects.equals(this.id, other.id)) {
+            return false;
+        }
+        return true;
     }
 
     @Override

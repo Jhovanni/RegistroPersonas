@@ -23,7 +23,7 @@ import org.springframework.stereotype.Service;
  * @author Jhovanni
  */
 @Service
-public class ServicioRegistro implements Servicio {
+public class ServicioRegistro {
 
     private static final Logger log = LogManager.getLogger();
 
@@ -40,31 +40,26 @@ public class ServicioRegistro implements Servicio {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    @Override
     public Usuario getUsuario(String nombre) {
         log.entry(nombre);
         return log.exit(usuarioRepository.findOne(nombre));
     }
 
-    @Override
     public Ciudad getCiudad(int id) {
         log.entry(id);
         return log.exit(ciudadRepository.findOne(id));
     }
 
-    @Override
     public List<Ciudad> getCiudades() {
         log.entry();
-        return log.exit(ciudadRepository.findAll());
+        return log.exit(ciudadRepository.findAllByOrderByIdAsc());
     }
 
-    @Override
     public List<Persona> getPersonas() {
         log.entry();
         return log.exit(personaRepository.findAllForListing());
     }
 
-    @Override
     public Persona registrarPersona(Persona persona, String nombreUsuario, String clave) {
         log.entry(persona, nombreUsuario, clave);
         Usuario usuario = new Usuario();
@@ -80,26 +75,23 @@ public class ServicioRegistro implements Servicio {
 
         Permiso permiso = new Permiso();
         permiso.setUsuario(usuario);
-        permiso.setNivel(Nivel.usuario);
+        permiso.setNivel(Nivel.Usuario);
         permisoRepository.save(permiso);
 
         persona.setUsuario(usuario);
         return log.exit(personaRepository.saveAndFlush(persona));
     }
 
-    @Override
     public Persona getPersona(int id) {
         log.entry(id);
         return log.exit(personaRepository.findOne(id));
     }
 
-    @Override
     public Persona getPersona(String nombreUsuario) {
         log.entry(nombreUsuario);
         return log.exit(personaRepository.findByUsuarioNombre(nombreUsuario));
     }
 
-    @Override
     public void borrarPersona(Persona persona) {
         log.entry(persona);
         Usuario usuario = persona.getUsuario();
@@ -120,14 +112,12 @@ public class ServicioRegistro implements Servicio {
         log.exit();
     }
 
-    @Override
     public void borrarPersona(int id) {
         log.entry(id);
         borrarPersona(getPersona(id));
         log.exit();
     }
 
-    @Override
     public void editarPersona(Persona persona) {
         log.entry(persona);
         Persona actual = personaRepository.findOne(persona.getId());
@@ -140,7 +130,6 @@ public class ServicioRegistro implements Servicio {
         log.exit();
     }
 
-    @Override
     public Foto getFoto(int id) {
         log.entry(id);
         return log.exit(fotoRepository.findOne(id));

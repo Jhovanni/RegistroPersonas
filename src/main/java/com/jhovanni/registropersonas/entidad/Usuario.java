@@ -1,5 +1,6 @@
 package com.jhovanni.registropersonas.entidad;
 
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
@@ -18,7 +19,7 @@ import org.springframework.security.core.userdetails.UserDetails;
  */
 @Entity
 @Table
-public class Usuario implements UserDetails {
+public class Usuario implements Serializable, UserDetails {
 
     @Id
     private String nombre;
@@ -26,7 +27,7 @@ public class Usuario implements UserDetails {
     private boolean activo;
     @OneToOne(mappedBy = "usuario")
     private Persona persona;
-    @OneToMany(fetch = FetchType.EAGER,mappedBy = "usuario")
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "usuario")
     private List<Permiso> permisos;
 
     public String getNombre() {

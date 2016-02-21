@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Configuration status="WARN">
     <Appenders>
-        <Console name="Console" target="SYSTEM_OUT">
-            <PatternLayout pattern="%highlight{%d{yyyy/MM/dd HH:mm:ss SSS} [%t] %level %c{1}.%M - %m}%n"/>
+        <Console name="console" target="SYSTEM_OUT">
+            <PatternLayout pattern="%highlight{%d{yyyy/MM/dd HH:mm:ss SSS} [%t] %level %c{1}.%M.%L - %m:}%n"/>
         </Console>
     </Appenders>
     <Loggers>
-        <Logger name="com.foo.Bar" level="trace">
-            <AppenderRef ref="Console"/>
+        <Logger name="consoleLogger" level="trace">
+            <AppenderRef ref="console"/>
         </Logger>
         <Root level="trace">
-            <AppenderRef ref="Console"/>
+            <AppenderRef ref="console"/>
         </Root>
     </Loggers>
 </Configuration>

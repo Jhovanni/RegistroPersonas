@@ -1,10 +1,10 @@
 package com.jhovanni.registropersonas.entidad;
 
 import java.io.Serializable;
+import java.util.Objects;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -25,9 +25,9 @@ public class Persona implements Serializable {
 
     @Id
     @GeneratedValue
-    private int id;
+    private Integer id;
     @NotNull
-    @Size(min = 3, max = 20)
+    @Size(min = 3, max = 30)
     private String nombre;
     @Range(min = 15, max = 70)
     private int edad;
@@ -54,7 +54,7 @@ public class Persona implements Serializable {
         this.genero = genero;
     }
 
-    public Persona(int id, String nombre, int edad, Genero genero, Ciudad ciudad, Integer fotoId) {
+    public Persona(Integer id, String nombre, int edad, Genero genero, Ciudad ciudad, Integer fotoId) {
         this.id = id;
         this.nombre = nombre;
         this.edad = edad;
@@ -68,11 +68,11 @@ public class Persona implements Serializable {
         }
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -126,8 +126,8 @@ public class Persona implements Serializable {
 
     @Override
     public int hashCode() {
-        int hash = 7;
-        hash = 59 * hash + this.id;
+        int hash = 5;
+        hash = 83 * hash + Objects.hashCode(this.id);
         return hash;
     }
 
@@ -140,12 +140,15 @@ public class Persona implements Serializable {
             return false;
         }
         final Persona other = (Persona) obj;
-        return this.id == other.id;
+        if (!Objects.equals(this.id, other.id)) {
+            return false;
+        }
+        return true;
     }
 
     @Override
     public String toString() {
-        return "Persona{" + "id=" + id + ", nombre=" + nombre + ", edad=" + edad + ", genero=" + genero + ", ciudad=" + ciudad + '}';
+        return "Persona{" + "id=" + id + ", nombre=" + nombre + '}';
     }
 
 }

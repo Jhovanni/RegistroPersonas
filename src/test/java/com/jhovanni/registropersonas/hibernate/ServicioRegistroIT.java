@@ -26,12 +26,12 @@ import org.springframework.transaction.annotation.Transactional;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = RootConfigTest.class)
 @Ignore
-public class ServicioRegistroTest extends TestCase {
+public class ServicioRegistroIT extends TestCase {
 
     private final Logger log = LogManager.getLogger();
 
     @Autowired
-    private Servicio servicioRegistro;
+    private ServicioRegistro servicioRegistro;
 
     @Test
     public void testDepencencias() {

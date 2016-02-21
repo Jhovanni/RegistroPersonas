@@ -5,30 +5,38 @@ import com.jhovanni.registropersonas.config.RootConfigTest;
 import com.jhovanni.registropersonas.entidad.Ciudad;
 import com.jhovanni.registropersonas.entidad.Genero;
 import com.jhovanni.registropersonas.entidad.Persona;
-import com.jhovanni.registropersonas.hibernate.Servicio;
+import com.jhovanni.registropersonas.hibernate.ServicioRegistro;
 import java.util.ArrayList;
 import java.util.List;
-import javax.ws.rs.core.MediaType;
 import junit.framework.TestCase;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hamcrest.Matchers;
+import static org.hamcrest.Matchers.allOf;
+import static org.hamcrest.Matchers.hasItem;
+import static org.hamcrest.Matchers.hasProperty;
+import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.is;
 import org.junit.Before;
 import org.junit.Test;
-import static org.hamcrest.Matchers.*;
-import org.junit.Ignore;
-import static org.mockito.Mockito.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
+import static org.mockito.Mockito.when;
 import org.mockito.MockitoAnnotations;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.forwardedUrl;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 /**
@@ -39,8 +47,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {RootConfigTest.class, DispatcherConfig.class})
 @WebAppConfiguration
-@Ignore
-public class ControlPrincipalTest extends TestCase{
+public class ControlPrincipalTest extends TestCase {
 
     private static final Logger log = LogManager.getLogger();
     private MockMvc mvc;
@@ -48,7 +55,7 @@ public class ControlPrincipalTest extends TestCase{
     @InjectMocks
     private ControlPrincipal control;
     @Mock
-    private Servicio servicio;
+    private ServicioRegistro servicio;
 
     @Before
     @Override
@@ -112,7 +119,7 @@ public class ControlPrincipalTest extends TestCase{
         verifyNoMoreInteractions(servicio);
         log.exit();
     }
-    
+
     @Test
     public void testPrepararRegistrar() throws Exception {
         log.entry();
@@ -124,9 +131,9 @@ public class ControlPrincipalTest extends TestCase{
                 .andExpect(model().attribute("personaForm", Matchers.isA(PersonaForm.class)));
         log.exit();
     }
-    
+
     @Test
-    public void testRegistrar()throws Exception{
+    public void testRegistrar() throws Exception {
         log.entry();
         PersonaForm personaForm = new PersonaForm();
         personaForm.setCiudad(new Ciudad());
@@ -136,8 +143,7 @@ public class ControlPrincipalTest extends TestCase{
         personaForm.setGenero(Genero.M);
         personaForm.setNombre("Persona");
         personaForm.setNombreUsuario("usuario");
-        
-        
+
         mvc.perform(post("/persona/registrar")
                 .sessionAttr("personaForm", personaForm))
                 .andExpect(status().isOk())

@@ -3,7 +3,7 @@ package com.jhovanni.registropersonas.control;
 import com.jhovanni.registropersonas.entidad.Ciudad;
 import com.jhovanni.registropersonas.entidad.Foto;
 import com.jhovanni.registropersonas.entidad.Persona;
-import com.jhovanni.registropersonas.hibernate.Servicio;
+import com.jhovanni.registropersonas.hibernate.ServicioRegistro;
 import java.io.IOException;
 import java.security.Principal;
 import java.util.List;
@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
 
 /**
@@ -27,12 +28,13 @@ import org.springframework.web.servlet.ModelAndView;
  * @author Jhovanni
  */
 @Controller
+@SessionAttributes({"personaForm"})
 public class ControlPrincipal {
     private static final Logger log = LogManager.getLogger();
     private List<Ciudad>ciudades;
     
     @Autowired
-    private Servicio servicio;
+    private ServicioRegistro servicio;
     
     @RequestMapping("")
     public String inicio() {
@@ -92,8 +94,8 @@ public class ControlPrincipal {
     @PreAuthorize(value = "isAuthenticated()")
     @RequestMapping(value = "persona/registrar", method = RequestMethod.POST)
     public ModelAndView registrar(@Valid @ModelAttribute PersonaForm personaForm, Errors errors) {
-        ModelAndView mv = new ModelAndView("persona/registrar");
         log.entry(personaForm);
+        ModelAndView mv = new ModelAndView("persona/registrar");
 
         if (!personaForm.getClave().equals(personaForm.getClave2())) {
             log.debug("contraseñas recibidas diferentes");
@@ -117,7 +119,7 @@ public class ControlPrincipal {
         }
         return log.exit(mv);
     }
-    @PreAuthorize(value = "hasAuthority('admin')")
+    @PreAuthorize(value = "hasAuthority('Administrador')")
     @RequestMapping(value = "persona/editar/{id}", method = RequestMethod.GET)
     public ModelAndView prepararEditar(@PathVariable int id) {
         log.entry(id);
@@ -141,7 +143,7 @@ public class ControlPrincipal {
         return log.exit(mv);
     }
 
-    @PreAuthorize(value = "hasAuthority('admin')")
+    @PreAuthorize(value = "hasAuthority('Administrador')")
     @RequestMapping(value = "persona/editar/{id}", method = RequestMethod.POST)
     public ModelAndView editar(@Valid Persona persona, Errors errors) {
         ModelAndView mv = new ModelAndView("persona/editar");
@@ -160,7 +162,7 @@ public class ControlPrincipal {
         return log.exit(mv);
     }
 
-    @PreAuthorize(value = "hasAuthority('admin')")
+    @PreAuthorize(value = "hasAuthority('Administrador')")
     @RequestMapping(value = "persona/borrar/{id}", method = RequestMethod.GET)
     public ModelAndView prepararBorrar(@PathVariable int id) {
         log.entry(id);
@@ -172,7 +174,7 @@ public class ControlPrincipal {
         return log.exit(mv);
     }
 
-    @PreAuthorize(value = "hasAuthority('admin')")
+    @PreAuthorize(value = "hasAuthority('Administrador')")
     @RequestMapping(value = "persona/borrar/{id}", method = RequestMethod.POST)
     public ModelAndView borrar(@PathVariable int id) {
         log.entry(id);
