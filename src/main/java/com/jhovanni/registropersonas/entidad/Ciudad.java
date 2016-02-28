@@ -1,5 +1,6 @@
 package com.jhovanni.registropersonas.entidad;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
@@ -15,6 +16,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table
+@JsonIgnoreProperties({"personas"})
 public class Ciudad implements Serializable {
 
     @Id

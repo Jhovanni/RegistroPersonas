@@ -1,5 +1,6 @@
 package com.jhovanni.registropersonas.entidad;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.List;
@@ -19,6 +20,7 @@ import org.springframework.security.core.userdetails.UserDetails;
  */
 @Entity
 @Table
+@JsonIgnoreProperties({"persona", "password", "username", "authorities", "accountNonExpired", "accountNonLocked", "credentialsNonExpired", "enabled"})
 public class Usuario implements Serializable, UserDetails {
 
     @Id

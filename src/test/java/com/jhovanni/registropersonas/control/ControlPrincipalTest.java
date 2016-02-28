@@ -1,36 +1,31 @@
 package com.jhovanni.registropersonas.control;
 
-import com.jhovanni.registropersonas.config.DispatcherConfig;
-import com.jhovanni.registropersonas.config.RootConfigTest;
-import com.jhovanni.registropersonas.entidad.Ciudad;
-import com.jhovanni.registropersonas.entidad.Genero;
+import com.jhovanni.registropersona.excepcion.NombreUsuarioOcupadoException;
+import com.jhovanni.registropersona.excepcion.RegistroNoEncontradoException;
 import com.jhovanni.registropersonas.entidad.Persona;
+import com.jhovanni.registropersonas.factory.CiudadFactory;
+import com.jhovanni.registropersonas.factory.PersonaFactory;
+import com.jhovanni.registropersonas.factory.UsuarioFactory;
 import com.jhovanni.registropersonas.hibernate.ServicioRegistro;
 import java.util.ArrayList;
 import java.util.List;
 import junit.framework.TestCase;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.hamcrest.Matchers;
-import static org.hamcrest.Matchers.allOf;
-import static org.hamcrest.Matchers.hasItem;
-import static org.hamcrest.Matchers.hasProperty;
 import static org.hamcrest.Matchers.hasSize;
-import static org.hamcrest.Matchers.is;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 import org.mockito.MockitoAnnotations;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.web.WebAppConfiguration;
+import org.mockito.runners.MockitoJUnitRunner;
+import org.springframework.security.authentication.TestingAuthenticationToken;
 import org.springframework.test.web.servlet.MockMvc;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -41,16 +36,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 /**
- * Pruebas para el controlador de vistas de la aplicación
+ * Pruebas para el controlador de vistas de la aplicación.
  *
  * @author jhovanni
  */
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = {RootConfigTest.class, DispatcherConfig.class})
-@WebAppConfiguration
+@RunWith(MockitoJUnitRunner.class)
 public class ControlPrincipalTest extends TestCase {
 
-    private static final Logger log = LogManager.getLogger();
     private MockMvc mvc;
 
     @InjectMocks
@@ -58,23 +50,22 @@ public class ControlPrincipalTest extends TestCase {
     @Mock
     private ServicioRegistro servicio;
 
+    private Persona persona;
+    private List<Persona> personas;
+
     @Before
     @Override
     public void setUp() {
         MockitoAnnotations.initMocks(this);
         mvc = MockMvcBuilders.standaloneSetup(control).build();
-    }
 
-    /**
-     * Test inyección de dependencias correctas Se asegura que tanto el
-     * controlador como el servicio no sean nulos
-     */
-    @Test
-    public void testDependencias() {
-        log.entry();
-        assertNotNull(control);
-        assertNotNull(servicio);
-        log.exit();
+        persona = PersonaFactory.get(CiudadFactory.get(), UsuarioFactory.get());
+        personas = new ArrayList<>(0);
+        personas.add(persona);
+
+        when(servicio.getPersonas()).thenReturn(personas);
+        when(servicio.getPersona(persona.getId())).thenReturn(persona);
+        when(servicio.getPersona(persona.getUsuario().getNombre())).thenReturn(persona);
     }
 
     /**
@@ -84,11 +75,9 @@ public class ControlPrincipalTest extends TestCase {
      */
     @Test
     public void testInicio() throws Exception {
-        log.entry();
         mvc.perform(get("/")).andExpect(status().isOk())
                 .andExpect(view().name("inicio"))
                 .andExpect(forwardedUrl("inicio"));
-        log.exit();
     }
 
     /**
@@ -98,61 +87,251 @@ public class ControlPrincipalTest extends TestCase {
      */
     @Test
     public void testListarPersonas() throws Exception {
-        log.entry();
-        List<Persona> personas = new ArrayList<>();
-        personas.add(new Persona("jhovanni", 27, Genero.M));
-        when(servicio.getPersonas()).thenReturn(personas);
 
         mvc.perform(get("/persona/lista")).andExpect(status().isOk())
                 .andExpect(view().name("persona/lista"))
                 .andExpect(forwardedUrl("persona/lista"))
                 .andExpect(model().attributeExists("personas"))
                 .andExpect(model().attribute("personas", hasSize(1)))
-                .andExpect(model().attribute("personas", hasItem(
-                                        allOf(
-                                                hasProperty("nombre", is("jhovanni")),
-                                                hasProperty("edad", is(27)),
-                                                hasProperty("genero", is(Genero.M))
-                                        )
-                                )));
+                .andExpect(model().attribute("personas", Matchers.isA(List.class)
+                        ));
         verify(servicio).getCiudades();
         verify(servicio, times(1)).getPersonas();
         verifyNoMoreInteractions(servicio);
-        log.exit();
     }
 
+    /**
+     * Probar la petición para registrar nueva persona
+     *
+     * @throws Exception
+     */
     @Test
     public void testPrepararRegistrar() throws Exception {
-        log.entry();
         mvc.perform(get("/persona/registrar"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("persona/registrar"))
                 .andExpect(forwardedUrl("persona/registrar"))
                 .andExpect(model().attributeExists("personaForm"))
                 .andExpect(model().attribute("personaForm", Matchers.isA(PersonaForm.class)));
-        log.exit();
     }
 
+    /**
+     * Prueba registrar persona cuando el formulario de registro es válido
+     *
+     * @throws Exception
+     */
     @Test
-    public void testRegistrar() throws Exception {
-        log.entry();
-        PersonaForm personaForm = new PersonaForm();
-        personaForm.setCiudad(new Ciudad());
-        personaForm.setClave("claveClave");
-        personaForm.setClave2("claveClave");
-        personaForm.setEdad(20);
-        personaForm.setGenero(Genero.M);
-        personaForm.setNombre("Persona");
-        personaForm.setNombreUsuario("usuario");
+    public void testRegistrar_personaValida_metodoRegistrarPersonaLlamado() throws Exception {
+        PersonaForm personaForm = new PersonaForm(PersonaFactory.get(CiudadFactory.get(), UsuarioFactory.get()));
 
         mvc.perform(post("/persona/registrar")
                 .sessionAttr("personaForm", personaForm))
                 .andExpect(status().isOk())
                 .andExpect(view().name("persona/registrar"))
-                .andExpect(forwardedUrl("persona/registrar"));
+                .andExpect(forwardedUrl("persona/registrar"))
+                .andExpect(model().attributeExists("usuarioRegistrado"));
 
         Mockito.verify(servicio, Mockito.times(1)).registrarPersona(personaForm.toPersona(), personaForm.getNombreUsuario(), personaForm.getClave());
-        log.exit();
+    }
+
+    /**
+     * Prueba registrar persona cuando el formulario de registro es inválido
+     *
+     * @throws Exception
+     */
+    @Test
+    public void testRegistrar_personaInvalida_metodo() throws Exception {
+        PersonaForm personaForm = new PersonaForm(persona);
+        personaForm.setClave2("claveInválida");
+
+        mvc.perform(post("/persona/registrar")
+                .sessionAttr("personaForm", personaForm))
+                .andExpect(status().isOk())
+                .andExpect(view().name("persona/registrar"))
+                .andExpect(forwardedUrl("persona/registrar"))
+                .andExpect(model().attributeDoesNotExist("usuarioRegistrado"))
+                .andExpect(model().hasErrors());
+
+        Mockito.verify(servicio, Mockito.never()).registrarPersona(personaForm.toPersona(), personaForm.getNombreUsuario(), personaForm.getClave());
+    }
+
+    /**
+     * Prueba registrar persona cuando el nombre de usuario recibido ya se
+     * encuentra en uso en el sistema
+     *
+     * @throws Exception
+     */
+    @Test
+    @SuppressWarnings("unchecked")
+    public void testRegistrar_nombreUsuarioOcupado_personaNoGuardadaEInformeAlUsuario() throws Exception {
+        PersonaForm personaForm = new PersonaForm(persona);
+
+        Mockito.doThrow(NombreUsuarioOcupadoException.class).when(servicio).registrarPersona(Mockito.isA(Persona.class), Mockito.isA(String.class), Mockito.isA(String.class));
+
+        mvc.perform(post("/persona/registrar")
+                .sessionAttr("personaForm", personaForm))
+                .andExpect(status().isOk())
+                .andExpect(view().name("persona/registrar"))
+                .andExpect(forwardedUrl("persona/registrar"))
+                .andExpect(model().attributeDoesNotExist("usuarioRegistrado"))
+                .andExpect(model().hasErrors());
+
+        verify(servicio, Mockito.times(1)).registrarPersona(personaForm.toPersona(), personaForm.getNombreUsuario(), personaForm.getClave());
+    }
+
+    /**
+     * Prueba el método que prepara la edición de un registro persona recibiendo
+     * el id de la misma
+     *
+     * @throws Exception
+     */
+    @Test
+    public void testPrepararEditar_idPersonaEnviado_mostrarPaginaDeEdicion() throws Exception {
+        mvc.perform(get("/persona/editar/" + persona.getId()))
+                .andExpect(status().isOk())
+                .andExpect(view().name("persona/editar"))
+                .andExpect(forwardedUrl("persona/editar"))
+                .andExpect(model().attributeExists("persona"));
+
+        verify(servicio, times(1)).getPersona(persona.getId());
+    }
+
+    /**
+     * Prueba el método que prepara la edición de un registro persona sin
+     * parámetro alguno. En tal caso, se toma el registro persona que
+     * corresponde al usuario actual en el sistema
+     *
+     * @throws Exception
+     */
+    @Test
+    public void testPrepararEditar_noParametroEnviado_editarUsuarioActual() throws Exception {
+        TestingAuthenticationToken token = new TestingAuthenticationToken(persona.getUsuario(), persona.getUsuario().getAuthorities());
+
+        mvc.perform(get("/persona/editar").principal(token))
+                .andExpect(status().isOk())
+                .andExpect(view().name("persona/editar"))
+                .andExpect(forwardedUrl("persona/editar"))
+                .andExpect(model().attributeExists("persona"));
+
+        verify(servicio, times(1)).getPersona(persona.getUsuario().getNombre());
+    }
+
+    /**
+     * Test editar persona cuando el formulario tiene datos correctos. Se espera
+     * una llamada al método de servicio para editar, así como la variable
+     * personaEditada agregada al modelo, para que sea usada como notificación
+     * al usuario
+     *
+     * @throws Exception
+     */
+    @Test
+    public void testEditar_formularioValido_actualizacionRealizada() throws Exception {
+
+        mvc.perform(post("/persona/editar/" + persona.getId())
+                .sessionAttr("persona", persona))
+                .andExpect(status().isOk())
+                .andExpect(view().name("persona/editar"))
+                .andExpect(forwardedUrl("persona/editar"))
+                .andExpect(model().attributeExists("persona", "personaEditada"));
+
+        verify(servicio, times(1)).editarPersona(persona);
+    }
+
+    /**
+     * Test editar persona cuando hay campos inválidos en el formulario
+     * recibido. Se espera que no haya llamada alguna para editar la persona en
+     * el servicio.
+     *
+     * @throws Exception
+     */
+    @Test
+    public void testEditar_formularioInvalido_noActualizacionRealizada() throws Exception {
+        persona.setNombre("");
+
+        mvc.perform(post("/persona/editar/" + persona.getId())
+                .sessionAttr("persona", persona))
+                .andExpect(status().isOk())
+                .andExpect(view().name("persona/editar"))
+                .andExpect(forwardedUrl("persona/editar"))
+                .andExpect(model().hasErrors())
+                .andExpect(model().attributeExists("persona"))
+                .andExpect(model().attributeDoesNotExist("personaEditada"));
+
+        verify(servicio, never()).editarPersona(persona);
+    }
+
+    /**
+     * Test editar persona cuando la persona enviada no existe en la base de
+     * datos. Se espera que el sistema no falle y una variable llamada
+     * registroInexistente sea añadida al modelo
+     *
+     * @throws Exception
+     */
+    @Test
+    public void testEditar_personaInexistente_variableRegistroNoEncontradoAgregada() throws Exception {
+        Mockito.doThrow(RegistroNoEncontradoException.class).when(servicio).editarPersona(persona);
+
+        mvc.perform(post("/persona/editar/" + persona.getId())
+                .sessionAttr("persona", persona))
+                .andExpect(status().isOk())
+                .andExpect(view().name("persona/editar"))
+                .andExpect(forwardedUrl("persona/editar"))
+                .andExpect(model().attributeExists("registroNoEncontrado"))
+                .andExpect(model().attributeDoesNotExist("personaEditada"));
+
+    }
+
+    /**
+     * Test prepararBorrar. Verifica la vista regresada así como el atributo
+     * persona en el modelo
+     *
+     * @throws Exception
+     */
+    @Test
+    public void prepararBorrar_personaExistente_paginaBorrarRegresada() throws Exception {
+        mvc.perform(get("/persona/borrar/" + persona.getId()))
+                .andExpect(status().isOk())
+                .andExpect(view().name("persona/borrar"))
+                .andExpect(forwardedUrl("persona/borrar"))
+                .andExpect(model().attributeExists("persona"));
+    }
+
+    /**
+     * Test método borrar. Verifica que la llamada a borrar el registro se haya
+     * realizado correctament, así como la vista regresada
+     *
+     * @throws Exception
+     */
+    @Test
+    public void testBorrar_personaExistente_registroBorrado() throws Exception {
+        mvc.perform(post("/persona/borrar/" + persona.getId())
+                .sessionAttr("persona", persona))
+                .andExpect(status().isOk())
+                .andExpect(view().name("persona/borrar"))
+                .andExpect(forwardedUrl("persona/borrar"))
+                .andExpect(model().attributeExists("personaBorrada"));
+
+        verify(servicio, times(1)).borrarPersona(persona.getId());
+    }
+
+    /**
+     * Test método borrar cuando no existe una persona con el id proporcionado.
+     * Verifica que una variable con nombre registroNoEncontrado se haya
+     * agregado al model
+     *
+     * @throws Exception
+     */
+    @Test
+    public void testBorrar_personaInexistente_varialbeRegistroNoEncontradoAgregada() throws Exception {
+        Mockito.doThrow(RegistroNoEncontradoException.class).when(servicio).borrarPersona(persona.getId());
+
+        mvc.perform(post("/persona/borrar/" + persona.getId())
+                .sessionAttr("persona", persona))
+                .andExpect(status().isOk())
+                .andExpect(view().name("persona/borrar"))
+                .andExpect(forwardedUrl("persona/borrar"))
+                .andExpect(model().attributeExists("registroNoEncontrado"))
+                .andExpect(model().attributeDoesNotExist("personaBorrada"));
     }
 
 }

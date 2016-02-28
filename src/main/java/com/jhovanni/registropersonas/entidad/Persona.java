@@ -1,5 +1,6 @@
 package com.jhovanni.registropersonas.entidad;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.io.Serializable;
 import java.util.Objects;
 import javax.persistence.Entity;
@@ -21,6 +22,7 @@ import org.hibernate.validator.constraints.Range;
  */
 @Entity
 @Table
+@JsonIgnoreProperties({})
 public class Persona implements Serializable {
 
     @Id
@@ -30,7 +32,7 @@ public class Persona implements Serializable {
     @Size(min = 3, max = 30)
     private String nombre;
     @Range(min = 15, max = 70)
-    private int edad;
+    private Integer edad;
     @NotNull
     @Enumerated(EnumType.STRING)
     private Genero genero;
@@ -48,13 +50,13 @@ public class Persona implements Serializable {
     public Persona() {
     }
 
-    public Persona(String nombre, int edad, Genero genero) {
+    public Persona(String nombre, Integer edad, Genero genero) {
         this.nombre = nombre;
         this.edad = edad;
         this.genero = genero;
     }
 
-    public Persona(Integer id, String nombre, int edad, Genero genero, Ciudad ciudad, Integer fotoId) {
+    public Persona(Integer id, String nombre, Integer edad, Genero genero, Ciudad ciudad, Integer fotoId) {
         this.id = id;
         this.nombre = nombre;
         this.edad = edad;
@@ -84,11 +86,11 @@ public class Persona implements Serializable {
         this.nombre = nombre;
     }
 
-    public int getEdad() {
+    public Integer getEdad() {
         return edad;
     }
 
-    public void setEdad(int edad) {
+    public void setEdad(Integer edad) {
         this.edad = edad;
     }
 
@@ -148,7 +150,7 @@ public class Persona implements Serializable {
 
     @Override
     public String toString() {
-        return "Persona{" + "id=" + id + ", nombre=" + nombre + '}';
+        return "Persona{" + "id=" + id + ", nombre=" + nombre + ", edad=" + edad + ", genero=" + genero + ", foto=" + foto + ", usuario=" + usuario + ", ciudad=" + ciudad + '}';
     }
 
 }
