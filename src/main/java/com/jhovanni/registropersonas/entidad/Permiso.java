@@ -22,7 +22,7 @@ import org.springframework.security.core.GrantedAuthority;
 public class Permiso implements Serializable, GrantedAuthority {
 
     @Id
-    @JoinColumn(name = "NOMBRE_USUARIO", referencedColumnName = "NOMBRE")
+    @JoinColumn(name = "nombre_usuario", referencedColumnName = "nombre")
     @ManyToOne
     private Usuario usuario;
     @Id

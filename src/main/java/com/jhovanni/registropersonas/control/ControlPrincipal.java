@@ -174,7 +174,7 @@ public class ControlPrincipal {
     public ModelAndView registrar(@Valid @ModelAttribute PersonaForm personaForm, Errors errors) {
         log.entry(personaForm);
         ModelAndView mv = new ModelAndView("persona/registrar");
-
+        
         if (!Objects.equals(personaForm.getClave(), personaForm.getClave2())) {
             log.debug("Contraseñas recibidas diferentes");
             errors.rejectValue("clave2", "ClaveDiferente");
@@ -184,6 +184,7 @@ public class ControlPrincipal {
                 servicio.registrarPersona(personaForm.toPersona(), personaForm.getNombreUsuario(), personaForm.getClave());
                 mv.clear();
                 mv.addObject("usuarioRegistrado", true);
+                mv.addObject("personaForm", new PersonaForm());
             } catch (NombreUsuarioOcupadoException e) {
                 log.info("Nombre de usuario <" + personaForm.getNombreUsuario() + "> ocupado");
                 errors.rejectValue("nombreUsuario", "IdOcupado");
@@ -309,19 +310,5 @@ public class ControlPrincipal {
     public String prepararLogin() {
         log.entry();
         return log.exit("login");
-    }
-
-    /**
-     * Muestra página de acceso denegado
-     *
-     * @param principal
-     * @return
-     */
-    @RequestMapping(value = "denegado")
-    public ModelAndView accesoDenegado(Principal principal) {
-        log.entry(principal);
-        ModelAndView mv = new ModelAndView("denegado");
-        mv.addObject("nombreUsuario", principal.getName());
-        return log.exit(mv);
     }
 }

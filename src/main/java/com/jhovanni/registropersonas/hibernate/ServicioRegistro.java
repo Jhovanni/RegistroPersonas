@@ -14,6 +14,7 @@ import com.jhovanni.registropersonas.repositorio.PermisoRepository;
 import com.jhovanni.registropersonas.repositorio.PersonaRepository;
 import com.jhovanni.registropersonas.repositorio.UsuarioRepository;
 import java.util.List;
+import javax.transaction.Transactional;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -96,8 +97,9 @@ public class ServicioRegistro {
      * com.jhovanni.registropersona.excepcion.NombreUsuarioOcupadoException si
      * el nombre de usuario seleccionado ya se encuentra en uso
      */
+    @Transactional
     public Persona registrarPersona(Persona persona, String nombreUsuario, String clave) throws NombreUsuarioOcupadoException {
-        log.entry(persona, nombreUsuario, clave);
+        log.entry(persona, nombreUsuario);
 
         if (usuarioRepository.exists(nombreUsuario)) {
             throw new NombreUsuarioOcupadoException(nombreUsuario);
@@ -145,12 +147,24 @@ public class ServicioRegistro {
     }
 
     /**
+     * Obtiene el nombre de una persona en base al nombre de usuario asociado
+     *
+     * @param nombreUsuario
+     * @return
+     */
+    public String getPersonaNombre(String nombreUsuario) {
+        log.entry(nombreUsuario);
+        return log.exit(personaRepository.findNombreByUsuarioNombre(nombreUsuario));
+    }
+
+    /**
      * Recibe una persona y la borra del sistema
      *
      * @param persona
      * @throws RegistroNoEncontradoException en caso de que la persona recibida
      * no exista en el sistema
      */
+    @Transactional
     public void borrarPersona(Persona persona) throws RegistroNoEncontradoException {
         log.entry(persona);
         if (!personaRepository.exists(persona.getId())) {
@@ -181,6 +195,7 @@ public class ServicioRegistro {
      * @throws RegistroNoEncontradoException en caso de que no exista una
      * persona que corresponda con el id recibido
      */
+    @Transactional
     public void borrarPersona(int id) throws RegistroNoEncontradoException {
         log.entry(id);
         borrarPersona(getPersona(id));
@@ -196,6 +211,7 @@ public class ServicioRegistro {
      * @throws RegistroNoEncontradoException en caso de que la persona recibida
      * no exista ya en el sistema
      */
+    @Transactional
     public Persona editarPersona(Persona persona) throws RegistroNoEncontradoException {
         log.entry(persona);
 

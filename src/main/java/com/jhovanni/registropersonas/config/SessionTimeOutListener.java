@@ -36,8 +36,7 @@ public class SessionTimeOutListener implements HttpSessionListener {
 
     @Override
     public void sessionDestroyed(HttpSessionEvent se) {
-        log.trace("Sesión finalizada");
-        log.info(se.getSession().getMaxInactiveInterval());
+        log.trace("Sesión finalizada. Timeout " + se.getSession().getMaxInactiveInterval());
     }
 
 }

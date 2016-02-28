@@ -23,7 +23,7 @@ public class Inicializador implements WebApplicationInitializer {
         AnnotationConfigWebApplicationContext rootContext
                 = new AnnotationConfigWebApplicationContext();
         rootContext.register(RootConfig.class, SecurityConfig.class);
-        
+
         //crear el filtro de urls para spring security
         FilterRegistration.Dynamic springSecurityFilterChain
                 = servletContext.addFilter("springSecurityFilterChain", DelegatingFilterProxy.class);
@@ -38,9 +38,13 @@ public class Inicializador implements WebApplicationInitializer {
                 = new AnnotationConfigWebApplicationContext();
         dispatcherContext.register(DispatcherConfig.class, SecurityConfig.class);
 
+        // Configurar que el dispatcherServlet suelte la excepción NoHandlerFoundException para poderla capturar
+        DispatcherServlet dispatcherServlet = new DispatcherServlet(dispatcherContext);
+        dispatcherServlet.setThrowExceptionIfNoHandlerFound(true);
+
         // Registrar y mapear el dispatcher al servlet
         ServletRegistration.Dynamic dispatcher
-                = servletContext.addServlet("dispatcher", new DispatcherServlet(dispatcherContext));
+                = servletContext.addServlet("dispatcherServlet", dispatcherServlet);
         dispatcher.setLoadOnStartup(1);
         dispatcher.addMapping("/");
     }
