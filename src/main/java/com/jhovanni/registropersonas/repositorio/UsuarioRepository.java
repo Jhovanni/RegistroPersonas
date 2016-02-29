@@ -8,5 +8,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
  * @author jhovanni
  */
 public interface UsuarioRepository extends JpaRepository<Usuario, String>{
-    
+
 }

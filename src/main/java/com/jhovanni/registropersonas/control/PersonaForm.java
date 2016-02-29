@@ -1,5 +1,6 @@
 package com.jhovanni.registropersonas.control;
 
+import com.jhovanni.registropersona.validacion.Tipologia;
 import com.jhovanni.registropersonas.entidad.Ciudad;
 import com.jhovanni.registropersonas.entidad.Foto;
 import com.jhovanni.registropersonas.entidad.Genero;
@@ -33,6 +34,7 @@ public class PersonaForm implements Serializable {
     private MultipartFile foto;
     @NotNull
     @Size(min = 3, max = 20)
+    @Tipologia(tipo = Tipologia.Tipo.MINUSCULA)
     private String nombreUsuario;
     @NotNull
     @Size(min = 7)

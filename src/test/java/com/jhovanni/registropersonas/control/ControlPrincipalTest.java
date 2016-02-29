@@ -11,7 +11,9 @@ import java.util.ArrayList;
 import java.util.List;
 import junit.framework.TestCase;
 import org.hamcrest.Matchers;
+import static org.hamcrest.Matchers.anyOf;
 import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.is;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -25,10 +27,12 @@ import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 import org.mockito.MockitoAnnotations;
 import org.mockito.runners.MockitoJUnitRunner;
+import org.springframework.http.MediaType;
 import org.springframework.security.authentication.TestingAuthenticationToken;
 import org.springframework.test.web.servlet.MockMvc;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.forwardedUrl;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -66,6 +70,25 @@ public class ControlPrincipalTest extends TestCase {
         when(servicio.getPersonas()).thenReturn(personas);
         when(servicio.getPersona(persona.getId())).thenReturn(persona);
         when(servicio.getPersona(persona.getUsuario().getNombre())).thenReturn(persona);
+    }
+
+    /**
+     * Test petición para comprobar si un nombre de usuario ya se encuentra en
+     * uso. Verifica que el tipo de contenido regresado sea JSON y que sea
+     * compatible con un objeto Boolean. Además verifica que se haga una llamada
+     * a
+     *
+     * @throws Exception
+     */
+    @Test
+    public void testIsNombreUsuarioOcupado() throws Exception {
+        String nombreUsuario = "admin";
+        mvc.perform(get("/persona/isNombreUsuarioOcupado/" + nombreUsuario))
+                .andExpect(status().isOk())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(content().string(anyOf(is(Boolean.TRUE.toString()), is(Boolean.FALSE.toString()))));
+
+        verify(servicio, times(1)).isNombreUsuarioOcupado(nombreUsuario);
     }
 
     /**

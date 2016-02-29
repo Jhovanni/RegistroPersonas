@@ -237,4 +237,15 @@ public class ServicioRegistro {
         log.entry(id);
         return log.exit(fotoRepository.findOne(id));
     }
+
+    /**
+     * Verifica si un nombre de usuario ya se encuentra en uso en el sistema.
+     *
+     * @param nombreUsuario
+     * @return
+     */
+    public boolean isNombreUsuarioOcupado(String nombreUsuario) {
+        log.entry(nombreUsuario);
+        return log.exit(usuarioRepository.exists(nombreUsuario));
+    }
 }

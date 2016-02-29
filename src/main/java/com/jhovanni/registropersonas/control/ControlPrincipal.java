@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -38,6 +39,20 @@ public class ControlPrincipal {
 
     @Autowired
     private ServicioRegistro servicio;
+
+    /**
+     * Comprueba si un nombre de usuario recibido ya se encuentra en uso en el
+     * sistema. El nombre de usuario se comprueba conviertiéndolo a minúsculas
+     *
+     * @param nombreUsuario
+     * @return
+     */
+    @RequestMapping(value = "persona/isNombreUsuarioOcupado/{nombreUsuario}")
+    @ResponseBody
+    public boolean isNombreUsuarioOcupado(@PathVariable String nombreUsuario) {
+        log.entry(nombreUsuario);
+        return log.exit(servicio.isNombreUsuarioOcupado(nombreUsuario.toLowerCase()));
+    }
 
     /**
      * Request mapping para mostrar página de inicio.
@@ -174,7 +189,7 @@ public class ControlPrincipal {
     public ModelAndView registrar(@Valid @ModelAttribute PersonaForm personaForm, Errors errors) {
         log.entry(personaForm);
         ModelAndView mv = new ModelAndView("persona/registrar");
-        
+
         if (!Objects.equals(personaForm.getClave(), personaForm.getClave2())) {
             log.debug("Contraseñas recibidas diferentes");
             errors.rejectValue("clave2", "ClaveDiferente");

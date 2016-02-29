@@ -19,13 +19,16 @@
         <div class="container">
             <h1>${tituloRegistrarPersona}</h1>
             <c:if test="${usuarioRegistrado}"><div class="text-success"><s:message code="PersonaRegistrada"/></div></c:if>
-            <f:form action="registrar" modelAttribute="personaForm" enctype="multipart/form-data" cssClass="form-horizontal" autocomplete="off" id="001" onsubmit="enviar()">
+            <f:form id="registrarForm" action="registrar" modelAttribute="personaForm" enctype="multipart/form-data" cssClass="form-horizontal" autocomplete="off">
                 <!-- Firefox: desactivar autocomplete --><input type="text" style="display:none"><input type="password" style="display:none">
                 <div class="form-group" class="help-block"><f:errors path=""/></div>
-                <div class="form-group">
+                <div id="nombreUsuarioDiv" class="form-group">
                     <f:label path="nombreUsuario" cssClass="col-sm-2 control-label"><s:message code="Persona.nombreUsuario"/>:</f:label>
-                        <div class="col-sm-10">
-                        <f:input path="nombreUsuario" cssClass="form-control"/><f:errors path="nombreUsuario" cssClass="help-block"/>
+                        <div class="col-sm-10"><div class="input-group">
+                            <f:input id="nombreUsuarioInput" path="nombreUsuario" cssClass="form-control" aria-describedby="nombreUsuarioAddon"/>
+                            <span class="input-group-addon" id="nombreUsuarioAddon"></span>
+                        </div>
+                        <f:errors path="nombreUsuario" cssClass="help-block"/>
                     </div>
                 </div>
                 <div class="form-group">
@@ -81,6 +84,46 @@
                         </div>
                     </div>
             </f:form>
+            <div hidden="true">
+                <span id="textoDinamicoVerificando"><s:message code="texto.dinanico.verficando"/></span>
+                <span id="textoDinamicoDisponible"><s:message code="texto.dinamico.disponible"/></span>
+                <span id="textoDinamicoOcupado"><s:message code="texto.dinamico.ocupado"/></span>
+                <span id="textoDinamicoError"><s:message code="texto.dinamico.error"/></span>
+            </div>
         </div>
+        <script>
+            $(document).ready(function () {
+                $("#nombreUsuarioInput").keyup(function () {
+                    if (this.value.length >= 3 && this.value.length <= 20) {
+                        //TODO:validar integridad del campo antes de verificar disponibilidad (no puede tener caracteres especiales, ni espacios)
+                        var nombreUsuario = this.value;
+                        var baseUrl = "${pageContext.request.contextPath}";
+                        $("#nombreUsuarioDiv").removeClass("has-warning has-error has-success");
+                        $.ajax({
+                            url: "${pageContext.request.contextPath}/persona/isNombreUsuarioOcupado/" + nombreUsuario,
+                            beforeSend: function (xhr) {
+                                $("#nombreUsuarioAddon").html($("#textoDinamicoVerificando").html());
+                            },
+                            success: function (data, textStatus, jqXHR) {
+                                if (data.toString() === "false") {
+                                    $("#nombreUsuarioAddon").html($("#textoDinamicoDisponible").html());
+                                    $("#nombreUsuarioDiv").removeClass("has-warning has-error").addClass("has-success");
+                                } else {
+                                    $("#nombreUsuarioAddon").html($("#textoDinamicoOcupado").html());
+                                    $("#nombreUsuarioDiv").removeClass("has-warning has-success").addClass("has-error");
+                                }
+                            },
+                            error: function (jqXHR, textStatus, errorThrown) {
+                                $("#nombreUsuarioAddon").html($("#textoDinamicoError").html());
+                                $("#nombreUsuarioDiv").removeClass("has-warning has-succes").addClass("has-warning");
+                            }
+                        });
+                    } else {
+                        $("#nombreUsuarioAddon").html("");
+                        $("#nombreUsuarioDiv").removeClass("has-warning has-error has-success");
+                    }
+                });
+            });
+        </script>
     </body>
 </html>
