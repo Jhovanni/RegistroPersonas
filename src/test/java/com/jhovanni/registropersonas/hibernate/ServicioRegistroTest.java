@@ -59,6 +59,18 @@ public class ServicioRegistroTest extends TestCase {
     private List<Persona> personas;
 
     /**
+     * Prueba buscar el id de una persona en base al nombre de usuario. Se
+     * verifica que la llamada al método de búsqueda se realize propiamente
+     */
+    @Test
+    public void testGetPersonaIdByUsuarioNombre_nombreRecibido_busquedaPorNombreRealizada() {
+        String nombreUsuario = "Usuario test";
+        servicio.getPersonaId(nombreUsuario);
+        Mockito.verify(personaRepository, Mockito.times(1)).findIdByUsuarioNombre(nombreUsuario);
+
+    }
+
+    /**
      * Probar editar persona cuando la variable fotoPerfil no es nula. En tal
      * caso se espera que se cree un nuevo registro para la foto recibida, el
      * cual se asigna como fotoPerfil de la persona, reemplazando la existente.

@@ -70,6 +70,7 @@ public class ControlPrincipalTest extends TestCase {
         when(servicio.getPersonas()).thenReturn(personas);
         when(servicio.getPersona(persona.getId())).thenReturn(persona);
         when(servicio.getPersona(persona.getUsuario().getNombre())).thenReturn(persona);
+        when(servicio.getPersonaId(persona.getUsuario().getNombre())).thenReturn(persona.getId());
     }
 
     /**
@@ -221,22 +222,20 @@ public class ControlPrincipalTest extends TestCase {
 
     /**
      * Prueba el método que prepara la edición de un registro persona sin
-     * parámetro alguno. En tal caso, se toma el registro persona que
-     * corresponde al usuario actual en el sistema
+     * parámetro alguno. Se espera que el sistema realize una búsqueda del id de
+     * la persona, para redireccionar al método de petición de edición normal
      *
      * @throws Exception
      */
     @Test
-    public void testPrepararEditar_noParametroEnviado_editarUsuarioActual() throws Exception {
+    public void testPrepararEditar_noParametroEnviado_redireccionAEditarNormal() throws Exception {
         TestingAuthenticationToken token = new TestingAuthenticationToken(persona.getUsuario(), persona.getUsuario().getAuthorities());
 
         mvc.perform(get("/persona/editar").principal(token))
-                .andExpect(status().isOk())
-                .andExpect(view().name("persona/editar"))
-                .andExpect(forwardedUrl("persona/editar"))
-                .andExpect(model().attributeExists("personaForm"));
+                .andExpect(status().isFound())
+                .andExpect(view().name("redirect:editar/" + persona.getId()));
 
-        verify(servicio, times(1)).getPersona(persona.getUsuario().getNombre());
+        verify(servicio, times(1)).getPersonaId(persona.getUsuario().getNombre());
     }
 
     /**

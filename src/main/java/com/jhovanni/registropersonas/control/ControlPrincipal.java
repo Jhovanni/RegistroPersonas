@@ -31,7 +31,7 @@ import org.springframework.web.servlet.ModelAndView;
  * @author Jhovanni
  */
 @Controller
-@SessionAttributes({"persona", "personaForm"})
+@SessionAttributes({"personaForm"})
 public class ControlPrincipal {
 
     private static final Logger log = LogManager.getLogger();
@@ -135,17 +135,6 @@ public class ControlPrincipal {
     }
 
     /**
-     * Misma funcionalidad que {@link #personaForm() } pero para instancia
-     * {@link Persona}
-     *
-     * @return
-     */
-    @ModelAttribute
-    public Persona persona() {
-        return new Persona();
-    }
-
-    /**
      * Request mapping para mostrar la página de listar personas. Agrega al
      * mismo tiempo información de las personas contenidas en el sistema
      *
@@ -231,7 +220,8 @@ public class ControlPrincipal {
     }
 
     /**
-     * Muestra la página de edición con la información del usuario actual
+     * Sirve de intermediario para editar una persona obteniendo su id en base
+     * al usuario logueado
      *
      * @param principal
      * @return
@@ -240,11 +230,8 @@ public class ControlPrincipal {
     @RequestMapping(value = "persona/editar", method = RequestMethod.GET)
     public ModelAndView prepararEditar(Principal principal) {
         log.entry(principal);
-        ModelAndView mv = new ModelAndView("persona/editar");
-        Persona persona = servicio.getPersona(principal.getName());
-        if (persona != null) {
-            mv.addObject(new PersonaForm(persona));
-        }
+        Integer id = servicio.getPersonaId(principal.getName());
+        ModelAndView mv = new ModelAndView("redirect:editar/" + id);
         return log.exit(mv);
     }
 

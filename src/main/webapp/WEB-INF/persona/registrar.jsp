@@ -75,7 +75,7 @@
                 <div class="form-group">
                     <f:label path="foto" cssClass="col-sm-2 control-label"><s:message code="Persona.fotoPerfil"/>:</f:label>
                         <div class="col-sm-10">
-                        <f:input path="foto" type="file" cssClass="help-block"/><f:errors path="foto"/>
+                        <f:input path="foto" type="file" accept="image/*" cssClass="help-block"/><f:errors path="foto" cssClass="help-block"/>
                     </div>
                 </div>
                 <div class="form-group">

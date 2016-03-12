@@ -17,53 +17,41 @@ import javax.validation.Constraint;
 import javax.validation.Payload;
 
 /**
- * Los caracteres de la cadena deben de contener sólo elementos del tipo
- * especificado. Ésta es una anotación de práctica, con funcionalidad de algo
- * sencillo. Claro que por ahora ha generado más trabajo que ayuda, un simple
- * regex podría haber ayudado. Más lo importante fue aprender un poco de como se
- * crean la validaciones por anotación
- * <p>
- * {@code null} se considera válido
- *
+ * Valida el tipo de un archivo en base a los permitidos por {@link Tipo}
  * @author Administrator
  */
 @Target({FIELD, METHOD, PARAMETER, ANNOTATION_TYPE})
 @Retention(RUNTIME)
-@Constraint(validatedBy = TipologiaValidador.class)
+@Constraint(validatedBy = TipoArchivoValidador.class)
 @Documented
-public @interface Tipologia {
+public @interface TipoArchivo {
 
-    String message() default "La tipología de las letras ingresadas no se encuentran dentro de las admitidas Minúsculas/Mayúsculas";
+    String message() default "Tipo de archivo no aceptado";
 
     Class<?>[] groups() default {};
 
     Class<? extends Payload>[] payload() default {};
 
-    /**
-     *
-     * @return tipo de letras admitidas
-     */
-    Tipologia.Tipo tipo();
+    TipoArchivo.Tipo tipo();
 
-    /**
-     * Define varias anotaciones {@link Tipologia} para el mismo elemento
-     *
-     * @see Tipologia
-     */
     @Target({FIELD, METHOD, PARAMETER, ANNOTATION_TYPE})
     @Retention(RUNTIME)
     @Documented
     @interface List {
 
-        Tipologia[] value();
+        TipoArchivo[] value();
     }
 
     /**
-     * Tipologías disponibles
+     * Tipos de archivos disponibles
      */
     public enum Tipo {
 
-        MAYUSCULA, MINUSCULA
+        IMAGEN("image\\/.*");
+        public String regex;
 
+        private Tipo(String regex) {
+            this.regex = regex;
+        }
     }
 }

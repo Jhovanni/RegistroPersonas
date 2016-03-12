@@ -1,5 +1,7 @@
 package com.jhovanni.registropersonas.control;
 
+import com.jhovanni.registropersona.validacion.FileSize;
+import com.jhovanni.registropersona.validacion.TipoArchivo;
 import com.jhovanni.registropersona.validacion.Tipologia;
 import com.jhovanni.registropersonas.entidad.Ciudad;
 import com.jhovanni.registropersonas.entidad.Foto;
@@ -32,6 +34,8 @@ public class PersonaForm implements Serializable {
     private Genero genero;
     @NotNull
     private Ciudad ciudad;
+    @FileSize(max = 102400)
+    @TipoArchivo(tipo = TipoArchivo.Tipo.IMAGEN)
     private MultipartFile foto;
     @NotNull
     @Size(min = 3, max = 20)

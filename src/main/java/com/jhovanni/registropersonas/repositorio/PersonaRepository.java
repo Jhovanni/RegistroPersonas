@@ -25,4 +25,7 @@ public interface PersonaRepository extends JpaRepository<Persona, Integer> {
 
     @Query(value = "SELECT p.nombre FROM Persona p WHERE p.usuario.nombre = :nombre")
     String findNombreByUsuarioNombre(@Param("nombre") String nombre);
+
+    @Query(value = "SELECT p.id FROM Persona p WHERE p.usuario.nombre = :nombre")
+    public Integer findIdByUsuarioNombre(@Param("nombre") String nombre);
 }

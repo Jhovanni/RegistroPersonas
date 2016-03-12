@@ -243,4 +243,20 @@ public class ServicioRegistro {
         log.entry(nombreUsuario);
         return log.exit(usuarioRepository.exists(nombreUsuario));
     }
+
+    /**
+     * Obtiene el id de una persona en base al nombre de usuario asociado.
+     *
+     * @param nombre
+     * @return id de la persona encontrada, o 0 en caso de que no se haya
+     * encontrado alguna
+     */
+    public Integer getPersonaId(String nombre) {
+        log.entry(nombre);
+        Integer id = personaRepository.findIdByUsuarioNombre(nombre);
+        if (id == null) {
+            id = 0;
+        }
+        return log.exit(id);
+    }
 }
