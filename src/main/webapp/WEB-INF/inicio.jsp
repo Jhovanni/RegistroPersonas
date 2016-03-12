@@ -9,53 +9,11 @@
 <s:message code="Titulo.index" var="tituloIndex"/>
 <!DOCTYPE html>
 <html>
+    
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>${tituloIndex}</title>
-        <style>
-            .padding{padding: 1em !important;}
-            .padding-bottom{padding-bottom: 1em !important;}
-            .padding-top{padding-top: 1em !important;}
-            .margin-top{margin-top: 1em !important;}
-            .margin-bottom{margin-bottom: 1em !important;}
-            body > section.landing{padding: 6em;}
-            boy > section.landing .entrada-buscar{margin-top: 1em;}
-            .ligero{font-size: .7rem}
-            .fondo.claro{background-color: #fff;}
-            .fondo.oscuro{background-color: #222;}
-            .texto.claro{color: #fff;}
-            .texto.oscuro{color: #59636b;}
-            .texto.tema{color: #31b0d5}
-            #bienvenida{
-                background-image: url("${pageContext.request.contextPath}/imagenes/chica_mirando.jpg");
-                background-repeat: no-repeat;
-                background-position: center center;
-                background-size: cover;
-                background-attachment: fixed;
-                -webkit-background-size: cover;
-                -moz-background-size: cover;
-                -o-background-size: cover;
-                padding-top: 20em;
-                padding-bottom: 24em;
-            }
-            #fotografia{
-                background-image: url("${pageContext.request.contextPath}/imagenes/playa_cancun.JPG");
-                background-repeat: no-repeat;
-                background-position: center center;
-                background-size: cover;
-                -webkit-background-size: cover;
-                -moz-background-size: cover;
-                -o-background-size: cover;
-                padding-top: 22em;
-                padding-bottom: 30em;
-            }
-            #top-link{position: fixed;bottom: 1em;right: 1em;min-height: 1em;padding: 1em;margin-bottom: 1em;border-radius: .4em;}            
-            #top-link:hover{border:1px solid #e3e3e3;border-radius:4px;-webkit-box-shadow:inset 0 1px 1px rgba(0,0,0,.05);}
-            ::-webkit-input-placeholder {text-align: center}
-            :-moz-placeholder {text-align: center;}/* Firefox 18- */
-            ::-moz-placeholder {text-align: center;}/* Firefox 19+ */
-            :-ms-input-placeholder {text-align: center;}
-        </style>
+        <link href="${pageContext.request.contextPath}/css/inicio.css" rel="stylesheet" type="text/css"/>
     </head>
     <body>
         <span id="top-link">

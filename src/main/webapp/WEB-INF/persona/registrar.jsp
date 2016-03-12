@@ -91,50 +91,11 @@
                 <span id="textoDinamicoError"><s:message code="texto.dinamico.error"/></span>
             </div>
         </div>
+        <script src="${pageContext.request.contextPath}/js/registro.js" type="text/javascript"></script>
         <script>
-            var nombreUsuario = null;
             $(document).ready(function () {
-                nombreUsuario = $("#nombreUsuarioInput").val();
-                init();
+                registro.init("${pageContext.request.contextPath}");
             });
-            init = function () {
-                
-                $("#nombreUsuarioInput").keyup(function () {
-                    console.info(":::", nombreUsuario);
-                    if (this.value === nombreUsuario) {
-                        console.log("Nombre de usuario no cambiado" + this.value + "-" + nombreUsuario);
-                        return;
-                    }
-                    //TODO:verificar si la tecla fue de texto, en caso contrario regresar
-                    if (this.value.length >= 3 && this.value.length <= 20) {
-                        //TODO:validar integridad del campo antes de verificar disponibilidad (no puede tener caracteres especiales, ni espacios)
-                        nombreUsuario = this.value;
-                        $("#nombreUsuarioDiv").removeClass("has-warning has-error has-success");
-                        $.ajax({
-                            url: "${pageContext.request.contextPath}/persona/isNombreUsuarioOcupado/" + nombreUsuario,
-                            beforeSend: function (xhr) {
-                                $("#nombreUsuarioAddon").html($("#textoDinamicoVerificando").html());
-                            },
-                            success: function (data, textStatus, jqXHR) {
-                                if (data.toString() === "false") {
-                                    $("#nombreUsuarioAddon").html($("#textoDinamicoDisponible").html());
-                                    $("#nombreUsuarioDiv").removeClass("has-warning has-error").addClass("has-success");
-                                } else {
-                                    $("#nombreUsuarioAddon").html($("#textoDinamicoOcupado").html());
-                                    $("#nombreUsuarioDiv").removeClass("has-warning has-success").addClass("has-error");
-                                }
-                            },
-                            error: function (jqXHR, textStatus, errorThrown) {
-                                $("#nombreUsuarioAddon").html($("#textoDinamicoError").html());
-                                $("#nombreUsuarioDiv").removeClass("has-warning has-succes").addClass("has-warning");
-                            }
-                        });
-                    } else {
-                        $("#nombreUsuarioAddon").html("");
-                        $("#nombreUsuarioDiv").removeClass("has-warning has-error has-success");
-                    }
-                });
-            };
         </script>
     </body>
 </html>
