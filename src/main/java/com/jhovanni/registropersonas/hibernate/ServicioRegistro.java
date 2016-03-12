@@ -110,9 +110,10 @@ public class ServicioRegistro {
         usuario.setActivo(true);
         usuario = usuarioRepository.save(usuario);
 
-        if (persona.getFoto() != null) {
-            log.info("Guardando archivo (foto) seleccionado en base de datos");
-            fotoRepository.save(persona.getFoto());
+        if (persona.getFotoPerfil() != null) {
+            log.info("Guardando archivo como imágen de perfil " + persona.getFotoPerfil());
+            persona.setFotoPerfil(fotoRepository.save(persona.getFotoPerfil()));
+            persona.getFotoPerfil().setPersona(persona);
         }
 
         Permiso permiso = new Permiso();
@@ -158,37 +159,6 @@ public class ServicioRegistro {
     }
 
     /**
-     * Recibe una persona y la borra del sistema
-     *
-     * @param persona
-     * @throws RegistroNoEncontradoException en caso de que la persona recibida
-     * no exista en el sistema
-     */
-    @Transactional
-    public void borrarPersona(Persona persona) throws RegistroNoEncontradoException {
-        log.entry(persona);
-        if (!personaRepository.exists(persona.getId())) {
-            throw new RegistroNoEncontradoException(persona);
-        }
-        Usuario usuario = persona.getUsuario();
-        List<Permiso> permisos = usuario.getPermisos();
-        Foto foto = persona.getFoto();
-
-        personaRepository.delete(persona);
-        if (permisos != null) {
-            for (Permiso permiso : permisos) {
-                permisoRepository.delete(permiso);
-            }
-        }
-        if (foto != null) {
-            log.info("Borrando archivo de foto");
-            fotoRepository.delete(foto);
-        }
-        usuarioRepository.delete(usuario);
-        log.exit();
-    }
-
-    /**
      * Recibe el id de una persona y la borra del sistema
      *
      * @param id
@@ -198,13 +168,32 @@ public class ServicioRegistro {
     @Transactional
     public void borrarPersona(int id) throws RegistroNoEncontradoException {
         log.entry(id);
-        borrarPersona(getPersona(id));
+        Persona persona = personaRepository.findOne(id);
+        if (persona == null) {
+            throw new RegistroNoEncontradoException(persona);
+        }
+        Usuario usuario = persona.getUsuario();
+        List<Permiso> permisos = usuario.getPermisos();
+
+        if (persona.getFotos() != null && !persona.getFotos().isEmpty()) {
+            log.info("Borrando " + persona.getFotos().size() + " fotos asociadas a la persona ");
+            fotoRepository.delete(persona.getFotos());
+        }
+        personaRepository.delete(persona);
+        if (permisos != null) {
+            for (Permiso permiso : permisos) {
+                permisoRepository.delete(permiso);
+            }
+        }
+        usuarioRepository.delete(usuario);
         log.exit();
     }
 
     /**
      * Recibe una persona y actualiza sus campos nombre, edad, genero y ciudad
-     * en la base de datos
+     * en la base de datos. Además, si la variable fotoPerfil no es nula, se
+     * crea un nuevo registro foto asignándola como la nueva fotografía de
+     * perfil para la persona
      *
      * @param persona
      * @return
@@ -224,6 +213,12 @@ public class ServicioRegistro {
         actual.setEdad(persona.getEdad());
         actual.setGenero(persona.getGenero());
         actual.setCiudad(persona.getCiudad());
+
+        if (persona.getFotoPerfil() != null) {
+            log.info("Agregando nuevo archivo como imagen de pefil " + persona.getFotoPerfil());
+            actual.setFotoPerfil(fotoRepository.save(persona.getFotoPerfil()));
+            actual.getFotoPerfil().setPersona(actual);
+        }
         return log.exit(personaRepository.saveAndFlush(actual));
     }
 

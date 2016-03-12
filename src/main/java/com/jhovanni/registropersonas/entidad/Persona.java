@@ -2,6 +2,7 @@ package com.jhovanni.registropersonas.entidad;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.io.Serializable;
+import java.util.List;
 import java.util.Objects;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -10,6 +11,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
@@ -36,9 +38,9 @@ public class Persona implements Serializable {
     @NotNull
     @Enumerated(EnumType.STRING)
     private Genero genero;
-    @JoinColumn(name = "ID_FOTO", referencedColumnName = "ID")
+    @JoinColumn(name = "id_foto_perfil", referencedColumnName = "ID")
     @OneToOne
-    private Foto foto;
+    private Foto fotoPerfil;
     @JoinColumn(name = "NOMBRE_USUARIO", referencedColumnName = "NOMBRE")
     @OneToOne
     private Usuario usuario;
@@ -46,6 +48,8 @@ public class Persona implements Serializable {
     @ManyToOne
     @NotNull
     private Ciudad ciudad;
+    @OneToMany(mappedBy = "persona")
+    private List<Foto> fotos;
 
     public Persona() {
     }
@@ -66,7 +70,7 @@ public class Persona implements Serializable {
         } else {
             Foto f = new Foto();
             f.setId(fotoId);
-            this.foto = f;
+            this.fotoPerfil = f;
         }
     }
 
@@ -102,12 +106,12 @@ public class Persona implements Serializable {
         this.genero = genero;
     }
 
-    public Foto getFoto() {
-        return foto;
+    public Foto getFotoPerfil() {
+        return fotoPerfil;
     }
 
-    public void setFoto(Foto foto) {
-        this.foto = foto;
+    public void setFotoPerfil(Foto fotoPerfil) {
+        this.fotoPerfil = fotoPerfil;
     }
 
     public Usuario getUsuario() {
@@ -133,6 +137,14 @@ public class Persona implements Serializable {
         return hash;
     }
 
+    public List<Foto> getFotos() {
+        return fotos;
+    }
+
+    public void setFotos(List<Foto> fotos) {
+        this.fotos = fotos;
+    }
+
     @Override
     public boolean equals(Object obj) {
         if (obj == null) {
@@ -142,15 +154,12 @@ public class Persona implements Serializable {
             return false;
         }
         final Persona other = (Persona) obj;
-        if (!Objects.equals(this.id, other.id)) {
-            return false;
-        }
-        return true;
+        return Objects.equals(this.id, other.getId());
     }
 
     @Override
     public String toString() {
-        return "Persona{" + "id=" + id + ", nombre=" + nombre + ", edad=" + edad + ", genero=" + genero + ", foto=" + foto + ", usuario=" + usuario + ", ciudad=" + ciudad + '}';
+        return "Persona{" + "id=" + id + ", nombre=" + nombre + ", edad=" + edad + ", genero=" + genero + ", foto=" + fotoPerfil + ", usuario=" + usuario + ", ciudad=" + ciudad + '}';
     }
 
 }

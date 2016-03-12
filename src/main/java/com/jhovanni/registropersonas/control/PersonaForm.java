@@ -22,6 +22,7 @@ public class PersonaForm implements Serializable {
 
     private static final Logger log = LogManager.getLogger();
 
+    private Integer id;
     @NotNull
     @Size(min = 3, max = 20)
     private String nombre;
@@ -46,6 +47,7 @@ public class PersonaForm implements Serializable {
     }
 
     PersonaForm(Persona persona) {
+        this.id = persona.getId();
         this.nombre = persona.getNombre();
         this.edad = persona.getEdad();
         this.genero = persona.getGenero();
@@ -57,6 +59,7 @@ public class PersonaForm implements Serializable {
 
     public Persona toPersona() {
         Persona persona = new Persona();
+        persona.setId(id);
         persona.setNombre(nombre);
         persona.setEdad(edad);
         persona.setGenero(genero);
@@ -71,7 +74,7 @@ public class PersonaForm implements Serializable {
                 } else {
                     f.setNombre(this.foto.getOriginalFilename().substring(0, Foto.NOMBRE_SIZE));
                 }
-                persona.setFoto(f);
+                persona.setFotoPerfil(f);
             } catch (IOException ex) {
                 log.error("IOException PersonaForm.toPersona: " + ex);
             } catch (NullPointerException ne) {
@@ -79,6 +82,14 @@ public class PersonaForm implements Serializable {
             }
         }
         return persona;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getNombre() {
@@ -147,7 +158,7 @@ public class PersonaForm implements Serializable {
 
     @Override
     public String toString() {
-        return "PersonaForm{" + "nombre=" + nombre + ", edad=" + edad + ", genero=" + genero + ", ciudad=" + ciudad + ", nombreUsuario=" + nombreUsuario + '}';
+        return "PersonaForm{" + "id=" + id + ", nombre=" + nombre + ", edad=" + edad + ", genero=" + genero + ", ciudad=" + ciudad + ", nombreUsuario=" + nombreUsuario + '}';
     }
 
 }

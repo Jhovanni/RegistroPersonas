@@ -5,8 +5,9 @@ import java.util.Objects;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
-import javax.persistence.OneToOne;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -28,7 +29,8 @@ public class Foto implements Serializable {
     @Lob
     @NotNull
     private byte[] contenido;
-    @OneToOne(mappedBy = "foto")
+    @JoinColumn(name = "id_persona", referencedColumnName = "id")
+    @ManyToOne
     private Persona persona;
 
     public Integer getId() {

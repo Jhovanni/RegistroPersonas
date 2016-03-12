@@ -43,6 +43,7 @@ public class RootConfigTest {
         Properties properties = new Properties();
         properties.put("hibernate.dialect", "org.hibernate.dialect.MySQLDialect");
         properties.put("show_sql", "true");
+        properties.put("format_sql", "true");
         properties.put("use_sql_comments", "true");
         properties.put("hibernate.format_sql", "true");
 

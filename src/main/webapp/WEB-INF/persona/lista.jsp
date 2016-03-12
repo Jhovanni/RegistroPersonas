@@ -25,7 +25,7 @@
                                 <th><s:message code="Persona.edad"/></th>
                                 <th><s:message code="Persona.genero"/></th>
                                 <th><s:message code="Persona.ciudad"/></th>
-                                <th><s:message code="Persona.foto"/></th>
+                                <th><s:message code="Persona.fotoPerfil"/></th>
                                 <th>&nbsp;</th>
                             </tr>
                         </thead>
@@ -37,8 +37,8 @@
                                     <td><s:message code="Persona.genero.${persona.genero}"/></td>
                                     <td>${persona.ciudad.nombre}</td>
                                     <td>
-                                        <c:url value="foto/${persona.foto.id}" var="urlFoto"/>
-                                        <s:message code="Persona.foto.alt" var="sinFoto"/>
+                                        <c:url value="foto/${persona.fotoPerfil.id}" var="urlFoto"/>
+                                        <s:message code="Persona.fotoPerfil.alt" var="sinFoto"/>
                                         <a href="${urlFoto}"><img src="${urlFoto}" alt="${sinFoto}" class="img-thumbnail" width="50" height="50"/></a>
                                     </td>
                                     <td>

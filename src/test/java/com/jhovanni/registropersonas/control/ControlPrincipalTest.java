@@ -214,7 +214,7 @@ public class ControlPrincipalTest extends TestCase {
                 .andExpect(status().isOk())
                 .andExpect(view().name("persona/editar"))
                 .andExpect(forwardedUrl("persona/editar"))
-                .andExpect(model().attributeExists("persona"));
+                .andExpect(model().attributeExists("personaForm"));
 
         verify(servicio, times(1)).getPersona(persona.getId());
     }
@@ -234,7 +234,7 @@ public class ControlPrincipalTest extends TestCase {
                 .andExpect(status().isOk())
                 .andExpect(view().name("persona/editar"))
                 .andExpect(forwardedUrl("persona/editar"))
-                .andExpect(model().attributeExists("persona"));
+                .andExpect(model().attributeExists("personaForm"));
 
         verify(servicio, times(1)).getPersona(persona.getUsuario().getNombre());
     }
@@ -249,13 +249,14 @@ public class ControlPrincipalTest extends TestCase {
      */
     @Test
     public void testEditar_formularioValido_actualizacionRealizada() throws Exception {
+        PersonaForm personaForm = new PersonaForm(persona);
 
         mvc.perform(post("/persona/editar/" + persona.getId())
-                .sessionAttr("persona", persona))
+                .sessionAttr("personaForm", personaForm))
                 .andExpect(status().isOk())
                 .andExpect(view().name("persona/editar"))
                 .andExpect(forwardedUrl("persona/editar"))
-                .andExpect(model().attributeExists("persona", "personaEditada"));
+                .andExpect(model().attributeExists("personaForm", "personaEditada"));
 
         verify(servicio, times(1)).editarPersona(persona);
     }
@@ -270,14 +271,15 @@ public class ControlPrincipalTest extends TestCase {
     @Test
     public void testEditar_formularioInvalido_noActualizacionRealizada() throws Exception {
         persona.setNombre("");
+        PersonaForm personaForm = new PersonaForm(persona);
 
         mvc.perform(post("/persona/editar/" + persona.getId())
-                .sessionAttr("persona", persona))
+                .sessionAttr("personaForm", personaForm))
                 .andExpect(status().isOk())
                 .andExpect(view().name("persona/editar"))
                 .andExpect(forwardedUrl("persona/editar"))
                 .andExpect(model().hasErrors())
-                .andExpect(model().attributeExists("persona"))
+                .andExpect(model().attributeExists("personaForm"))
                 .andExpect(model().attributeDoesNotExist("personaEditada"));
 
         verify(servicio, never()).editarPersona(persona);
@@ -292,10 +294,11 @@ public class ControlPrincipalTest extends TestCase {
      */
     @Test
     public void testEditar_personaInexistente_variableRegistroNoEncontradoAgregada() throws Exception {
+        PersonaForm personaForm = new PersonaForm(persona);
         Mockito.doThrow(RegistroNoEncontradoException.class).when(servicio).editarPersona(persona);
 
         mvc.perform(post("/persona/editar/" + persona.getId())
-                .sessionAttr("persona", persona))
+                .sessionAttr("personaForm", personaForm))
                 .andExpect(status().isOk())
                 .andExpect(view().name("persona/editar"))
                 .andExpect(forwardedUrl("persona/editar"))

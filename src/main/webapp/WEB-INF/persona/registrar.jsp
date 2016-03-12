@@ -73,7 +73,7 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <f:label path="foto" cssClass="col-sm-2 control-label"><s:message code="Persona.foto"/>:</f:label>
+                    <f:label path="foto" cssClass="col-sm-2 control-label"><s:message code="Persona.fotoPerfil"/>:</f:label>
                         <div class="col-sm-10">
                         <f:input path="foto" type="file" cssClass="help-block"/><f:errors path="foto"/>
                     </div>
@@ -92,12 +92,23 @@
             </div>
         </div>
         <script>
+            var nombreUsuario = null;
             $(document).ready(function () {
+                nombreUsuario = $("#nombreUsuarioInput").val();
+                init();
+            });
+            init = function () {
+                
                 $("#nombreUsuarioInput").keyup(function () {
+                    console.info(":::", nombreUsuario);
+                    if (this.value === nombreUsuario) {
+                        console.log("Nombre de usuario no cambiado" + this.value + "-" + nombreUsuario);
+                        return;
+                    }
+                    //TODO:verificar si la tecla fue de texto, en caso contrario regresar
                     if (this.value.length >= 3 && this.value.length <= 20) {
                         //TODO:validar integridad del campo antes de verificar disponibilidad (no puede tener caracteres especiales, ni espacios)
-                        var nombreUsuario = this.value;
-                        var baseUrl = "${pageContext.request.contextPath}";
+                        nombreUsuario = this.value;
                         $("#nombreUsuarioDiv").removeClass("has-warning has-error has-success");
                         $.ajax({
                             url: "${pageContext.request.contextPath}/persona/isNombreUsuarioOcupado/" + nombreUsuario,
@@ -123,7 +134,7 @@
                         $("#nombreUsuarioDiv").removeClass("has-warning has-error has-success");
                     }
                 });
-            });
+            };
         </script>
     </body>
 </html>

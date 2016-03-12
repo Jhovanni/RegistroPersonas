@@ -20,7 +20,7 @@ public interface PersonaRepository extends JpaRepository<Persona, Integer> {
      *
      * @return
      */
-    @Query(value = "SELECT new com.jhovanni.registropersonas.entidad.Persona(p.id,p.nombre,p.edad,p.genero,p.ciudad,p.foto.id) FROM Persona p")
+    @Query(value = "SELECT new com.jhovanni.registropersonas.entidad.Persona(p.id,p.nombre,p.edad,p.genero,p.ciudad,p.fotoPerfil.id) FROM Persona p")
     List<Persona> findAllForListing();
 
     @Query(value = "SELECT p.nombre FROM Persona p WHERE p.usuario.nombre = :nombre")

@@ -24,7 +24,7 @@
                 <div class="text-info"><s:message code="PersonaNoEncontrada"/></div>
             </c:if>
             <c:if test="${!noEncontrada}">
-                <f:form action="${persona.id}" modelAttribute="persona" class="form-horizontal">
+                <f:form action="${persona.id}" modelAttribute="personaForm" class="form-horizontal" enctype="multipart/form-data">
                     <div class="form-group"><f:errors path="" cssClass="has-error"/></div>
                     <div class="form-group">
                         <f:label path="nombre" class="col-sm-2 control-label"><s:message code="Persona.nombre"/>:</f:label>
@@ -43,15 +43,18 @@
                             <f:errors path="ciudad" cssClass="help-block"/>
                         </div>
                     </div>
-                    <%--<f:label path="foto"><s:message code="Persona.foto"/>:</f:label>--%>
-                    <%--<f:input path="foto" type="file"/><f:errors path="foto"/>--%>
-
                     <div class="form-group">
                         <f:label path="genero" class="col-sm-2 control-label"><s:message code="Persona.genero"/>:</f:label>
                             <div class="col-sm-10">
                             <f:radiobutton path="genero" value="M" label="M"/>
                             <f:radiobutton path="genero" value="F" label="F"/>
                             <f:errors path="genero" cssClass="help-block"/>
+                            </div>
+                    </div>
+                    <div class="form-group">
+                        <f:label path="foto" cssClass="col-sm-2 control-label"><s:message code="Persona.fotoPerfil"/>:</f:label>
+                            <div class="col-sm-10">
+                            <f:input path="foto" type="file" cssClass="help-block"/><f:errors path="foto"/>
                         </div>
                     </div>
                     <div class="form-group">

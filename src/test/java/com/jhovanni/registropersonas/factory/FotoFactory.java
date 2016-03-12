@@ -19,6 +19,7 @@ public class FotoFactory {
         Foto foto = new Foto();
         foto.setId(count);
         foto.setNombre("Foto default");
+        foto.setContenido(new byte[0]);
         count++;
         return foto;
     }

@@ -110,6 +110,7 @@ public class ControlPrincipal {
     public List<Ciudad> ciudades() {
         if (ciudades == null) {
             ciudades = servicio.getCiudades();
+            log.info("Se encontraron las siguientes ciudades al lanzar la aplicación " + ciudades);
         }
         return ciudades;
     }
@@ -170,6 +171,7 @@ public class ControlPrincipal {
     public ModelAndView prepararRegistrar() {
         log.entry();
         ModelAndView mv = new ModelAndView("persona/registrar");
+        mv.addObject("personaForm", new PersonaForm());
         return log.exit(mv);
     }
 
@@ -223,7 +225,7 @@ public class ControlPrincipal {
         ModelAndView mv = new ModelAndView("persona/editar");
         Persona persona = servicio.getPersona(id);
         if (persona != null) {
-            mv.addObject(persona);
+            mv.addObject(new PersonaForm(persona));
         }
         return log.exit(mv);
     }
@@ -241,7 +243,7 @@ public class ControlPrincipal {
         ModelAndView mv = new ModelAndView("persona/editar");
         Persona persona = servicio.getPersona(principal.getName());
         if (persona != null) {
-            mv.addObject(persona);
+            mv.addObject(new PersonaForm(persona));
         }
         return log.exit(mv);
     }
@@ -257,10 +259,11 @@ public class ControlPrincipal {
      */
     @PreAuthorize(value = "hasAuthority('Administrador')")
     @RequestMapping(value = "persona/editar/{id}", method = RequestMethod.POST)
-    public ModelAndView editar(@Valid Persona persona, Errors errors) {
-        log.entry(persona);
+    public ModelAndView editar(@Valid PersonaForm personaForm, Errors errors) {
+        log.entry(personaForm);
         ModelAndView mv = new ModelAndView("persona/editar");
         if (!errors.hasErrors()) {
+            Persona persona = personaForm.toPersona();
             try {
                 servicio.editarPersona(persona);
                 mv.addObject("personaEditada", true);
