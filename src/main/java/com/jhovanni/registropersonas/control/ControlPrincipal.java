@@ -66,18 +66,6 @@ public class ControlPrincipal {
     }
 
     /**
-     * Agrega una imagen default a la respuesta de la petición.
-     *
-     * @param response
-     */
-    @RequestMapping(value = "persona/foto")
-    public void mostrarDefaultFoto(HttpServletResponse response) {
-        log.entry();
-        //TODO: implementar
-        log.exit();
-    }
-
-    /**
      * Agrega la foto con id {@code id} a la respuesta de la petición
      *
      * @param id
@@ -87,7 +75,7 @@ public class ControlPrincipal {
     public void mostrarFoto(@PathVariable(value = "id") int id, HttpServletResponse response) {
         log.entry(id);
         Foto foto = servicio.getFoto(id);
-        response.setContentType("image/jpeg, image/jpg, image/png, image/gif");
+        response.setContentType(foto.getTipoContenido());
         response.setContentLength(foto.getContenido().length);
         response.setHeader("Content-Disposition", "inline; filename=\"" + foto.getNombre()
                 + "\"");

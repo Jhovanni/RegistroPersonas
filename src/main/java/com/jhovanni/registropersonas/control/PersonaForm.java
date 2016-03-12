@@ -72,6 +72,7 @@ public class PersonaForm implements Serializable {
             try {
                 Foto f = new Foto();
                 f.setContenido(this.foto.getBytes());
+                f.setTipoContenido(this.foto.getContentType());
 
                 if (this.foto.getOriginalFilename().length() <= Foto.NOMBRE_SIZE) {
                     f.setNombre(this.foto.getOriginalFilename());

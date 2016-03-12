@@ -2,6 +2,7 @@ package com.jhovanni.registropersonas.entidad;
 
 import java.io.Serializable;
 import java.util.Objects;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -29,6 +30,10 @@ public class Foto implements Serializable {
     @Lob
     @NotNull
     private byte[] contenido;
+    @Size(max = 60)
+    @NotNull
+    @Column(name = "tipo_contenido")
+    private String tipoContenido;
     @JoinColumn(name = "id_persona", referencedColumnName = "id")
     @ManyToOne
     private Persona persona;
@@ -55,6 +60,14 @@ public class Foto implements Serializable {
 
     public void setContenido(byte[] contenido) {
         this.contenido = contenido;
+    }
+
+    public String getTipoContenido() {
+        return tipoContenido;
+    }
+
+    public void setTipoContenido(String tipoContenido) {
+        this.tipoContenido = tipoContenido;
     }
 
     public Persona getPersona() {
