@@ -7,6 +7,8 @@ package com.jhovanni.registropersonas.control;
 
 import com.jhovanni.registropersonas.hibernate.ServicioRegistro;
 import java.security.Principal;
+import java.util.Date;
+import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -63,6 +65,35 @@ public class AdvisorController {
             nombreUsuario = principal.getName();
         }
         mv.addObject("nombreUsuario", nombreUsuario);
+        return log.exit(mv);
+    }
+
+    /**
+     * Proporciona página personalizada para cuando existan errores en la
+     * aplicación. La excepción será agregada al log con prioridad FATAL
+     *
+     * @param request
+     * @param e
+     * @return
+     */
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    @ExceptionHandler(Exception.class)
+    public ModelAndView pagina500(ServletRequest request, Exception e) {
+        log.entry(e);
+        ModelAndView mv = new ModelAndView("500");
+        mv.addObject("excepcionTimeStamp", new Date());
+        mv.addObject("excepcionClase", e.getClass());
+        mv.addObject("excepcionMensaje", e.getMessage());
+
+        if (request instanceof HttpServletRequest) {
+            HttpServletRequest hsr = (HttpServletRequest) request;
+            mv.addObject("metodo", hsr.getMethod());
+            mv.addObject("uri", hsr.getRequestURI());
+            if (hsr.getUserPrincipal() != null) {
+                mv.addObject("nombreUsuario", hsr.getUserPrincipal().getName());
+            }
+        }
+        log.fatal("Hora de resolver defectos", e);
         return log.exit(mv);
     }
 
