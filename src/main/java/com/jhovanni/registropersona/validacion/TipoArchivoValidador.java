@@ -24,7 +24,7 @@ public class TipoArchivoValidador implements ConstraintValidator<TipoArchivo, Mu
 
     @Override
     public boolean isValid(MultipartFile value, ConstraintValidatorContext context) {
-        if (value == null) {
+        if (value == null || value.getSize() == 0) {
             return true;
         }
         return value.getContentType().matches(tipo.regex);
