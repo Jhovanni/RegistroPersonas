@@ -9,10 +9,8 @@
         <title><jsp:invoke fragment="titulo"/></title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link href="${pageContext.request.contextPath}/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
+        <link href="${pageContext.request.contextPath}/css/registro.css" rel="stylesheet" type="text/css"/>
         <jsp:invoke fragment="estilos"/>
-        <style>
-            body { padding-top: 50px; }
-        </style>
     </head>
     <body>
         <%@ include file="../jsp/encabezado.jsp" %>

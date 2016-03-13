@@ -3,17 +3,16 @@
     Created on : 17/02/2015, 11:26:27 PM
     Author     : Jhovanni
 --%>
+<%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="s" uri="http://www.springframework.org/tags" %>
 <s:message code="Titulo.paginaLogin" var="tituloPaginaLogin"/>
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>${tituloPaginaLogin}</title>
-    </head>
-    <body>
-        <%@ include file="encabezado.jsp" %>
+
+<t:plantilla>
+    <jsp:attribute name="titulo">
+        ${tituloPaginaLogin}
+    </jsp:attribute>
+    <jsp:body>
         <div class="container">
             <h1>${tituloPaginaLogin}</h1>
             <form action="login" method="post">
@@ -34,5 +33,5 @@
                 <button type="submit" class="btn btn-default"><s:message code="Boton.ingresar"/></button>
             </form>
         </div>
-    </body>
-</html>
+    </jsp:body>
+</t:plantilla>

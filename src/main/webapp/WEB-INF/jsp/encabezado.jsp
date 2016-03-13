@@ -7,9 +7,9 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="s" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="sec"	uri="http://www.springframework.org/security/tags"%>
-<link href="${pageContext.request.contextPath}/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
-<script src="${pageContext.request.contextPath}/js/jquery.min.js" type="text/javascript"></script>
-<script src="${pageContext.request.contextPath}/js/bootstrap.min.js" type="text/javascript"></script>
+<!--<link href="${pageContext.request.contextPath}/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
+<script src="${pageContext.request.contextPath}/js/jquery.min.js" type="text/javascript"></script>-->
+<!--<script src="${pageContext.request.contextPath}/js/bootstrap.min.js" type="text/javascript"></script>-->
 <style>
     body { padding-top: 50px; }
 </style>

@@ -2,7 +2,7 @@
 <#import "spring.ftl" as spring />
 <#import "plantilla.ftl" as plantilla>
 
-<@plantilla.renderizar "Titulo.index", ["/css/inicio.css"]>
+<@plantilla.renderizar "Titulo.index", ["/css/registro.css"]>
 <#if errorConexionClase??>
 <div class="row pull-left affix">
     <div class="col-sm-8 jumbotron alert-warning alert-dismissible has-warning" role="alert">

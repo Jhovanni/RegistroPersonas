@@ -3,18 +3,16 @@
     Created on : 13/02/2015, 06:31:50 PM
     Author     : Jhovanni
 --%>
+<%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib  prefix="s" uri="http://www.springframework.org/tags"%>
 <%@taglib prefix="f" uri="http://www.springframework.org/tags/form"%>
 <s:message code="Titulo.editarPersona" var="tituloEditarPersona"/>
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>${tituloEditarPersona}</title>
-    </head>
-    <body>
-        <%@ include file="../encabezado.jsp" %>
+<t:plantilla>
+    <jsp:attribute name="titulo">
+        ${tituloEditarPersona}
+    </jsp:attribute>
+    <jsp:body>
         <div class="container">
             <h1>${tituloEditarPersona}</h1>
             <c:if test="${personaEditada}">
@@ -49,7 +47,7 @@
                             <f:radiobutton path="genero" value="M" label="M"/>
                             <f:radiobutton path="genero" value="F" label="F"/>
                             <f:errors path="genero" cssClass="help-block"/>
-                            </div>
+                        </div>
                     </div>
                     <div class="form-group">
                         <f:label path="foto" cssClass="col-sm-2 control-label"><s:message code="Persona.fotoPerfil"/>:</f:label>
@@ -67,5 +65,5 @@
                 <br>
             </c:if>
         </div>
-    </body>
-</html>
+    </jsp:body>
+</t:plantilla>

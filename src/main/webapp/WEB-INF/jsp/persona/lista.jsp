@@ -3,17 +3,15 @@
     Created on : 12/02/2015, 08:51:00 AM
     Author     : Jhovanni
 --%>
+<%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib  prefix="s" uri="http://www.springframework.org/tags"%>
 <s:message code="Titulo.listaPersonas" var="tituloListaPersonas"/>
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>${tituloListaPersonas}</title>
-    </head>
-    <body>
-        <%@ include file="../encabezado.jsp" %>
+<t:plantilla>
+    <jsp:attribute name="titulo">
+        ${tituloListPersonas}
+    </jsp:attribute>
+    <jsp:body>
         <div class="container">
             <h1>${tituloListaPersonas}</h1>
             <c:if test="${empty personas}" var="listaVacia"><s:message code="ListaVacia.persona"/></c:if>
@@ -49,15 +47,15 @@
                                         </a>
                                     </td>
                                     <td>
-                                        <sec:authorize access="hasAuthority('Administrador')">
-                                            <a href="editar/${persona.id}" class="btn btn-default"><s:message code="Link.editarPersona"/>
-                                            </a>
-                                            <a href="borrar/${persona.id}" class="btn btn-default"><s:message code="Link.borrarPersona"/>
-                                            </a>
-                                        </sec:authorize>
-                                    </td>
-                                </tr>
-                            </c:forEach>
+                            <sec:authorize access="hasAuthority('Administrador')">
+                                <a href="editar/${persona.id}" class="btn btn-default"><s:message code="Link.editarPersona"/>
+                                </a>
+                                <a href="borrar/${persona.id}" class="btn btn-default"><s:message code="Link.borrarPersona"/>
+                                </a>
+                            </sec:authorize>
+                            </td>
+                            </tr>
+                        </c:forEach>
                         </tbody>
                     </table></div>
                 </c:if>
@@ -66,5 +64,5 @@
         <div class="container">
             <div class="col-sm-12"><p class="text-right"> Febrero 2015 | Desarrollado por <a href="#">Jhovanni</a></p></div>
         </div>
-    </body>
-</html>
+    </jsp:body>
+</t:plantilla>

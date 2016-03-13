@@ -3,19 +3,25 @@
     Created on : 12/02/2015, 09:23:56 AM
     Author     : Jhovanni
 --%>
-
+<%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib  prefix="s" uri="http://www.springframework.org/tags"%>
 <%@taglib prefix="f" uri="http://www.springframework.org/tags/form"%>
 <s:message code="Titulo.registrarPersona" var="tituloRegistrarPersona"/>
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>${tituloRegistrarPersona}</title>
-    </head>
-    <body>
-        <%@ include file="../encabezado.jsp" %>
+
+<t:plantilla>
+    <jsp:attribute name="titulo">
+        ${tituloRegistrarPersona}
+    </jsp:attribute>
+    <jsp:attribute name="scripts">
+        <script src="${pageContext.request.contextPath}/js/registro.js" type="text/javascript"></script>
+        <script>
+            $(document).ready(function () {
+                registro.init("${pageContext.request.contextPath}");
+            });
+        </script>
+    </jsp:attribute>
+    <jsp:body>
         <div class="container">
             <h1>${tituloRegistrarPersona}</h1>
             <c:if test="${usuarioRegistrado}"><div class="text-success"><s:message code="PersonaRegistrada"/></div></c:if>
@@ -91,11 +97,5 @@
                 <span id="textoDinamicoError"><s:message code="texto.dinamico.error"/></span>
             </div>
         </div>
-        <script src="${pageContext.request.contextPath}/js/registro.js" type="text/javascript"></script>
-        <script>
-            $(document).ready(function () {
-                registro.init("${pageContext.request.contextPath}");
-            });
-        </script>
-    </body>
-</html>
+    </jsp:body>
+</t:plantilla>

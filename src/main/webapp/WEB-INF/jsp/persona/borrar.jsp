@@ -3,18 +3,16 @@
     Created on : 13/02/2015, 05:21:31 PM
     Author     : Jhovanni
 --%>
+<%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="f" uri="http://www.springframework.org/tags/form"%>
 <%@taglib prefix="s" uri="http://www.springframework.org/tags" %>
 <s:message code="Titulo.borrarPersona" var="tituloBorrarPersona"/>
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>${tituloBorrarPersona}</title>
-    </head>
-    <body>
-        <%@ include file="../encabezado.jsp" %>
+<t:plantilla>
+    <jsp:attribute name="titulo">
+        ${tituloBorrarPersona}
+    </jsp:attribute>
+    <jsp:body>
         <div class="container">
             <h1>${tituloBorrarPersona}</h1>
             <c:if test="${personaBorrada}">
@@ -59,10 +57,10 @@
                         <div class="col-sm-offset-2 col-sm-10">
                             <a href="../editar/${persona.id}" class="btn btn-default"><s:message code="Link.editarPersona"/></a>
                             <f:button class="btn btn-default"><s:message code="Boton.borrarPersona"/></f:button>
+                            </div>
                         </div>
-                    </div>
                 </f:form>
             </c:if>
         </div>
-    </body>
-</html>
+    </jsp:body>
+</t:plantilla>

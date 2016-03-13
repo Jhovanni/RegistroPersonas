@@ -6,9 +6,6 @@
     <jsp:attribute name="titulo">
         ${tituloPagina}
     </jsp:attribute>
-    <jsp:attribute name="estilos">
-        <link href="${pageContext.request.contextPath}/css/inicio.css" rel="stylesheet" type="text/css"/>
-    </jsp:attribute>
     <jsp:attribute name="scripts">
     </jsp:attribute>
     <jsp:body>
