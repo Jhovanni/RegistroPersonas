@@ -4,6 +4,7 @@ import com.jhovanni.registropersona.excepcion.NombreUsuarioOcupadoException;
 import com.jhovanni.registropersona.excepcion.RegistroNoEncontradoException;
 import com.jhovanni.registropersonas.entidad.Ciudad;
 import com.jhovanni.registropersonas.entidad.Foto;
+import com.jhovanni.registropersonas.entidad.Nivel;
 import com.jhovanni.registropersonas.entidad.Persona;
 import com.jhovanni.registropersonas.hibernate.ServicioRegistro;
 import java.io.IOException;
@@ -15,7 +16,12 @@ import javax.validation.Valid;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -195,11 +201,15 @@ public class ControlPrincipal {
      * @param id
      * @return
      */
-    @PreAuthorize(value = "hasAuthority('Administrador')")
+    @PreAuthorize(value = "isAuthenticated()")
     @RequestMapping(value = "persona/editar/{id}", method = RequestMethod.GET)
-    public ModelAndView prepararEditar(@PathVariable int id) {
+    public ModelAndView prepararEditar(@PathVariable int id) throws AccessDeniedException {
         log.entry(id);
         ModelAndView mv = new ModelAndView("persona/editar");
+
+        if (!edicionPermitida(id)) {
+            throw new AccessDeniedException("Edición no permitida");
+        }
         Persona persona = servicio.getPersona(id);
         if (persona != null) {
             mv.addObject(new PersonaForm(persona));
@@ -228,15 +238,19 @@ public class ControlPrincipal {
      * recibidos son válidos, la persona es actualizada, en caso contrario se
      * regresan los mismos para que el usuario solucione tales datos incorrectos
      *
-     * @param persona
+     * @param personaForm
      * @param errors
      * @return
      */
     @PreAuthorize(value = "hasAuthority('Administrador')")
     @RequestMapping(value = "persona/editar/{id}", method = RequestMethod.POST)
-    public ModelAndView editar(@Valid PersonaForm personaForm, Errors errors) {
+    public ModelAndView editar(@Valid PersonaForm personaForm, Errors errors) throws AccessDeniedException {
         log.entry(personaForm);
         ModelAndView mv = new ModelAndView("persona/editar");
+
+        if (!edicionPermitida(personaForm.getId())) {
+            throw new AccessDeniedException("Edición no permitida");
+        }
         if (!errors.hasErrors()) {
             Persona persona = personaForm.toPersona();
             try {
@@ -303,5 +317,28 @@ public class ControlPrincipal {
     public String prepararLogin() {
         log.entry();
         return log.exit("login");
+    }
+
+    /**
+     * Evalúa si el usuario logueado tiene libertad para editar una persona.
+     *
+     * @param idPersona
+     * @return
+     */
+    private boolean edicionPermitida(Integer idPersona) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication instanceof AnonymousAuthenticationToken) {
+            //usuarios anónimos no pueden editar
+            return log.exit(false);
+        }
+        for (GrantedAuthority authority : authentication.getAuthorities()) {
+            if (authority.getAuthority().equals(Nivel.Administrador.toString())) {
+                //si es Administrador, puede editar cualquier persona
+                return log.exit(true);
+            }
+        }
+        Integer idPersonaUsuario = servicio.getPersonaId(authentication.getName());
+        //puede editar si el id es el mismo que la persona asociada a este usuario
+        return log.exit(idPersona.equals(idPersonaUsuario));
     }
 }

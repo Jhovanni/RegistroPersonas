@@ -29,6 +29,7 @@ import org.mockito.MockitoAnnotations;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.http.MediaType;
 import org.springframework.security.authentication.TestingAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.web.servlet.MockMvc;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -38,6 +39,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.util.NestedServletException;
 
 /**
  * Pruebas para el controlador de vistas de la aplicación.
@@ -67,10 +69,36 @@ public class ControlPrincipalTest extends TestCase {
         personas = new ArrayList<>(0);
         personas.add(persona);
 
+        TestingAuthenticationToken token = new TestingAuthenticationToken(persona.getUsuario(), persona.getUsuario().getAuthorities());
+        SecurityContextHolder.getContext().setAuthentication(token);
+
         when(servicio.getPersonas()).thenReturn(personas);
         when(servicio.getPersona(persona.getId())).thenReturn(persona);
         when(servicio.getPersona(persona.getUsuario().getNombre())).thenReturn(persona);
         when(servicio.getPersonaId(persona.getUsuario().getNombre())).thenReturn(persona.getId());
+    }
+
+    /**
+     * Probar editar una persona, cuando el usuario logueado no posee los roles
+     * necesarios, ni tampoco está asociado al registro persona que desea
+     * editar. En tal situación se espera, sea arrojada una
+     * AccessDeniedException.<br>
+     * <small>Parace haber un problema con el runner, porque encierra la
+     * excepción, por lo cual he tenido que poner NestedServletException como
+     * esperada (esta medida es sólo requerida en el test). TODO: corregir
+     * eso</small>
+     *
+     * @throws Exception
+     */
+    @Test(expected = NestedServletException.class)
+    public void testEditar_usuarioSinRolesYSinRegistroPersona_accesoDenegado() throws Exception {
+        TestingAuthenticationToken token = new TestingAuthenticationToken("admin", null);
+        SecurityContextHolder.getContext().setAuthentication(token);
+        PersonaForm personaForm = new PersonaForm(persona);
+        Mockito.doThrow(RegistroNoEncontradoException.class).when(servicio).editarPersona(persona);
+
+        mvc.perform(post("/persona/editar/" + persona.getId())
+                .sessionAttr("personaForm", personaForm));
     }
 
     /**

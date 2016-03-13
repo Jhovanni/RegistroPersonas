@@ -19,5 +19,12 @@
         <script src="${pageContext.request.contextPath}/js/jquery.min.js" type="text/javascript"></script>
         <script src="${pageContext.request.contextPath}/js/bootstrap.min.js" type="text/javascript"></script>
         <jsp:invoke fragment="scripts"/>
+        <script>
+            //ajustar el margin inferior para dar espacio al pie de página, al momento de redimensionar la ventana
+            $(window).resize(function () {
+                var altura = $("#pie-pagina").height();
+                $("body").css("margin-bottom", altura);
+            });
+        </script>
     </body>
 </html>
