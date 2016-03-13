@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
-import org.springframework.orm.hibernate4.LocalSessionFactoryBean;
+import org.springframework.orm.hibernate3.LocalSessionFactoryBean;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
@@ -39,25 +39,26 @@ public class RootConfig {
 
     @Bean
     @Autowired
-    public LocalSessionFactoryBean sessionFactory(DataSource dataSource) {
-        Properties properties = new Properties();
-        properties.put("hibernate.dialect", "org.hibernate.dialect.MySQLDialect");
-
-        LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
-        sessionFactory.setDataSource(dataSource);
-        sessionFactory.setPackagesToScan("com.jhovanni.registropersonas.entidad");
-        sessionFactory.setHibernateProperties(properties);
-        return sessionFactory;
-    }
-
-    @Bean
-    @Autowired
     public JpaTransactionManager transactionManager(EntityManagerFactory entityManagerFactory) {
         JpaTransactionManager transactionManager = new JpaTransactionManager();
         transactionManager.setEntityManagerFactory(entityManagerFactory);
         return transactionManager;
     }
 
+    /**
+     * Configura el entity manager. Usando este entity manager, el
+     * {@code sessionFactory} usado anteriormente queda obsoleto. Por lo tanto
+     * es posible eliminarlo (hay que recordar que éste nuevo entity manager se
+     * empezó a manejar cuando se agrega SpringData al proyecto). <br>Como
+     * referencia, y para futuras ocasiones en que no se desee usar un
+     * entityManager; la forma de usar un session factory es creando un método
+     * similar a este, pero que regrese un objeto
+     * {@link  LocalSessionFactoryBean} en su lugar. La configuración interna es
+     * practicamente la misma
+     *
+     * @param dataSource
+     * @return
+     */
     @Bean
     @Autowired
     public LocalContainerEntityManagerFactoryBean jpaEntityManagerFactory(DataSource dataSource) {

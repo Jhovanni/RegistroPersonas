@@ -45,7 +45,7 @@
                         <input id="usuario" name="usuario" class="form-control" placeholder="${nombreUsuarioLabel}"/>
                         <label for="clave" class="sr-only"><s:message code="Persona.clave" var="claveLabel"/></label>
                         <input id="clave" name="clave" type="password" class="form-control" placeholder="${claveLabel}"/>
-                        <button type="submit" class="btn btn-default btn-sm"><s:message code="Boton.ingresar"/></button>
+                        <button type="submit" class="btn btn-success btn-sm"><s:message code="Boton.ingresar"/></button>
                     </div>
                 </form>
             </sec:authorize>

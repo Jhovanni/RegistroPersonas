@@ -13,8 +13,11 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessResourceFailureException;
 import org.springframework.http.HttpStatus;
+import org.springframework.orm.jpa.JpaSystemException;
 import org.springframework.security.access.AccessDeniedException;
+import org.springframework.transaction.CannotCreateTransactionException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -65,6 +68,56 @@ public class AdvisorController {
             nombreUsuario = principal.getName();
         }
         mv.addObject("nombreUsuario", nombreUsuario);
+        return log.exit(mv);
+    }
+
+    /**
+     * Handler intermediario para problemas al conectar a la base de datos desde
+     * el inicio de la aplicación. <br>Redirecciona al inicio, pero agrega una
+     * variable informando que la conexión no está disponible
+     *
+     * @param e
+     * @return
+     */
+    @ResponseStatus(HttpStatus.BAD_GATEWAY)
+    @ExceptionHandler({JpaSystemException.class})
+    public ModelAndView problemaConexion(Exception e) {
+        log.entry();
+        ModelAndView mv = new ModelAndView("inicio");
+        mv.addObject("errorConexionClase", e.getClass());
+        mv.addObject("errorConexionMensaje", e.getMessage());
+        return log.exit(mv);
+    }
+
+    /**
+     * Proporciona página personalizada para cuando hay errores debido a
+     * problemas de conectividad con la base de datos.
+     * <br>
+     * TODO: quizá reiniciar la conexión ayude, de la misma manera que se usa en
+     * sessionFilter, investigar como se hace eso
+     *
+     * @param request
+     * @param e
+     * @return
+     */
+    @ResponseStatus(HttpStatus.GATEWAY_TIMEOUT)
+    @ExceptionHandler({CannotCreateTransactionException.class, DataAccessResourceFailureException.class})
+    public ModelAndView pagina504(ServletRequest request, Exception e) {
+        log.entry(e);
+        ModelAndView mv = new ModelAndView("504");
+        mv.addObject("excepcionTimeStamp", new Date());
+        mv.addObject("excepcionClase", e.getClass());
+        mv.addObject("excepcionMensaje", e.getMessage());
+
+        if (request instanceof HttpServletRequest) {
+            HttpServletRequest hsr = (HttpServletRequest) request;
+            mv.addObject("metodo", hsr.getMethod());
+            mv.addObject("uri", hsr.getRequestURI());
+            if (hsr.getUserPrincipal() != null) {
+                mv.addObject("nombreUsuario", hsr.getUserPrincipal().getName());
+            }
+        }
+        log.error("Al parecer hay problemas con la base de datos por " + e.getClass() + ":" + e.getMessage());
         return log.exit(mv);
     }
 

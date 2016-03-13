@@ -9,7 +9,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
-import org.springframework.orm.hibernate4.LocalSessionFactoryBean;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
@@ -30,28 +29,10 @@ public class RootConfigTest {
     public BasicDataSource dataSource() {
         BasicDataSource dataSource = new BasicDataSource();
         dataSource.setDriverClassName("com.mysql.jdbc.Driver");
-        //jdbc:mysql://db4free.net:3306/jhovannidatabase?zeroDateTimeBehavior=convertToNul
-        dataSource.setUrl("jdbc:mysql://db4free.net:3306/jhovannidatabase");
+        dataSource.setUrl("jdbc:mysql://db4free.net:3306/jhovannidatabase?zeroDateTimeBehavior=convertToNull");
         dataSource.setUsername("jhovanni");
         dataSource.setPassword("jhovanniDatabase");
         return dataSource;
-    }
-
-    @Bean
-    @Autowired
-    public LocalSessionFactoryBean sessionFactory(DataSource dataSource) {
-        Properties properties = new Properties();
-        properties.put("hibernate.dialect", "org.hibernate.dialect.MySQLDialect");
-        properties.put("show_sql", "true");
-        properties.put("format_sql", "true");
-        properties.put("use_sql_comments", "true");
-        properties.put("hibernate.format_sql", "true");
-
-        LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
-        sessionFactory.setDataSource(dataSource);
-        sessionFactory.setPackagesToScan("com.jhovanni.registropersonas.entidad");
-        sessionFactory.setHibernateProperties(properties);
-        return sessionFactory;
     }
 
     @Bean
@@ -67,9 +48,11 @@ public class RootConfigTest {
     public LocalContainerEntityManagerFactoryBean jpaEntityManagerFactory(DataSource dataSource) {
         Properties properties = new Properties();
         properties.put("hibernate.dialect", "org.hibernate.dialect.MySQLDialect");
+        properties.put("hibernate.show_sql", "true");
+        properties.put("hibernate.format_sql", "true");
+        properties.put("hibernate.use_sql_comments", "true");
 
         HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
-        vendorAdapter.setShowSql(true);
 
         LocalContainerEntityManagerFactoryBean entityManagerFactory = new LocalContainerEntityManagerFactoryBean();
         entityManagerFactory.setDataSource(dataSource);

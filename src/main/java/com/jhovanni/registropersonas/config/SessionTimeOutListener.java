@@ -24,14 +24,14 @@ import org.apache.logging.log4j.Logger;
 @WebListener
 public class SessionTimeOutListener implements HttpSessionListener {
 
-    private final static int TIME_OUT = 5 * 60;
+    private final static int TIME_OUT = 20 * 60;
 
     private static final Logger log = LogManager.getLogger();
 
     @Override
     public void sessionCreated(HttpSessionEvent se) {
         log.trace("Sesión iniciada");
-//        se.getSession().setMaxInactiveInterval(TIME_OUT);
+        se.getSession().setMaxInactiveInterval(TIME_OUT);
     }
 
     @Override

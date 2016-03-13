@@ -9,7 +9,7 @@
 <s:message code="Titulo.index" var="tituloIndex"/>
 <!DOCTYPE html>
 <html>
-    
+
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>${tituloIndex}</title>
@@ -17,11 +17,26 @@
     </head>
     <body>
         <span id="top-link">
-            <a href="#top" onclick="$('html,body').animate({scrollTop:0},'slow');return false;">
+            <a href="#top" onclick="$('html,body').animate({scrollTop: 0}, 'slow');
+                    return false;">
                 <span class="glyphicon glyphicon-chevron-up"></span>
             </a>
         </span>
         <%@ include file="encabezado.jsp" %>
+        <c:if test="${errorConexionClase != null}">
+            <div class="row pull-left affix">
+                <div class="col-sm-8 jumbotron alert-warning alert-dismissible has-warning" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4>Al  parecer hay problemas de conexión con la base de datos </h4>
+                    Es muy probable que muchas funciones del sistema no estén disponibles
+                    <span class="glyphicon glyphicon-info-sign" aria-hidden="true" data-toggle="collapse" href="#errorConexionInfo" aria-expanded="false" aria-controls="errorConexionInfo"></span>
+                    <div class="collapse" id="errorConexionInfo">
+                        <h6><strong>Información para el administrador</strong></h6>
+                        <div style="width: 20em;word-wrap: break-word;"><code><small><strong>${errorConexionClase}:</strong>${errorConexionMensaje}</small></code></div>
+                    </div>
+                </div>
+            </div>
+        </c:if>
         <section id="bienvenida" class="container-fluid text-center landing texto claro">
             <div class="row">
                 <div class="col-xs-10 col-xs-offset-1">
@@ -31,10 +46,10 @@
             </div>
             <div class="row">
                 <div class="col-xs-6 col-xs-offset-3 input-group entrada-buscar">
-                        <input type="text" class="form-control" placeholder="Ingresa un texto para buscar" focus state/>
-                        <span class="input-group-btn">
-                            <button class="btn btn-default"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
-                        </span>
+                    <input type="text" class="form-control" placeholder="Ingresa un texto para buscar" focus state/>
+                    <span class="input-group-btn">
+                        <button class="btn btn-default"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
+                    </span>
                 </div>                
             </div>
             <h5>Se buscará a las personas por nombre y ciudad</h5>

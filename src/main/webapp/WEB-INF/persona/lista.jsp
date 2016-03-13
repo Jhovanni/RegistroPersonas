@@ -38,24 +38,15 @@
                                     <td>${persona.ciudad.nombre}</td>
                                     <td>
                                         <c:choose>
-                                            <c:when test="${persona.fotoPerfil.id == null}">
-                                                <!--Mostrar fotos perfil por defecto-->
-                                                <c:choose>
-                                                    <c:when test="${persona.genero eq 'M'}">
-                                                        <a href="${urlFoto}"><img src="${pageContext.request.contextPath}/imagenes/perfil-chico.png" alt="${sinFoto}" class="img-thumbnail" width="50" height="50"/></a>
-                                                        </c:when>
-                                                        <c:otherwise>
-                                                        <a href="${urlFoto}"><img src="${pageContext.request.contextPath}/imagenes/perfil-chica.png" alt="${sinFoto}" class="img-thumbnail" width="50" height="50"/></a>
-                                                        </c:otherwise>
-                                                    </c:choose>
-                                                </c:when>
-                                                <c:otherwise>
-                                                <!--Solicitar foto de perfil guardada y mostrarla-->
-                                                <c:url value="foto/${persona.fotoPerfil.id}" var="urlFoto"/>
-                                                <s:message code="Persona.fotoPerfil.alt" var="sinFoto"/>
-                                                <a href="${urlFoto}"><img src="${urlFoto}" alt="${sinFoto}" class="img-thumbnail" width="50" height="50"/></a>
-                                                </c:otherwise>
-                                            </c:choose>
+                                            <c:when test="${persona.fotoPerfil.id == null}"><c:choose>
+                                                    <c:when test="${persona.genero eq 'M'}"><c:url value="/imagenes/perfil-chico.png" var="urlFoto"/></c:when>
+                                                    <c:otherwise><c:url value="/imagenes/perfil-chica.png" var="urlFoto"/></c:otherwise>
+                                                </c:choose></c:when>
+                                            <c:otherwise><c:url value="foto/${persona.fotoPerfil.id}" var="urlFoto"/></c:otherwise>
+                                        </c:choose>
+                                        <a href="${urlFoto}" target="_blank">
+                                            <img src="${urlFoto}" alt="<s:message code="Persona.fotoPerfil.alt"/>" class="img-thumbnail" width="50" height="50"/>
+                                        </a>
                                     </td>
                                     <td>
                                         <sec:authorize access="hasAuthority('Administrador')">
