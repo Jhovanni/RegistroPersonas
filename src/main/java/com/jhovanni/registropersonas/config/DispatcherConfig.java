@@ -13,6 +13,8 @@ import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.servlet.view.JstlView;
+import org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer;
+import org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver;
 
 /**
  *
@@ -22,17 +24,41 @@ import org.springframework.web.servlet.view.JstlView;
 @EnableWebMvc
 @ComponentScan(basePackages = {"com.jhovanni.registropersonas.control", "com.jhovanni.registropersonas.secure"})
 public class DispatcherConfig extends WebMvcConfigurerAdapter {
-    
+
     @Autowired
     private CiudadFormatter ciudadFormatter;
 
     @Bean
-    public InternalResourceViewResolver viewResolver() {
+    public InternalResourceViewResolver jspViewResolver() {
         InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();
         viewResolver.setViewClass(JstlView.class);
-        viewResolver.setPrefix("/WEB-INF/");
+        viewResolver.setPrefix("/WEB-INF/jsp/");
         viewResolver.setSuffix(".jsp");
+        //importante ponerle el orden menos importante, ya que este resolver siempre regresa una vista, haya encontrado o no el archivo
+        viewResolver.setOrder(5);
         return viewResolver;
+    }
+
+    @Bean
+    public FreeMarkerViewResolver freeMarkerViewResolver() {
+        FreeMarkerViewResolver viewResolver = new FreeMarkerViewResolver();
+        viewResolver.setPrefix("");//prefix vacío porque se configura con freeMarkerConfigurer
+        viewResolver.setSuffix(".ftl");
+        viewResolver.setCache(false);//colocar true para producción
+        viewResolver.setOrder(1);
+        return viewResolver;
+    }
+
+    /**
+     * Requerido para configurar free marker
+     *
+     * @return
+     */
+    @Bean
+    public FreeMarkerConfigurer freeMarkerConfigurer() {
+        FreeMarkerConfigurer configurer = new FreeMarkerConfigurer();
+        configurer.setTemplateLoaderPath("/WEB-INF/ftl/");
+        return configurer;
     }
 
     @Bean
@@ -60,5 +86,5 @@ public class DispatcherConfig extends WebMvcConfigurerAdapter {
         registry.addResourceHandler("/fonts/**").addResourceLocations("/fonts/");
         registry.addResourceHandler("/imagenes/**").addResourceLocations("/imagenes/");
     }
-    
+
 }
