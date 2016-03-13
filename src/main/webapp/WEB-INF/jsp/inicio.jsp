@@ -1,27 +1,17 @@
-<%-- 
-    Document   : index
-    Created on : Jun 12, 2015, 11:26:24 PM
-    Author     : jhovanni
---%>
-
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib  prefix="s" uri="http://www.springframework.org/tags"%>
-<s:message code="Titulo.index" var="tituloIndex"/>
-<!DOCTYPE html>
-<html>
-
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>${tituloIndex}</title>
+<s:message code="Titulo.index" var="tituloPagina"/>
+<t:plantilla>
+    <jsp:attribute name="titulo">
+        ${tituloPagina}
+    </jsp:attribute>
+    <jsp:attribute name="estilos">
         <link href="${pageContext.request.contextPath}/css/inicio.css" rel="stylesheet" type="text/css"/>
-    </head>
-    <body>
-        <span id="top-link">
-            <a href="#top" onclick="$('html,body').animate({scrollTop: 0}, 'slow');
-                    return false;">
-                <span class="glyphicon glyphicon-chevron-up"></span>
-            </a>
-        </span>
+    </jsp:attribute>
+    <jsp:attribute name="scripts">
+    </jsp:attribute>
+    <jsp:body>
         <%@ include file="encabezado.jsp" %>
         <c:if test="${errorConexionClase != null}">
             <div class="row pull-left affix">
@@ -124,13 +114,5 @@
                 </div>
             </div>
         </section>
-        <footer class="container-fluid text-center small fondo oscuro">
-            <div class="row padding texto claro">
-                <div class="col-xs-6 col-xs-offset-3">
-                    <p>2015 - Desarrollado por <a class="" href="#">Jhovanni</a>, repositorio en <a href="https://github.com/Jhovanni/RegistroPersonas">GitHub</a></p>
-                    <small>Actualmente radico en Guadalajara. Uniendo fuerzas con un equipo estupendo en IBM</small>
-                </div>
-            </div>
-        </footer>
-    </body>
-</html>
+    </jsp:body>
+</t:plantilla>

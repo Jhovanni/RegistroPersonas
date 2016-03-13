@@ -21,7 +21,7 @@
             <c:if test="${usuarioRegistrado}"><div class="text-success"><s:message code="PersonaRegistrada"/></div></c:if>
             <f:form id="registrarForm" action="registrar" modelAttribute="personaForm" enctype="multipart/form-data" cssClass="form-horizontal" autocomplete="off">
                 <!-- Firefox: desactivar autocomplete --><input type="text" style="display:none"><input type="password" style="display:none">
-                <div class="form-group" class="help-block"><f:errors path=""/></div>
+                <div class="form-group help-block"><f:errors path=""/></div>
                 <div id="nombreUsuarioDiv" class="form-group">
                     <f:label path="nombreUsuario" cssClass="col-sm-2 control-label"><s:message code="Persona.nombreUsuario"/>:</f:label>
                         <div class="col-sm-10"><div class="input-group">
@@ -84,7 +84,7 @@
                         </div>
                     </div>
             </f:form>
-            <div hidden="true">
+            <div hidden>
                 <span id="textoDinamicoVerificando"><s:message code="texto.dinanico.verficando"/></span>
                 <span id="textoDinamicoDisponible"><s:message code="texto.dinamico.disponible"/></span>
                 <span id="textoDinamicoOcupado"><s:message code="texto.dinamico.ocupado"/></span>
