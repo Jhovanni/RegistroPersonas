@@ -21,8 +21,21 @@
         <script src="${pageContext.request.contextPath}/js/bootstrap.min.js" type="text/javascript"></script>
         <jsp:invoke fragment="scripts"/>
         <script>
-            //ajustar el margin inferior para dar espacio al pie de página, al momento de redimensionar la ventana
             $(window).resize(function () {
+                ajustarPiePagina();
+            });
+            $(document).ready(function () {
+                ajustarPiePagina();
+            });
+            /**
+             * Usado para ajustar el margin-bottom del body, dando el espacio requerido para el pie de página
+             * Podría dejarlo estático, y funcionaría el rezise automático, pero el pie de página no estaría al fondo.
+             * Es por ponerle ésa ubicación en el fondo, y el resize el mismo tiempo que es requerido hacer
+             * este ajuste dinámicamente
+             * @returns {undefined}
+             */
+            var ajustarPiePagina = (function () {
+                console.log("Ajustando");
                 var altura = $("#pie-pagina").height();
                 $("body").css("margin-bottom", altura);
             });

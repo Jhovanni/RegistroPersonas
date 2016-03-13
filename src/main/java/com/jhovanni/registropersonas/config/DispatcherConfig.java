@@ -34,6 +34,7 @@ public class DispatcherConfig extends WebMvcConfigurerAdapter {
         viewResolver.setViewClass(JstlView.class);
         viewResolver.setPrefix("/WEB-INF/jsp/");
         viewResolver.setSuffix(".jsp");
+        viewResolver.setContentType("text/html; charset=utf-8");
         //importante ponerle el orden menos importante, ya que este resolver siempre regresa una vista, haya encontrado o no el archivo
         viewResolver.setOrder(5);
         return viewResolver;
@@ -65,6 +66,7 @@ public class DispatcherConfig extends WebMvcConfigurerAdapter {
     public ReloadableResourceBundleMessageSource messageSource() {
         ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();
         messageSource.setBasename("/WEB-INF/locale/bundle");
+        messageSource.setDefaultEncoding("UTF-8");
         return messageSource;
     }
 
