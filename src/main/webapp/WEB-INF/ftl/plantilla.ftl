@@ -28,6 +28,7 @@
 <html>
     <head>
         <title>${titulo}</title>
+        <link rel="icon" href='<@spring.url "/imagenes/personas.png"/>' type="image/png" sizes="32x22">
         <meta codificacion="${codificacion}">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link href='<@spring.url "/css/bootstrap.min.css"/>' rel="stylesheet" type="text/css"/>

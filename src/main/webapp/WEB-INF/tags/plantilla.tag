@@ -7,6 +7,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title><jsp:invoke fragment="titulo"/></title>
+        <link rel="icon" href="${pageContext.request.contextPath}/imagenes/personas.png" type="image/png" sizes="32x22">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link href="${pageContext.request.contextPath}/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
         <link href="${pageContext.request.contextPath}/css/registro.css" rel="stylesheet" type="text/css"/>

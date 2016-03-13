@@ -9,7 +9,7 @@
 <s:message code="Titulo.listaPersonas" var="tituloListaPersonas"/>
 <t:plantilla>
     <jsp:attribute name="titulo">
-        ${tituloListPersonas}
+        ${tituloListaPersonas}
     </jsp:attribute>
     <jsp:body>
         <div class="container">
