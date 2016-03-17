@@ -1,7 +1,7 @@
 package com.jhovanni.registropersonas.hibernate;
 
-import com.jhovanni.registropersona.excepcion.NombreUsuarioOcupadoException;
-import com.jhovanni.registropersona.excepcion.RegistroNoEncontradoException;
+import com.jhovanni.registropersonas.excepcion.NombreUsuarioOcupadoException;
+import com.jhovanni.registropersonas.excepcion.RegistroNoEncontradoException;
 import com.jhovanni.registropersonas.entidad.Ciudad;
 import com.jhovanni.registropersonas.entidad.Foto;
 import com.jhovanni.registropersonas.entidad.Nivel;
@@ -94,7 +94,7 @@ public class ServicioRegistro {
      * @param clave
      * @return
      * @throws
-     * com.jhovanni.registropersona.excepcion.NombreUsuarioOcupadoException si
+     * com.jhovanni.registropersonas.excepcion.NombreUsuarioOcupadoException si
      * el nombre de usuario seleccionado ya se encuentra en uso
      */
     @Transactional
@@ -180,10 +180,9 @@ public class ServicioRegistro {
             fotoRepository.delete(persona.getFotos());
         }
         personaRepository.delete(persona);
-        if (permisos != null) {
-            for (Permiso permiso : permisos) {
-                permisoRepository.delete(permiso);
-            }
+        if (permisos != null && !permisos.isEmpty()) {
+            log.debug("Borrando " + permisos.size() + " permisos asociados al usuario");
+            permisoRepository.delete(permisos);
         }
         usuarioRepository.delete(usuario);
         log.exit();

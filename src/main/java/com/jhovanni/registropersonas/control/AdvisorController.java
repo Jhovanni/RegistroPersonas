@@ -20,6 +20,8 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.transaction.CannotCreateTransactionException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.NoHandlerFoundException;
@@ -37,6 +39,17 @@ public class AdvisorController {
     private static final Logger log = LogManager.getLogger();
     @Autowired
     private ServicioRegistro servicioRegistro;
+
+    /**
+     * Muestra la página de login
+     *
+     * @return
+     */
+    @RequestMapping(value = "login", method = RequestMethod.GET)
+    public String prepararLogin() {
+        log.entry();
+        return log.exit("login");
+    }
 
     /**
      * Muestra página a mostrar por defecto cuando la URL solicitada no se
@@ -84,8 +97,8 @@ public class AdvisorController {
     public ModelAndView problemaConexion(Exception e) {
         log.entry();
         ModelAndView mv = new ModelAndView("inicio");
-        mv.addObject("errorConexionClase", e.getClass());
-        mv.addObject("errorConexionMensaje", e.getMessage());
+        mv.addObject("excepcionClase", e.getClass());
+        mv.addObject("excepcionMensaje", e.getMessage());
         return log.exit(mv);
     }
 

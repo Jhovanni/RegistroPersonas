@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.jhovanni.registropersona.validacion;
+package com.jhovanni.registropersonas.anotacion;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
@@ -13,21 +13,21 @@ import org.springframework.web.multipart.MultipartFile;
  *
  * @author Administrator
  */
-public class FileSizeValidador implements ConstraintValidator<FileSize, MultipartFile> {
+public class TipoArchivoValidador implements ConstraintValidator<TipoArchivo, MultipartFile> {
 
-    private int max;
+    private TipoArchivo.Tipo tipo;
 
     @Override
-    public void initialize(FileSize constraintAnnotation) {
-        this.max = constraintAnnotation.max();
+    public void initialize(TipoArchivo constraintAnnotation) {
+        this.tipo = constraintAnnotation.tipo();
     }
 
     @Override
     public boolean isValid(MultipartFile value, ConstraintValidatorContext context) {
-        if (value == null) {
+        if (value == null || value.getSize() == 0) {
             return true;
         }
-        return value.getSize() <= max;
+        return value.getContentType().matches(tipo.regex);
     }
 
 }

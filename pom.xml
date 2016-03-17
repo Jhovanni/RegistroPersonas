@@ -208,8 +208,15 @@
             <artifactId>xml-apis</artifactId>
             <version>1.4.01</version>
         </dependency>
-    </dependencies>
+        <!--Imgscalr A Java Image Scaling Library-->
+        <dependency>
+            <groupId>org.imgscalr</groupId>
+            <artifactId>imgscalr-lib</artifactId>
+            <version>4.2</version>
+        </dependency>
 
+    </dependencies>
+    
     <build>
         <plugins>
             <plugin>
@@ -224,6 +231,34 @@
                             <!--this will run integration test-->
                             <!--goal>integration-test</goal>-->
                             <!--<goal>verify</goal>-->
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <!--JaCoCo Code Coverage Library-->
+            <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <version>0.7.6.201602180812</version>
+                <configuration>
+                    <excludes>
+                        <exclude>com/jhovanni/registropersonas/config/*</exclude>
+                        <exclude>com/jhovanni/registropersonas/entidad/*</exclude>
+                        <exclude>com/jhovanni/registropersonas/formato/*</exclude>
+                        <exclude>com/jhovanni/registropersonas/anotacion/*</exclude>
+                    </excludes>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>prepare-agent</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>report</id>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>report</goal>
                         </goals>
                     </execution>
                 </executions>

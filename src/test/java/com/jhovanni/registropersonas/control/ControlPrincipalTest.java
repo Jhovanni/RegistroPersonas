@@ -1,11 +1,14 @@
 package com.jhovanni.registropersonas.control;
 
-import com.jhovanni.registropersona.excepcion.NombreUsuarioOcupadoException;
-import com.jhovanni.registropersona.excepcion.RegistroNoEncontradoException;
+import com.jhovanni.registropersonas.excepcion.NombreUsuarioOcupadoException;
+import com.jhovanni.registropersonas.excepcion.RegistroNoEncontradoException;
+import com.jhovanni.registropersonas.entidad.Nivel;
 import com.jhovanni.registropersonas.entidad.Persona;
+import com.jhovanni.registropersonas.entidad.Usuario;
 import com.jhovanni.registropersonas.factory.CiudadFactory;
 import com.jhovanni.registropersonas.factory.PersonaFactory;
 import com.jhovanni.registropersonas.factory.UsuarioFactory;
+import com.jhovanni.registropersonas.formato.PersonaForm;
 import com.jhovanni.registropersonas.hibernate.ServicioRegistro;
 import java.util.ArrayList;
 import java.util.List;
@@ -28,6 +31,7 @@ import static org.mockito.Mockito.when;
 import org.mockito.MockitoAnnotations;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.http.MediaType;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.authentication.TestingAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.web.servlet.MockMvc;
@@ -65,11 +69,11 @@ public class ControlPrincipalTest extends TestCase {
         MockitoAnnotations.initMocks(this);
         mvc = MockMvcBuilders.standaloneSetup(control).build();
 
-        persona = PersonaFactory.get(CiudadFactory.get(), UsuarioFactory.get());
+        persona = PersonaFactory.get(CiudadFactory.get(), UsuarioFactory.get(Nivel.Administrador));
         personas = new ArrayList<>(0);
         personas.add(persona);
 
-        TestingAuthenticationToken token = new TestingAuthenticationToken(persona.getUsuario(), persona.getUsuario().getAuthorities());
+        TestingAuthenticationToken token = new TestingAuthenticationToken(persona.getUsuario(), null, new ArrayList<>(persona.getUsuario().getAuthorities()));
         SecurityContextHolder.getContext().setAuthentication(token);
 
         when(servicio.getPersonas()).thenReturn(personas);
@@ -92,10 +96,27 @@ public class ControlPrincipalTest extends TestCase {
      */
     @Test(expected = NestedServletException.class)
     public void testEditar_usuarioSinRolesYSinRegistroPersona_accesoDenegado() throws Exception {
-        TestingAuthenticationToken token = new TestingAuthenticationToken("admin", null);
+        Usuario usuario = UsuarioFactory.get(Nivel.Usuario);
+        TestingAuthenticationToken token = new TestingAuthenticationToken(usuario, null, new ArrayList<>(usuario.getAuthorities()));
         SecurityContextHolder.getContext().setAuthentication(token);
         PersonaForm personaForm = new PersonaForm(persona);
-        Mockito.doThrow(RegistroNoEncontradoException.class).when(servicio).editarPersona(persona);
+
+        mvc.perform(post("/persona/editar/" + persona.getId())
+                .sessionAttr("personaForm", personaForm));
+    }
+
+    /**
+     * Probar editar una persona, cuando el usuario logueado es anonimo. En tal
+     * situación se espera, sea arrojada una AccessDeniedException.<br>
+     *
+     * @throws Exception
+     */
+    @Test(expected = NestedServletException.class)
+    public void testEditar_usuarioAnomino_accesoDenegado() throws Exception {
+        AnonymousAuthenticationToken token = new AnonymousAuthenticationToken("invitado", persona.getUsuario().getNombre(), new ArrayList<>(persona.getUsuario().getAuthorities()
+        ));
+        SecurityContextHolder.getContext().setAuthentication(token);
+        PersonaForm personaForm = new PersonaForm(persona);
 
         mvc.perform(post("/persona/editar/" + persona.getId())
                 .sessionAttr("personaForm", personaForm));

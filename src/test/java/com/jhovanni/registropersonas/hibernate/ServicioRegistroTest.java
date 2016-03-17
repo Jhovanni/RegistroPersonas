@@ -5,12 +5,13 @@
  */
 package com.jhovanni.registropersonas.hibernate;
 
-import com.jhovanni.registropersona.excepcion.NombreUsuarioOcupadoException;
-import com.jhovanni.registropersona.excepcion.RegistroNoEncontradoException;
 import com.jhovanni.registropersonas.entidad.Foto;
+import com.jhovanni.registropersonas.entidad.Nivel;
 import com.jhovanni.registropersonas.entidad.Permiso;
 import com.jhovanni.registropersonas.entidad.Persona;
 import com.jhovanni.registropersonas.entidad.Usuario;
+import com.jhovanni.registropersonas.excepcion.NombreUsuarioOcupadoException;
+import com.jhovanni.registropersonas.excepcion.RegistroNoEncontradoException;
 import com.jhovanni.registropersonas.factory.CiudadFactory;
 import com.jhovanni.registropersonas.factory.FotoFactory;
 import com.jhovanni.registropersonas.factory.PersonaFactory;
@@ -67,7 +68,19 @@ public class ServicioRegistroTest extends TestCase {
         String nombreUsuario = "Usuario test";
         servicio.getPersonaId(nombreUsuario);
         Mockito.verify(personaRepository, Mockito.times(1)).findIdByUsuarioNombre(nombreUsuario);
+    }
 
+    /**
+     * Prueba buscar el id de una persona en base a un nombre de usuario que no
+     * se encontrará en la base de datos. En tal caso se espera que el método
+     * retorne valor 0.
+     */
+    @Test
+    public void testGetPersonaIdByUsuarioNombre_personaNoExistentePorNombre_valorCeroRegresado() {
+        String nombreUsuario = "Usuario test";
+        Mockito.when(personaRepository.findIdByUsuarioNombre(nombreUsuario)).thenReturn(null);
+        assertTrue(0 == servicio.getPersonaId(nombreUsuario));
+        Mockito.verify(personaRepository, Mockito.times(1)).findIdByUsuarioNombre(nombreUsuario);
     }
 
     /**
@@ -159,7 +172,7 @@ public class ServicioRegistroTest extends TestCase {
         Mockito.verify(personaRepository, Mockito.times(1)).delete(Mockito.isA(Persona.class));
         //los permisos asociados deben de ser borrados
         if (persona.getUsuario().getPermisos() != null && !persona.getUsuario().getPermisos().isEmpty()) {
-            Mockito.verify(permisoRepository, Mockito.atLeastOnce()).delete(Mockito.isA(Permiso.class));
+            Mockito.verify(permisoRepository, Mockito.atLeastOnce()).delete(Matchers.anyListOf(Permiso.class));
         }
         //se elimina el registro usuario
         Mockito.verify(usuarioRepository, Mockito.times(1)).delete(Mockito.isA(Usuario.class));
@@ -206,10 +219,65 @@ public class ServicioRegistroTest extends TestCase {
 
         servicio.editarPersona(persona);
     }
+    /*Test para métodos que llaman directamente un repositorio */
+
+    @Test
+    public void testGetUsuario_porNombre_findOneLlamado() {
+        servicio.getUsuario(persona.getUsuario().getNombre());
+        Mockito.verify(usuarioRepository, Mockito.times(1)).findOne(Mockito.isA(String.class));
+    }
+
+    @Test
+    public void testGetCiudad_porId_findOneLlamado() {
+        servicio.getCiudad(1);
+        Mockito.verify(ciudadRepository, Mockito.times(1)).findOne(Mockito.isA(Integer.class));
+    }
+
+    @Test
+    public void testGetCiudades() {
+        servicio.getCiudades();
+        Mockito.verify(ciudadRepository, Mockito.times(1)).findAllByOrderByIdAsc();
+    }
+
+    @Test
+    public void testGetPersonas() {
+        servicio.getPersonas();
+        Mockito.verify(personaRepository, Mockito.times(1)).findAllForListing();
+    }
+
+    @Test
+    public void testGetPersona_porId_findOneLlamado() {
+        servicio.getPersona(persona.getId());
+        Mockito.verify(personaRepository, Mockito.times(1)).findOne(Mockito.isA(Integer.class));
+    }
+
+    @Test
+    public void testGetPersona_porNombreUsuario_findByUsuarioNombreLlamado() {
+        servicio.getPersona(persona.getUsuario().getNombre());
+        Mockito.verify(personaRepository, Mockito.times(1)).findByUsuarioNombre(Mockito.isA(String.class));
+    }
+
+    @Test
+    public void testGetPersonaNombre_porNombreUsuario_findByUsuarioNombreLlamado() {
+        servicio.getPersonaNombre(persona.getUsuario().getNombre());
+        Mockito.verify(personaRepository, Mockito.times(1)).findNombreByUsuarioNombre(Mockito.isA(String.class));
+    }
+
+    @Test
+    public void testGetFoto_porId_findOneLlamado() {
+        servicio.getFoto(1);
+        Mockito.verify(fotoRepository, Mockito.times(1)).findOne(Mockito.isA(Integer.class));
+    }
+
+    @Test
+    public void testIsNombreUsuarioOcupado() {
+        servicio.isNombreUsuarioOcupado(persona.getUsuario().getNombre());
+        Mockito.verify(usuarioRepository, Mockito.times(1)).exists(Mockito.isA(String.class));
+    }
 
     @Before
     public void before() {
-        persona = PersonaFactory.get(CiudadFactory.get(), UsuarioFactory.get());
+        persona = PersonaFactory.get(CiudadFactory.get(), UsuarioFactory.get(Nivel.Usuario, Nivel.Administrador));
         personas = new ArrayList<>(0);
         personas.add(persona);
 

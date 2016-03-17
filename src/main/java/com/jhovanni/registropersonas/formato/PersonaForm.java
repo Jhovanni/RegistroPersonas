@@ -1,8 +1,8 @@
-package com.jhovanni.registropersonas.control;
+package com.jhovanni.registropersonas.formato;
 
-import com.jhovanni.registropersona.validacion.FileSize;
-import com.jhovanni.registropersona.validacion.TipoArchivo;
-import com.jhovanni.registropersona.validacion.Tipologia;
+import com.jhovanni.registropersonas.anotacion.FileSize;
+import com.jhovanni.registropersonas.anotacion.TipoArchivo;
+import com.jhovanni.registropersonas.anotacion.Tipologia;
 import com.jhovanni.registropersonas.entidad.Ciudad;
 import com.jhovanni.registropersonas.entidad.Foto;
 import com.jhovanni.registropersonas.entidad.Genero;
@@ -50,7 +50,7 @@ public class PersonaForm implements Serializable {
     public PersonaForm() {
     }
 
-    PersonaForm(Persona persona) {
+    public PersonaForm(Persona persona) {
         this.id = persona.getId();
         this.nombre = persona.getNombre();
         this.edad = persona.getEdad();

@@ -1,6 +1,6 @@
 package com.jhovanni.registropersonas.config;
 
-import com.jhovanni.registropersonas.control.CiudadFormatter;
+import com.jhovanni.registropersonas.formato.CiudadFormatter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;

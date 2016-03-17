@@ -3,7 +3,7 @@
 <#import "plantilla.ftl" as plantilla>
 
 <@plantilla.renderizar "Titulo.index", ["/css/registro.css"]>
-<#if errorConexionClase??>
+<#if excepcionClase??>
 <div class="row pull-left affix">
     <div class="col-sm-8 jumbotron alert-warning alert-dismissible has-warning" role="alert">
         <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -12,7 +12,7 @@
         <span class="glyphicon glyphicon-info-sign" aria-hidden="true" data-toggle="collapse" href="#errorConexionInfo" aria-expanded="false" aria-controls="errorConexionInfo"></span>
         <div class="collapse" id="errorConexionInfo">
             <h6><strong>Informaci&#243;n para el administrador</strong></h6>
-            <div style="width: 20em;word-wrap: break-word;"><code><small><strong>${errorConexionClase}:</strong>${errorConexionMensaje!}</small></code></div>
+            <div style="width: 20em;word-wrap: break-word;"><code><small><strong>${excepcionClase}:</strong>${excepcionMensaje!}</small></code></div>
             </div>
         </div>
     </div>

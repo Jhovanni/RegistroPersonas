@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.jhovanni.registropersona.validacion;
+package com.jhovanni.registropersonas.anotacion;
 
 import java.lang.annotation.Documented;
 import static java.lang.annotation.ElementType.ANNOTATION_TYPE;
@@ -17,41 +17,53 @@ import javax.validation.Constraint;
 import javax.validation.Payload;
 
 /**
- * Valida el tipo de un archivo en base a los permitidos por {@link Tipo}
+ * Los caracteres de la cadena deben de contener sólo elementos del tipo
+ * especificado. Ésta es una anotación de práctica, con funcionalidad de algo
+ * sencillo. Claro que por ahora ha generado más trabajo que ayuda, un simple
+ * regex podría haber ayudado. Más lo importante fue aprender un poco de como se
+ * crean la validaciones por anotación
+ * <p>
+ * {@code null} se considera válido
+ *
  * @author Administrator
  */
 @Target({FIELD, METHOD, PARAMETER, ANNOTATION_TYPE})
 @Retention(RUNTIME)
-@Constraint(validatedBy = TipoArchivoValidador.class)
+@Constraint(validatedBy = TipologiaValidador.class)
 @Documented
-public @interface TipoArchivo {
+public @interface Tipologia {
 
-    String message() default "Tipo de archivo no aceptado";
+    String message() default "La tipología de las letras ingresadas no se encuentran dentro de las admitidas Minúsculas/Mayúsculas";
 
     Class<?>[] groups() default {};
 
     Class<? extends Payload>[] payload() default {};
 
-    TipoArchivo.Tipo tipo();
+    /**
+     *
+     * @return tipo de letras admitidas
+     */
+    Tipologia.Tipo tipo();
 
+    /**
+     * Define varias anotaciones {@link Tipologia} para el mismo elemento
+     *
+     * @see Tipologia
+     */
     @Target({FIELD, METHOD, PARAMETER, ANNOTATION_TYPE})
     @Retention(RUNTIME)
     @Documented
     @interface List {
 
-        TipoArchivo[] value();
+        Tipologia[] value();
     }
 
     /**
-     * Tipos de archivos disponibles
+     * Tipologías disponibles
      */
     public enum Tipo {
 
-        IMAGEN("image\\/.*");
-        public String regex;
+        MAYUSCULA, MINUSCULA
 
-        private Tipo(String regex) {
-            this.regex = regex;
-        }
     }
 }

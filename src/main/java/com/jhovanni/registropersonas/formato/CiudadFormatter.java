@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.jhovanni.registropersonas.control;
+package com.jhovanni.registropersonas.formato;
 
 import com.jhovanni.registropersonas.entidad.Ciudad;
 import com.jhovanni.registropersonas.hibernate.ServicioRegistro;

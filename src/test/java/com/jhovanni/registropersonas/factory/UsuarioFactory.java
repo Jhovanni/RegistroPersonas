@@ -5,21 +5,35 @@
  */
 package com.jhovanni.registropersonas.factory;
 
+import com.jhovanni.registropersonas.entidad.Nivel;
+import com.jhovanni.registropersonas.entidad.Permiso;
 import com.jhovanni.registropersonas.entidad.Usuario;
+import java.util.ArrayList;
 
 /**
  *
  * @author Administrator
  */
 public class UsuarioFactory {
+
     private static int count = 1;
-    public static Usuario get(){
+
+    public static Usuario get() {
         Usuario u = new Usuario();
         u.setActivo(true);
-        u.setNombre("usuario"+count);
+        u.setNombre("usuario" + count);
         u.setClave("claveclave");
         count++;
         return u;
     }
-    
+
+    public static Usuario get(Nivel... niveles) {
+        Usuario u = get();
+        u.setPermisos(new ArrayList<Permiso>(0));
+        for (Nivel nivel : niveles) {
+            u.getPermisos().add(PermisoFactory.get(u, nivel));
+        }
+        return u;
+    }
+
 }

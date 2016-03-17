@@ -1,11 +1,12 @@
 package com.jhovanni.registropersonas.control;
 
-import com.jhovanni.registropersona.excepcion.NombreUsuarioOcupadoException;
-import com.jhovanni.registropersona.excepcion.RegistroNoEncontradoException;
 import com.jhovanni.registropersonas.entidad.Ciudad;
 import com.jhovanni.registropersonas.entidad.Foto;
 import com.jhovanni.registropersonas.entidad.Nivel;
 import com.jhovanni.registropersonas.entidad.Persona;
+import com.jhovanni.registropersonas.excepcion.NombreUsuarioOcupadoException;
+import com.jhovanni.registropersonas.excepcion.RegistroNoEncontradoException;
+import com.jhovanni.registropersonas.formato.PersonaForm;
 import com.jhovanni.registropersonas.hibernate.ServicioRegistro;
 import java.io.IOException;
 import java.security.Principal;
@@ -305,18 +306,6 @@ public class ControlPrincipal {
             mv.addObject("registroNoEncontrado", true);
         }
         return log.exit(mv);
-    }
-
-    //CONTROLES DE SPRING SECURITY
-    /**
-     * Muestra la página de login
-     *
-     * @return
-     */
-    @RequestMapping(value = "login", method = RequestMethod.GET)
-    public String prepararLogin() {
-        log.entry();
-        return log.exit("login");
     }
 
     /**
