@@ -38,11 +38,13 @@ import org.springframework.test.web.servlet.MockMvc;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.forwardedUrl;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.servlet.ViewResolver;
+import org.springframework.web.servlet.view.InternalResourceViewResolver;
+import org.springframework.web.servlet.view.JstlView;
 import org.springframework.web.util.NestedServletException;
 
 /**
@@ -67,7 +69,7 @@ public class ControlPrincipalTest extends TestCase {
     @Override
     public void setUp() {
         MockitoAnnotations.initMocks(this);
-        mvc = MockMvcBuilders.standaloneSetup(control).build();
+        mvc = MockMvcBuilders.standaloneSetup(control).setViewResolvers(viewResolver()).build();
 
         persona = PersonaFactory.get(CiudadFactory.get(), UsuarioFactory.get(Nivel.Administrador));
         personas = new ArrayList<>(0);
@@ -80,6 +82,18 @@ public class ControlPrincipalTest extends TestCase {
         when(servicio.getPersona(persona.getId())).thenReturn(persona);
         when(servicio.getPersona(persona.getUsuario().getNombre())).thenReturn(persona);
         when(servicio.getPersonaId(persona.getUsuario().getNombre())).thenReturn(persona.getId());
+    }
+
+    /**
+     * Prueba la petición de login.
+     *
+     * @throws Exception
+     */
+    @Test
+    public void testPrepararLogin() throws Exception {
+        mvc.perform(get("/login"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("login"));
     }
 
     /**
@@ -149,8 +163,7 @@ public class ControlPrincipalTest extends TestCase {
     @Test
     public void testInicio() throws Exception {
         mvc.perform(get("/")).andExpect(status().isOk())
-                .andExpect(view().name("inicio"))
-                .andExpect(forwardedUrl("inicio"));
+                .andExpect(view().name("inicio"));
     }
 
     /**
@@ -163,11 +176,10 @@ public class ControlPrincipalTest extends TestCase {
 
         mvc.perform(get("/persona/lista")).andExpect(status().isOk())
                 .andExpect(view().name("persona/lista"))
-                .andExpect(forwardedUrl("persona/lista"))
                 .andExpect(model().attributeExists("personas"))
                 .andExpect(model().attribute("personas", hasSize(1)))
                 .andExpect(model().attribute("personas", Matchers.isA(List.class)
-                        ));
+                ));
         verify(servicio).getCiudades();
         verify(servicio, times(1)).getPersonas();
         verifyNoMoreInteractions(servicio);
@@ -183,7 +195,6 @@ public class ControlPrincipalTest extends TestCase {
         mvc.perform(get("/persona/registrar"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("persona/registrar"))
-                .andExpect(forwardedUrl("persona/registrar"))
                 .andExpect(model().attributeExists("personaForm"))
                 .andExpect(model().attribute("personaForm", Matchers.isA(PersonaForm.class)));
     }
@@ -201,7 +212,6 @@ public class ControlPrincipalTest extends TestCase {
                 .sessionAttr("personaForm", personaForm))
                 .andExpect(status().isOk())
                 .andExpect(view().name("persona/registrar"))
-                .andExpect(forwardedUrl("persona/registrar"))
                 .andExpect(model().attributeExists("usuarioRegistrado"));
 
         Mockito.verify(servicio, Mockito.times(1)).registrarPersona(personaForm.toPersona(), personaForm.getNombreUsuario(), personaForm.getClave());
@@ -221,7 +231,6 @@ public class ControlPrincipalTest extends TestCase {
                 .sessionAttr("personaForm", personaForm))
                 .andExpect(status().isOk())
                 .andExpect(view().name("persona/registrar"))
-                .andExpect(forwardedUrl("persona/registrar"))
                 .andExpect(model().attributeDoesNotExist("usuarioRegistrado"))
                 .andExpect(model().hasErrors());
 
@@ -245,7 +254,6 @@ public class ControlPrincipalTest extends TestCase {
                 .sessionAttr("personaForm", personaForm))
                 .andExpect(status().isOk())
                 .andExpect(view().name("persona/registrar"))
-                .andExpect(forwardedUrl("persona/registrar"))
                 .andExpect(model().attributeDoesNotExist("usuarioRegistrado"))
                 .andExpect(model().hasErrors());
 
@@ -263,10 +271,27 @@ public class ControlPrincipalTest extends TestCase {
         mvc.perform(get("/persona/editar/" + persona.getId()))
                 .andExpect(status().isOk())
                 .andExpect(view().name("persona/editar"))
-                .andExpect(forwardedUrl("persona/editar"))
                 .andExpect(model().attributeExists("personaForm"));
 
         verify(servicio, times(1)).getPersona(persona.getId());
+    }
+
+    /**
+     * Prueba preparar edición de persona cuando el usuario logueado es anónimo.
+     * Se espera sea arrojada una excepción de no admitido.
+     *
+     * @throws Exception
+     */
+    @Test(expected = NestedServletException.class)
+    public void testPrepararEditar_usuarioAnomino_accesoDenegado() throws Exception {
+        AnonymousAuthenticationToken token = new AnonymousAuthenticationToken("invitado", persona.getUsuario().getNombre(), new ArrayList<>(persona.getUsuario().getAuthorities()
+        ));
+        SecurityContextHolder.getContext().setAuthentication(token);
+
+        mvc.perform(get("/persona/editar/" + persona.getId()))
+                .andExpect(status().isOk())
+                .andExpect(view().name("persona/editar"))
+                .andExpect(model().attributeExists("personaForm"));
     }
 
     /**
@@ -303,7 +328,6 @@ public class ControlPrincipalTest extends TestCase {
                 .sessionAttr("personaForm", personaForm))
                 .andExpect(status().isOk())
                 .andExpect(view().name("persona/editar"))
-                .andExpect(forwardedUrl("persona/editar"))
                 .andExpect(model().attributeExists("personaForm", "personaEditada"));
 
         verify(servicio, times(1)).editarPersona(persona);
@@ -325,7 +349,6 @@ public class ControlPrincipalTest extends TestCase {
                 .sessionAttr("personaForm", personaForm))
                 .andExpect(status().isOk())
                 .andExpect(view().name("persona/editar"))
-                .andExpect(forwardedUrl("persona/editar"))
                 .andExpect(model().hasErrors())
                 .andExpect(model().attributeExists("personaForm"))
                 .andExpect(model().attributeDoesNotExist("personaEditada"));
@@ -349,7 +372,6 @@ public class ControlPrincipalTest extends TestCase {
                 .sessionAttr("personaForm", personaForm))
                 .andExpect(status().isOk())
                 .andExpect(view().name("persona/editar"))
-                .andExpect(forwardedUrl("persona/editar"))
                 .andExpect(model().attributeExists("registroNoEncontrado"))
                 .andExpect(model().attributeDoesNotExist("personaEditada"));
 
@@ -366,7 +388,6 @@ public class ControlPrincipalTest extends TestCase {
         mvc.perform(get("/persona/borrar/" + persona.getId()))
                 .andExpect(status().isOk())
                 .andExpect(view().name("persona/borrar"))
-                .andExpect(forwardedUrl("persona/borrar"))
                 .andExpect(model().attributeExists("persona"));
     }
 
@@ -382,7 +403,6 @@ public class ControlPrincipalTest extends TestCase {
                 .sessionAttr("persona", persona))
                 .andExpect(status().isOk())
                 .andExpect(view().name("persona/borrar"))
-                .andExpect(forwardedUrl("persona/borrar"))
                 .andExpect(model().attributeExists("personaBorrada"));
 
         verify(servicio, times(1)).borrarPersona(persona.getId());
@@ -403,9 +423,22 @@ public class ControlPrincipalTest extends TestCase {
                 .sessionAttr("persona", persona))
                 .andExpect(status().isOk())
                 .andExpect(view().name("persona/borrar"))
-                .andExpect(forwardedUrl("persona/borrar"))
                 .andExpect(model().attributeExists("registroNoEncontrado"))
                 .andExpect(model().attributeDoesNotExist("personaBorrada"));
+    }
+
+    /**
+     * Crea un view resolver para ser usado en el mockMvc
+     *
+     * @return
+     */
+    private ViewResolver viewResolver() {
+        InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();
+        viewResolver.setViewClass(JstlView.class);
+        viewResolver.setPrefix("/WEB-INF/jsp/");
+        viewResolver.setSuffix(".jsp");
+        viewResolver.setContentType("text/html; charset=utf-8");
+        return viewResolver;
     }
 
 }

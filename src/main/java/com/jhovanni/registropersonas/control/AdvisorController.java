@@ -41,17 +41,6 @@ public class AdvisorController {
     private ServicioRegistro servicioRegistro;
 
     /**
-     * Muestra la página de login
-     *
-     * @return
-     */
-    @RequestMapping(value = "login", method = RequestMethod.GET)
-    public String prepararLogin() {
-        log.entry();
-        return log.exit("login");
-    }
-
-    /**
      * Muestra página a mostrar por defecto cuando la URL solicitada no se
      * encuentre
      *

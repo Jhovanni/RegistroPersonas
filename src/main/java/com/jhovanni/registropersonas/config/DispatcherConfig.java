@@ -22,7 +22,7 @@ import org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver;
  */
 @Configuration
 @EnableWebMvc
-@ComponentScan(basePackages = {"com.jhovanni.registropersonas.control", "com.jhovanni.registropersonas.secure"})
+@ComponentScan(basePackages = {"com.jhovanni.registropersonas.control", "com.jhovanni.registropersonas.formato", "com.jhovanni.registropersonas.secure"})
 public class DispatcherConfig extends WebMvcConfigurerAdapter {
 
     @Autowired

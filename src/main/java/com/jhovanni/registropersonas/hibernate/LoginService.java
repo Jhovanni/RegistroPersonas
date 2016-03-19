@@ -34,14 +34,7 @@ public class LoginService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String nombreUsuario) throws UsernameNotFoundException {
         log.entry(nombreUsuario);
-
-        Usuario usuario = null;
-        try {
-            usuario = usuarioRepository.findOne(nombreUsuario);
-        } catch (Exception e) {
-            log.fatal("Excepción ocurrida " + e);
-            throw e;
-        }
+        Usuario usuario = usuarioRepository.findOne(nombreUsuario);
         if (usuario == null) {
             log.debug("Nombre de usuario no encontrado");
             throw new UsernameNotFoundException(nombreUsuario);

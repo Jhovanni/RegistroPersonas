@@ -46,13 +46,24 @@ public class ControlPrincipal {
 
     @Autowired
     private ServicioRegistro servicio;
+    
+    /**
+     * Muestra la página de login
+     *
+     * @return
+     */
+    @RequestMapping(value = "login", method = RequestMethod.GET)
+    public ModelAndView prepararLogin() {
+        log.entry();
+        return log.exit(new ModelAndView("login"));
+    }
 
     /**
      * Comprueba si un nombre de usuario recibido ya se encuentra en uso en el
      * sistema. El nombre de usuario se comprueba conviertiéndolo a minúsculas
      *
      * @param nombreUsuario
-     * @return
+     * @return  
      */
     @RequestMapping(value = "persona/isNombreUsuarioOcupado/{nombreUsuario}")
     @ResponseBody
